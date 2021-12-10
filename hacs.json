@@ -1,0 +1,13 @@
+{
+  "name": "Weathelink",
+  "domains": [
+    "sensor",
+    "weather"
+  ],
+  "homeassistant": "2021.12.0",
+  "iot_class": [
+    "Cloud Poll"
+  ],
+  "zip_release": true,
+  "filename": "weatherlink.zip"
+}

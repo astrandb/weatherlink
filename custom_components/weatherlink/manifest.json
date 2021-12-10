@@ -1,0 +1,15 @@
+{
+  "domain": "weatherlink",
+  "name": "Weatherlink",
+  "config_flow": true,
+  "documentation": "https://www.home-assistant.io/integrations/weatherlink",
+  "requirements": [],
+  "ssdp": [],
+  "zeroconf": [],
+  "homekit": {},
+  "dependencies": [],
+  "codeowners": [
+    "@strandb"
+  ],
+  "iot_class": "cloud_polling"
+}
