@@ -6,7 +6,7 @@ import logging
 
 import async_timeout
 
-from homeassistant.components.weatherlink.pyweatherlink import WLHub
+from .pyweatherlink import WLHub
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
