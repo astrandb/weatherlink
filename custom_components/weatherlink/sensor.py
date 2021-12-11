@@ -1,12 +1,16 @@
 """Platform for sensor integration."""
 from __future__ import annotations
 
+from dataclasses import dataclass
+from typing import Final
+
 from homeassistant.components.sensor import (
-    DEVICE_CLASS_TEMPERATURE,
-    STATE_CLASS_MEASUREMENT,
+    SensorDeviceClass,
     SensorEntity,
+    SensorEntityDescription,
+    SensorStateClass,
 )
-from homeassistant.const import TEMP_CELSIUS
+from homeassistant.const import PERCENTAGE, PRESSURE_MBAR, TEMP_CELSIUS, TEMP_FAHRENHEIT
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -15,6 +19,103 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import get_coordinator
 from .const import DOMAIN
+
+SUBTAG_1 = "davis_current_observation"
+
+
+@dataclass
+class WLSensorDescription(SensorEntityDescription):
+    """Class describing Weatherlink sensor entities."""
+
+    tag: str | None = None
+    subtag: str | None = None
+    convert: str | None = None
+    decimals: int = 1
+
+
+SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
+    WLSensorDescription(
+        key="OutsideTemp",
+        tag="temp_c",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        name="Outside Temperature",
+        native_unit_of_measurement=TEMP_CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
+        key="OutsideHumidity",
+        tag="relative_humidity",
+        device_class=SensorDeviceClass.HUMIDITY,
+        name="Outside Humidity",
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
+        key="Pressure",
+        tag="pressure_mb",
+        device_class=SensorDeviceClass.PRESSURE,
+        name="Pressure",
+        native_unit_of_measurement=PRESSURE_MBAR,
+        state_class=SensorStateClass.MEASUREMENT,
+        decimals=0,
+    ),
+    WLSensorDescription(
+        key="Wind",
+        tag="wind_mph",
+        icon="mdi:weather-windy",
+        name="Wind",
+        convert=lambda x: x * 1609 / 3600,
+        native_unit_of_measurement="m/s",
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
+        key="InsideTemp",
+        tag="temp_in_f",
+        subtag=SUBTAG_1,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        name="Inside Temperature",
+        native_unit_of_measurement=TEMP_FAHRENHEIT,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
+        key="RainToday",
+        tag="rain_day_in",
+        subtag=SUBTAG_1,
+        icon="mdi:weather-pouring",
+        name="Rain Today",
+        native_unit_of_measurement="mm",
+        convert=lambda x: x * 25.4,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
+        key="RainInMonth",
+        tag="rain_month_in",
+        subtag=SUBTAG_1,
+        icon="mdi:weather-pouring",
+        name="Rain this month",
+        native_unit_of_measurement="mm",
+        convert=lambda x: x * 25.4,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
+        key="RainInYear",
+        tag="rain_year_in",
+        subtag=SUBTAG_1,
+        icon="mdi:weather-pouring",
+        name="Rain this year",
+        native_unit_of_measurement="mm",
+        convert=lambda x: x * 25.4,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+    ),
+    WLSensorDescription(
+        key="Dewpoint",
+        tag="dewpoint_c",
+        name="Dewpoint",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=TEMP_CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+)
 
 
 async def async_setup_entry(
@@ -26,38 +127,42 @@ async def async_setup_entry(
     coordinator = await get_coordinator(hass, config_entry)
 
     async_add_entities(
-        # WLSensor(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-        [WLSensor(coordinator, 1)]
+        WLSensor(coordinator, description) for description in SENSOR_TYPES
     )
 
 
 class WLSensor(CoordinatorEntity, SensorEntity):
     """Representation of a Sensor."""
 
-    def __init__(self, coordinator, idx):
+    entity_description: WLSensorDescription
+
+    def __init__(self, coordinator, description: SensorEntityDescription):
         """Initialize the sensor."""
         super().__init__(coordinator)
-        self._idx = idx
-        self._state = None
-        self._attr_name = "Outside temp"  # self.coordinator.data[self._idx]["name"]
-        self._attr_device_class = DEVICE_CLASS_TEMPERATURE
-        self._attr_native_unit_of_measurement = TEMP_CELSIUS
-        self._attr_state_class = STATE_CLASS_MEASUREMENT
+        self.entity_description = description
         self._attr_unique_id = (
-            "temp-123"  # {self.coordinator.data[self._idx]['serialNumber']}"
+            f"{self.coordinator.data[SUBTAG_1]['DID']}-{self.entity_description.key}"
         )
         self._attr_device_info = DeviceInfo(
-            identifiers={
-                (DOMAIN, "123")
-            },  # self.coordinator.data[self._idx]["serialNumber"])},
-            # name=self.coordinator.data[self._idx]["name"],
-            name="Device 1",
+            identifiers={(DOMAIN, self.coordinator.data[SUBTAG_1]["DID"])},
+            name=self.coordinator.data[SUBTAG_1]["station_name"],
             manufacturer="Davis",
             model="Weatherlink",
+            configuration_url="https://www.weatherlink.com/",
         )
 
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        # return 23.4
-        return round(float(self.coordinator.data["temp_c"]), 1)
+        if self.entity_description.subtag is not None:
+            value = float(
+                self.coordinator.data[self.entity_description.subtag][
+                    self.entity_description.tag
+                ]
+            )
+        else:
+            value = float(self.coordinator.data[self.entity_description.tag])
+
+        if self.entity_description.convert is not None:
+            value = self.entity_description.convert(value)
+        return round(value, self.entity_description.decimals)

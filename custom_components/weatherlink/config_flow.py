@@ -10,10 +10,10 @@ from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
-from .pyweatherlink import WLHub
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN
+from .pyweatherlink import WLHub
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -57,7 +57,11 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     # InvalidAuth
 
     # Return info that you want to store in the config entry.
-    return {"title": "Name of the device"}
+    data = await hub.get_data()
+    station_name = data["davis_current_observation"]["station_name"]
+    did = data["davis_current_observation"]["DID"]
+
+    return {"title": station_name, "did": did}
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -86,6 +90,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             _LOGGER.exception("Unexpected exception")
             errors["base"] = "unknown"
         else:
+            await self.async_set_unique_id(user_input["username"])
             return self.async_create_entry(title=info["title"], data=user_input)
 
         return self.async_show_form(

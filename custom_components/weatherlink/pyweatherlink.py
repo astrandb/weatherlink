@@ -1,8 +1,7 @@
-"""Library for Weatherlink."""
-"""Move to pypi.org when stable"""
+"""Library for Weatherlink.
 
-import json
-import logging
+Move to pypi.org when stable
+"""
 
 from aiohttp import ClientResponse, ClientSession
 

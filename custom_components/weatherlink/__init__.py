@@ -1,28 +1,28 @@
 """The Weatherlink integration."""
 from __future__ import annotations
-from homeassistant.components.weatherlink.pyweatherlink import WLHub
 
+from datetime import timedelta
+import logging
+
+import async_timeout
+
+from homeassistant.components.weatherlink.pyweatherlink import WLHub
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
-import logging
-import async_timeout
-from datetime import timedelta
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from homeassistant.const import Platform
 from .const import DOMAIN
 
-# TODO List the platforms that you want to support.
-# For your initial PR, limit it to 1 platform.
-PLATFORMS: list[str] = ["sensor"]
+PLATFORMS = [Platform.SENSOR]
 
 _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Weatherlink from a config entry."""
-    # TODO Store an API object for your platforms to access
-    # hass.data[DOMAIN][entry.entry_id] = MyApi(...)
-    hass.data[DOMAIN] = {}
+
+    hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = {}
     hass.data[DOMAIN][entry.entry_id]["api"] = WLHub(
         websession=async_get_clientsession(hass),
