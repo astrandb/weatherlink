@@ -8,5 +8,6 @@
     "Cloud Poll"
   ],
   "zip_release": true,
-  "filename": "weatherlink.zip"
+  "filename": "weatherlink.zip",
+  "render_readme": true
 }
