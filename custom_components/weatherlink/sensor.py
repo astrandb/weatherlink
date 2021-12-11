@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Final
+from typing import Any, Callable, Final
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -10,11 +10,11 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorStateClass,
 )
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import PERCENTAGE, PRESSURE_MBAR, TEMP_CELSIUS, TEMP_FAHRENHEIT
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.typing import ConfigType
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import get_coordinator
@@ -29,7 +29,7 @@ class WLSensorDescription(SensorEntityDescription):
 
     tag: str | None = None
     subtag: str | None = None
-    convert: str | None = None
+    convert: Callable[[Any], Any] | None = None
     decimals: int = 1
 
 
@@ -120,7 +120,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    config_entry: ConfigType,
+    config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the sensor platform."""
@@ -136,7 +136,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
 
     entity_description: WLSensorDescription
 
-    def __init__(self, coordinator, description: SensorEntityDescription):
+    def __init__(self, coordinator, description: WLSensorDescription):
         """Initialize the sensor."""
         super().__init__(coordinator)
         self.entity_description = description

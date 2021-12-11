@@ -1,18 +1,18 @@
 """The Weatherlink integration."""
 from __future__ import annotations
 
-from datetime import timedelta
 import logging
+from datetime import timedelta
 
 import async_timeout
-
-from .pyweatherlink import WLHub
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
-from homeassistant.const import Platform
+
 from .const import DOMAIN
+from .pyweatherlink import WLHub
 
 PLATFORMS = [Platform.SENSOR]
 
