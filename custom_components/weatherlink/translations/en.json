@@ -13,7 +13,7 @@
                 "data": {
                     "apitoken": "API token v1",
                     "password": "Password",
-                    "username": "Username"
+                    "username": "Username/DID"
                 }
             }
         }
