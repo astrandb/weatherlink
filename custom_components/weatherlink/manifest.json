@@ -10,7 +10,7 @@
   "dependencies": [],
   "version": "0.0.4",
   "codeowners": [
-    "@strandb"
+    "@astrandb"
   ],
   "iot_class": "cloud_polling"
 }
