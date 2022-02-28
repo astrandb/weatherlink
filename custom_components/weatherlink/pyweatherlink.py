@@ -2,10 +2,14 @@
 
 Move to pypi.org when stable
 """
+import logging
 
-from aiohttp import ClientResponse, ClientSession
+from aiohttp import ClientResponse, ClientResponseError, ClientSession
 
 API_URL = "https://api.weatherlink.com/v1/NoaaExt.json"
+
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class WLHub:
@@ -34,14 +38,21 @@ class WLHub:
             headers = dict(headers)
             kwargs.pop("headers")
 
-        return await self.websession.request(
+        res = await self.websession.request(
             method,
             f"{API_URL}?user={self.username}&pass={self.password}&apiToken={self.apitoken}",
             **kwargs,
             headers=headers,
         )
+        res.raise_for_status()
+        return res
 
     async def get_data(self):
         """Get data from api."""
-        res = await self.request("GET")
-        return await res.json()
+        try:
+            res = await self.request("GET")
+            return await res.json()
+        except ClientResponseError as exc:
+            _LOGGER.error(
+                "API get_data failed. Status: %s, - %s", exc.code, exc.message
+            )
