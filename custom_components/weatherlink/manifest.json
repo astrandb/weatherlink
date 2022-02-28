@@ -2,13 +2,14 @@
   "domain": "weatherlink",
   "name": "Weatherlink",
   "config_flow": true,
-  "documentation": "https://www.home-assistant.io/integrations/weatherlink",
+  "documentation": "https://github.com/astrandb/weatherlink",
+  "issue_tracker": "https://github.com/astrandb/weatherlink/issues",
   "requirements": [],
   "ssdp": [],
   "zeroconf": [],
   "homekit": {},
   "dependencies": [],
-  "version": "0.0.4",
+  "version": "0.0.5",
   "codeowners": [
     "@astrandb"
   ],
