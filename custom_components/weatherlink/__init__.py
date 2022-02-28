@@ -5,6 +5,7 @@ import logging
 from datetime import timedelta
 
 import async_timeout
+from aiohttp import ClientResponseError
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
@@ -60,12 +61,12 @@ async def get_coordinator(
 
     async def async_fetch():
         api = hass.data[DOMAIN][entry.entry_id]["api"]
-        async with async_timeout.timeout(10):
-            res = await api.request("GET")
-            # _LOGGER.debug("Data: %s", await res.json())
-        # if res.status == 401:
-        #     raise SenzAuthException("Authentication failure when fetching data")
-        return await res.json()
+        try:
+            async with async_timeout.timeout(10):
+                res = await api.request("GET")
+                return await res.json()
+        except ClientResponseError as exc:
+            _LOGGER.warning("API fetch failed. Status: %s, - %s", exc.code, exc.message)
 
     hass.data[DOMAIN][entry.entry_id]["coordinator"] = DataUpdateCoordinator(
         hass,
