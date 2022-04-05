@@ -35,7 +35,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     coordinator = await get_coordinator(hass, entry)
     if not coordinator.last_update_success:
         await coordinator.async_config_entry_first_refresh()
-    _LOGGER.info("First data: %s", coordinator.data)
+    _LOGGER.debug("First data: %s", coordinator.data)
 
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
 

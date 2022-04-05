@@ -2,10 +2,14 @@
   "config": {
     "step": {
       "user": {
+        "description": "Enter credentials to access your Weatherlink account",
         "data": {
           "apitoken": "API token v1",
           "username": "[%key:common::config_flow::data::username%]",
           "password": "[%key:common::config_flow::data::password%]"
+        },
+        "data_description": {
+          "username": "Use DID here if you have access to it - i.e. if it is your own station"
         }
       }
     },
