@@ -155,12 +155,21 @@ class WLSensor(CoordinatorEntity, SensorEntity):
     def native_value(self):
         """Return the state of the sensor."""
         if self.entity_description.subtag is not None:
+            if (
+                self.coordinator.data[self.entity_description.subtag].get(
+                    self.entity_description.tag
+                )
+                is None
+            ):
+                return None
             value = float(
                 self.coordinator.data[self.entity_description.subtag][
                     self.entity_description.tag
                 ]
             )
         else:
+            if self.coordinator.data.get(self.entity_description.tag) is None:
+                return None
             value = float(self.coordinator.data[self.entity_description.tag])
 
         if self.entity_description.convert is not None:
