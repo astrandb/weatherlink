@@ -3,6 +3,7 @@
 Move to pypi.org when stable
 """
 import logging
+import urllib.parse
 
 from aiohttp import ClientResponse, ClientResponseError, ClientSession
 
@@ -38,9 +39,16 @@ class WLHub:
             headers = dict(headers)
             kwargs.pop("headers")
 
+        params = {
+            'user': self.username,
+            'pass': self.password,
+            'apiToken': self.apitoken,
+        }
+        params_enc = urllib.parse.urlencode(params, quote_via=urllib.parse.quote)
+
         res = await self.websession.request(
             method,
-            f"{API_URL}?user={self.username}&pass={self.password}&apiToken={self.apitoken}",
+            f"{API_URL}?{params_enc}",
             **kwargs,
             headers=headers,
         )
