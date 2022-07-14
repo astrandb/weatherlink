@@ -51,6 +51,15 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WLSensorDescription(
+        key="InsideHumidity",
+        tag="relative_humidity_in",
+        subtag=SUBTAG_1,
+        device_class=SensorDeviceClass.HUMIDITY,
+        name="Inside Humidity",
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
         key="Pressure",
         tag="pressure_mb",
         device_class=SensorDeviceClass.PRESSURE,
@@ -69,6 +78,12 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WLSensorDescription(
+        key="WindDir",
+        tag="wind_dir",
+        icon="mdi:compass-outline",
+        name="Wind direction",
+    ),
+    WLSensorDescription(
         key="InsideTemp",
         tag="temp_in_f",
         subtag=SUBTAG_1,
@@ -84,6 +99,16 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         icon="mdi:weather-pouring",
         name="Rain Today",
         native_unit_of_measurement="mm",
+        convert=lambda x: x * 25.4,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
+        key="RainRate",
+        tag="rain_rate_in_per_hr",
+        subtag=SUBTAG_1,
+        icon="mdi:weather-pouring",
+        name="Rain rate",
+        native_unit_of_measurement="mm/h",
         convert=lambda x: x * 25.4,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -168,6 +193,9 @@ class WLSensor(CoordinatorEntity, SensorEntity):
                 ]
             )
         else:
+            if self.entity_description.tag in ["wind_dir"]:
+                return self.coordinator.data[self.entity_description.tag]
+
             if self.coordinator.data.get(self.entity_description.tag) is None:
                 return None
             value = float(self.coordinator.data[self.entity_description.tag])
