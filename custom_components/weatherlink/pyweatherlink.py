@@ -40,9 +40,9 @@ class WLHub:
             kwargs.pop("headers")
 
         params = {
-            'user': self.username,
-            'pass': self.password,
-            'apiToken': self.apitoken,
+            "user": self.username,
+            "pass": self.password,
+            "apiToken": self.apitoken,
         }
         params_enc = urllib.parse.urlencode(params, quote_via=urllib.parse.quote)
 
