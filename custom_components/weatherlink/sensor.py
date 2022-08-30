@@ -38,7 +38,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         key="OutsideTemp",
         tag="temp_c",
         device_class=SensorDeviceClass.TEMPERATURE,
-        name="Outside Temperature",
+        name="Outside temperature",
         native_unit_of_measurement=TEMP_CELSIUS,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -46,7 +46,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         key="OutsideHumidity",
         tag="relative_humidity",
         device_class=SensorDeviceClass.HUMIDITY,
-        name="Outside Humidity",
+        name="Outside humidity",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -55,7 +55,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         tag="relative_humidity_in",
         subtag=SUBTAG_1,
         device_class=SensorDeviceClass.HUMIDITY,
-        name="Inside Humidity",
+        name="Inside humidity",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -88,7 +88,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         tag="temp_in_f",
         subtag=SUBTAG_1,
         device_class=SensorDeviceClass.TEMPERATURE,
-        name="Inside Temperature",
+        name="Inside temperature",
         native_unit_of_measurement=TEMP_FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -97,7 +97,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         tag="rain_day_in",
         subtag=SUBTAG_1,
         icon="mdi:weather-pouring",
-        name="Rain Today",
+        name="Rain today",
         native_unit_of_measurement="mm",
         convert=lambda x: x * 25.4,
         state_class=SensorStateClass.MEASUREMENT,
@@ -165,6 +165,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         """Initialize the sensor."""
         super().__init__(coordinator)
         self.entity_description = description
+        self._attr_has_entity_name = True
         self._attr_unique_id = (
             f"{self.coordinator.data[SUBTAG_1]['DID']}-{self.entity_description.key}"
         )
