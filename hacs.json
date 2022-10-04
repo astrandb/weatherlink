@@ -3,7 +3,7 @@
   "domains": [
     "sensor"
   ],
-  "homeassistant": "2021.12.0b0",
+  "homeassistant": "2022.10.0",
   "iot_class": [
     "Cloud Poll"
   ],
