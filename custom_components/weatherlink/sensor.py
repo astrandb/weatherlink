@@ -11,7 +11,15 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE, PRESSURE_MBAR, TEMP_CELSIUS, TEMP_FAHRENHEIT
+from homeassistant.const import (
+    LENGTH_MILLIMETERS,
+    PERCENTAGE,
+    PRECIPITATION_MILLIMETERS_PER_HOUR,
+    PRESSURE_MBAR,
+    SPEED_METERS_PER_SECOND,
+    TEMP_CELSIUS,
+    TEMP_FAHRENHEIT,
+)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -71,10 +79,11 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     WLSensorDescription(
         key="Wind",
         tag="wind_mph",
+        device_class=SensorDeviceClass.SPEED,
         icon="mdi:weather-windy",
         name="Wind",
         convert=lambda x: x * 1609 / 3600,
-        native_unit_of_measurement="m/s",
+        native_unit_of_measurement=SPEED_METERS_PER_SECOND,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WLSensorDescription(
@@ -98,7 +107,8 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         subtag=SUBTAG_1,
         icon="mdi:weather-pouring",
         name="Rain today",
-        native_unit_of_measurement="mm",
+        device_class=SensorDeviceClass.DISTANCE,
+        native_unit_of_measurement=LENGTH_MILLIMETERS,
         convert=lambda x: x * 25.4,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -108,7 +118,8 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         subtag=SUBTAG_1,
         icon="mdi:weather-pouring",
         name="Rain rate",
-        native_unit_of_measurement="mm/h",
+        device_class=SensorDeviceClass.SPEED,
+        native_unit_of_measurement=PRECIPITATION_MILLIMETERS_PER_HOUR,
         convert=lambda x: x * 25.4,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -118,7 +129,8 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         subtag=SUBTAG_1,
         icon="mdi:weather-pouring",
         name="Rain this month",
-        native_unit_of_measurement="mm",
+        device_class=SensorDeviceClass.DISTANCE,
+        native_unit_of_measurement=LENGTH_MILLIMETERS,
         convert=lambda x: x * 25.4,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -128,7 +140,8 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         subtag=SUBTAG_1,
         icon="mdi:weather-pouring",
         name="Rain this year",
-        native_unit_of_measurement="mm",
+        device_class=SensorDeviceClass.DISTANCE,
+        native_unit_of_measurement=LENGTH_MILLIMETERS,
         convert=lambda x: x * 25.4,
         state_class=SensorStateClass.TOTAL_INCREASING,
     ),
