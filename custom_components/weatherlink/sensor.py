@@ -11,7 +11,15 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE, PRESSURE_MBAR, TEMP_CELSIUS, TEMP_FAHRENHEIT
+from homeassistant.const import (
+    LENGTH_MILLIMETERS,
+    PERCENTAGE,
+    PRECIPITATION_MILLIMETERS_PER_HOUR,
+    PRESSURE_MBAR,
+    SPEED_METERS_PER_SECOND,
+    TEMP_CELSIUS,
+    TEMP_FAHRENHEIT,
+)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -38,7 +46,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         key="OutsideTemp",
         tag="temp_c",
         device_class=SensorDeviceClass.TEMPERATURE,
-        name="Outside Temperature",
+        name="Outside temperature",
         native_unit_of_measurement=TEMP_CELSIUS,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -46,7 +54,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         key="OutsideHumidity",
         tag="relative_humidity",
         device_class=SensorDeviceClass.HUMIDITY,
-        name="Outside Humidity",
+        name="Outside humidity",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -55,7 +63,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         tag="relative_humidity_in",
         subtag=SUBTAG_1,
         device_class=SensorDeviceClass.HUMIDITY,
-        name="Inside Humidity",
+        name="Inside humidity",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -71,10 +79,11 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     WLSensorDescription(
         key="Wind",
         tag="wind_mph",
+        device_class=SensorDeviceClass.SPEED,
         icon="mdi:weather-windy",
         name="Wind",
         convert=lambda x: x * 1609 / 3600,
-        native_unit_of_measurement="m/s",
+        native_unit_of_measurement=SPEED_METERS_PER_SECOND,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WLSensorDescription(
@@ -88,7 +97,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         tag="temp_in_f",
         subtag=SUBTAG_1,
         device_class=SensorDeviceClass.TEMPERATURE,
-        name="Inside Temperature",
+        name="Inside temperature",
         native_unit_of_measurement=TEMP_FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -97,8 +106,9 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         tag="rain_day_in",
         subtag=SUBTAG_1,
         icon="mdi:weather-pouring",
-        name="Rain Today",
-        native_unit_of_measurement="mm",
+        name="Rain today",
+        device_class=SensorDeviceClass.DISTANCE,
+        native_unit_of_measurement=LENGTH_MILLIMETERS,
         convert=lambda x: x * 25.4,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -108,7 +118,8 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         subtag=SUBTAG_1,
         icon="mdi:weather-pouring",
         name="Rain rate",
-        native_unit_of_measurement="mm/h",
+        device_class=SensorDeviceClass.SPEED,
+        native_unit_of_measurement=PRECIPITATION_MILLIMETERS_PER_HOUR,
         convert=lambda x: x * 25.4,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -118,7 +129,8 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         subtag=SUBTAG_1,
         icon="mdi:weather-pouring",
         name="Rain this month",
-        native_unit_of_measurement="mm",
+        device_class=SensorDeviceClass.DISTANCE,
+        native_unit_of_measurement=LENGTH_MILLIMETERS,
         convert=lambda x: x * 25.4,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -128,7 +140,8 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         subtag=SUBTAG_1,
         icon="mdi:weather-pouring",
         name="Rain this year",
-        native_unit_of_measurement="mm",
+        device_class=SensorDeviceClass.DISTANCE,
+        native_unit_of_measurement=LENGTH_MILLIMETERS,
         convert=lambda x: x * 25.4,
         state_class=SensorStateClass.TOTAL_INCREASING,
     ),
@@ -165,6 +178,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         """Initialize the sensor."""
         super().__init__(coordinator)
         self.entity_description = description
+        self._attr_has_entity_name = True
         self._attr_unique_id = (
             f"{self.coordinator.data[SUBTAG_1]['DID']}-{self.entity_description.key}"
         )
