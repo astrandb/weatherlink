@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+from asyncio import TimeoutError
 from datetime import timedelta
 
 import async_timeout
@@ -10,7 +11,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN
 from .pyweatherlink import WLHub
@@ -67,6 +68,10 @@ async def get_coordinator(
                 return await res.json()
         except ClientResponseError as exc:
             _LOGGER.warning("API fetch failed. Status: %s, - %s", exc.code, exc.message)
+            raise UpdateFailed(exc) from exc
+        except TimeoutError as error:
+            _LOGGER.warning("Timeout during coordinator fetch")
+            raise UpdateFailed(error) from error
 
     hass.data[DOMAIN][entry.entry_id]["coordinator"] = DataUpdateCoordinator(
         hass,
