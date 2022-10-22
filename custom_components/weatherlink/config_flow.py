@@ -4,13 +4,13 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import selector
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+import voluptuous as vol
 
 from .const import DOMAIN
 from .pyweatherlink import WLHub

@@ -1,12 +1,12 @@
 """The Weatherlink integration."""
 from __future__ import annotations
 
-import logging
 from asyncio import TimeoutError
 from datetime import timedelta
+import logging
 
-import async_timeout
 from aiohttp import ClientResponseError
+import async_timeout
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
