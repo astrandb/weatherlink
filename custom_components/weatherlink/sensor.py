@@ -91,6 +91,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         tag="wind_dir",
         icon="mdi:compass-outline",
         name="Wind direction",
+        native_unit_of_measurement="",
     ),
     WLSensorDescription(
         key="InsideTemp",
