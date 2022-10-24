@@ -209,7 +209,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             )
         else:
             if self.entity_description.tag in ["wind_dir"]:
-                return self.coordinator.data[self.entity_description.tag]
+                return self.coordinator.data.get(self.entity_description.tag)
 
             if self.coordinator.data.get(self.entity_description.tag) is None:
                 return None
