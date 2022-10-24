@@ -2,10 +2,6 @@
 
 # Weatherlink Integration for Home Assistant
 
-_Work in progress_
-
-Known limitations: There is only limited error and exception handling in this pre-release.
-
 This integration will represent your data on Davis Weaterlink in Home Assistant. It will query the v1 API every 5 minutes.
 
 ## Installation
@@ -24,7 +20,7 @@ Make sure you have the credentials available for your account with Weatherlink c
 
 ### Setup
 
-Goto Integrations->Add and select Weatherlink
+Goto Integrations->Add and select Weatherlink - You may have to refresh browser cache to make the integration appear in the list.
 
 Follow instructions to complete setup.
 
