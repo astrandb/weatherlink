@@ -218,3 +218,10 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         if self.entity_description.convert is not None:
             value = self.entity_description.convert(value)
         return round(value, self.entity_description.decimals)
+
+    @property
+    def available(self):
+        """Return the availability of the entity."""
+
+        return self.coordinator.last_update_success
+
