@@ -1,12 +1,6 @@
 {
   "name": "Weatherlink",
-  "domains": [
-    "sensor"
-  ],
-  "homeassistant": "2022.10.0",
-  "iot_class": [
-    "Cloud Poll"
-  ],
+  "homeassistant": "2022.11.0",
   "zip_release": true,
   "filename": "weatherlink.zip",
   "render_readme": true
