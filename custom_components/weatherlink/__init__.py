@@ -1,7 +1,6 @@
 """The Weatherlink integration."""
 from __future__ import annotations
 
-from asyncio import TimeoutError
 from datetime import timedelta
 import logging
 
