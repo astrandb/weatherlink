@@ -69,9 +69,6 @@ async def get_coordinator(
         except ClientResponseError as exc:
             _LOGGER.warning("API fetch failed. Status: %s, - %s", exc.code, exc.message)
             raise UpdateFailed(exc) from exc
-        except TimeoutError as error:
-            _LOGGER.warning("Timeout during coordinator fetch")
-            raise UpdateFailed(error) from error
 
     hass.data[DOMAIN][entry.entry_id]["coordinator"] = DataUpdateCoordinator(
         hass,
