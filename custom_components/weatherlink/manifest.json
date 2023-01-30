@@ -9,7 +9,7 @@
   "zeroconf": [],
   "homekit": {},
   "dependencies": [],
-  "version": "0.0.13",
+  "version": "0.0.14",
   "codeowners": [
     "@astrandb"
   ],
