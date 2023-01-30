@@ -108,7 +108,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         device_class=SensorDeviceClass.PRECIPITATION,
         native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
         convert=lambda x: x * 25.4,
-        state_class=SensorStateClass.MEASUREMENT,
+        state_class=SensorStateClass.TOTAL_INCREASING,
     ),
     WLSensorDescription(
         key="RainRate",
@@ -128,7 +128,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         device_class=SensorDeviceClass.PRECIPITATION,
         native_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
         convert=lambda x: x * 25.4,
-        state_class=SensorStateClass.MEASUREMENT,
+        state_class=SensorStateClass.TOTAL_INCREASING,
     ),
     WLSensorDescription(
         key="RainInYear",
