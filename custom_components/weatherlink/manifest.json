@@ -1,18 +1,18 @@
 {
   "domain": "weatherlink",
   "name": "Weatherlink",
-  "config_flow": true,
-  "documentation": "https://github.com/astrandb/weatherlink",
-  "issue_tracker": "https://github.com/astrandb/weatherlink/issues",
-  "requirements": [],
-  "ssdp": [],
-  "zeroconf": [],
-  "homekit": {},
-  "dependencies": [],
-  "version": "0.0.14",
   "codeowners": [
     "@astrandb"
   ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/astrandb/weatherlink",
+  "homekit": {},
+  "integration_type": "service",
   "iot_class": "cloud_polling",
-  "integration_type": "service"
+  "issue_tracker": "https://github.com/astrandb/weatherlink/issues",
+  "requirements": [],
+  "ssdp": [],
+  "version": "0.0.14",
+  "zeroconf": []
 }
