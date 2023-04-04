@@ -1,0 +1,65 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Enheten är redan konfigurerad"
+    },
+    "error": {
+      "cannot_connect": "Lyckades inte ansluta",
+      "invalid_auth": "Ogiltig autentisering",
+      "unknown": "Oväntat fel"
+    },
+    "step": {
+      "user": {
+        "description": "Ange inloggningsuppgifter till ditt Weatherlink-konto",
+        "data": {
+          "apitoken": "API token v1",
+          "password": "Lösenord",
+          "username": "Användarnamn eller DID"
+        },
+        "data_description": {
+          "username": "Använd DID om du har tillgång till det, d v s om det är din egen station"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "outside_temperature": {
+        "name": "Temperatur ute"
+      },
+      "inside_temperature": {
+        "name": "Temperatur inne"
+      },
+      "outside_humidity": {
+        "name": "Luftfuktighet ute"
+      },
+      "inside_humidity": {
+        "name": "Luftfuktighet inne"
+      },
+      "pressure": {
+        "name": "Lufttryck"
+      },
+      "wind": {
+        "name": "Vindstyrka"
+      },
+      "wind_direction": {
+        "name": "Vindriktning"
+      },
+      "rain_today": {
+        "name": "Regn idag"
+      },
+      "rain_rate": {
+        "name": "Regntakt"
+      },
+      "rain_this_month": {
+        "name": "Regn denna månad"
+      },
+      "rain_this_year": {
+        "name": "Regn i år"
+      },
+      "dewpoint": {
+        "name": "Daggpunkt"
+      }
+    }
+  }
+}

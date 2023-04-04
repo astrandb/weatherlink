@@ -21,5 +21,45 @@
         }
       }
     }
+  },
+  "entity": {
+    "sensor": {
+      "outside_temperature": {
+        "name": "Outside temperature"
+      },
+      "inside_temperature": {
+        "name": "Inside temperature"
+      },
+      "outside_humidity": {
+        "name": "Outside humidity"
+      },
+      "inside_humidity": {
+        "name": "Inside humidity"
+      },
+      "pressure": {
+        "name": "Pressure"
+      },
+      "wind": {
+        "name": "Wind"
+      },
+      "wind_direction": {
+        "name": "Wind direction"
+      },
+      "rain_today": {
+        "name": "Rain today"
+      },
+      "rain_rate": {
+        "name": "Rain rate"
+      },
+      "rain_this_month": {
+        "name": "Rain this month"
+      },
+      "rain_this_year": {
+        "name": "Rain this year"
+      },
+      "dewpoint": {
+        "name": "Dewpoint"
+      }
+    }
   }
 }
