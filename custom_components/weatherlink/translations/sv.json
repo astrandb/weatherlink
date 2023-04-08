@@ -43,7 +43,24 @@
         "name": "Vindstyrka"
       },
       "wind_direction": {
-        "name": "Vindriktning"
+        "name": "Vindriktning",
+        "state": {
+          "north" : "Nord",
+          "northnortheast" : "Nordnordost",
+          "northeast" : "Nordost",
+          "eastnortheast" : "Ostnordost",
+          "eastsoutheast": "Ostsydost",
+          "southeast": "Sydost",
+          "southsoutheast": "Sydsydost",
+          "south": "Syd",
+          "southsouthwest": "Sydsydväst",
+          "southwest": "Sydväst",
+          "westsouthwest": "Västsydväst",
+          "west": "Väst",
+          "westnorthwest": "Västnordväst",
+          "northwest": "Nordväst",
+          "northnorthwest": "Nordnordväst"
+        }
       },
       "rain_today": {
         "name": "Regn idag"

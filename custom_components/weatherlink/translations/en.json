@@ -43,7 +43,25 @@
         "name": "Wind"
       },
       "wind_direction": {
-        "name": "Wind direction"
+        "name": "Wind direction",
+        "state": {
+          "north" : "North",
+          "northnortheast" : "North-northeast",
+          "northeast" : "Northeast",
+          "eastnortheast" : "East-northeast",
+          "east": "East",
+          "eastsoutheast": "East-southeast",
+          "southeast": "Southeast",
+          "southsoutheast": "South-southeast",
+          "south": "South",
+          "southsouthwest": "South-southwest",
+          "southwest": "Southwest",
+          "westsouthwest": "West-southwest",
+          "west": "West",
+          "westnorthwest": "West-northwest",
+          "northwest": "Northwest",
+          "northnorthwest": "North-Northwest"
+        }
       },
       "rain_today": {
         "name": "Rain today"
