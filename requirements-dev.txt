@@ -4,5 +4,5 @@ colorlog
 flake8
 isort
 wheel
-
+pre-commit
 homeassistant
