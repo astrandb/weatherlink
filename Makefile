@@ -23,4 +23,3 @@ install_dev: | .venv
 
 clean:
 	rm -rf .venv $(src_dir)/__pycache__
-	

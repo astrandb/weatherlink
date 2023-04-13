@@ -1,7 +1,7 @@
 {
   "name": "Weatherlink",
-  "homeassistant": "2023.4.0",
-  "zip_release": true,
   "filename": "weatherlink.zip",
-  "render_readme": true
+  "homeassistant": "2023.4.0",
+  "render_readme": true,
+  "zip_release": true
 }

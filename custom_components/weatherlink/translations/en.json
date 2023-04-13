@@ -45,10 +45,10 @@
       "wind_direction": {
         "name": "Wind direction",
         "state": {
-          "north" : "North",
-          "northnortheast" : "North-northeast",
-          "northeast" : "Northeast",
-          "eastnortheast" : "East-northeast",
+          "north": "North",
+          "northnortheast": "North-northeast",
+          "northeast": "Northeast",
+          "eastnortheast": "East-northeast",
           "east": "East",
           "eastsoutheast": "East-southeast",
           "southeast": "Southeast",

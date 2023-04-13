@@ -1,8 +1,9 @@
 """Platform for sensor integration."""
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Callable, Final
+from typing import Any, Final
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -205,7 +206,11 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             )
         else:
             if self.entity_description.tag in ["wind_dir"]:
-                return self.coordinator.data.get(self.entity_description.tag).replace("-", "").lower()
+                return (
+                    self.coordinator.data.get(self.entity_description.tag)
+                    .replace("-", "")
+                    .lower()
+                )
 
             if self.coordinator.data.get(self.entity_description.tag) is None:
                 return None
