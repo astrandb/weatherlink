@@ -45,10 +45,11 @@
       "wind_direction": {
         "name": "Vindriktning",
         "state": {
-          "north" : "Nord",
-          "northnortheast" : "Nordnordost",
-          "northeast" : "Nordost",
-          "eastnortheast" : "Ostnordost",
+          "north": "Nord",
+          "northnortheast": "Nordnordost",
+          "northeast": "Nordost",
+          "eastnortheast": "Ostnordost",
+          "east": "Ost",
           "eastsoutheast": "Ostsydost",
           "southeast": "Sydost",
           "southsoutheast": "Sydsydost",
