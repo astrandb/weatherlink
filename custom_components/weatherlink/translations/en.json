@@ -10,6 +10,15 @@
     },
     "step": {
       "user": {
+        "description": "Select the API version",
+        "data": {
+          "api_version": "API version"
+        },
+        "data_description": {
+          "api_version": "V1 can be used for legacy devices, V2 can be used for all devices."
+        }
+      },
+      "user_1": {
         "description": "Enter credentials to access your Weatherlink account",
         "data": {
           "apitoken": "API token v1",
@@ -19,6 +28,25 @@
         "data_description": {
           "username": "Use DID here if you have access to it - i.e. if it is your own station"
         }
+      },
+      "user_2": {
+        "description": "Enter credentials to access your Weatherlink account",
+        "data": {
+          "station_id": "Station Id",
+          "api_key_v2": "API key v2",
+          "api_secret": "API secret"
+        },
+        "data_description": {
+          "station_id": "Both integer or UUID station id types are accepted."
+        }
+      }
+    }
+  },
+  "selector": {
+    "set_api_ver": {
+      "options": {
+        "api_v1": "API V1",
+        "api_v2": "API V2"
       }
     }
   },
@@ -45,22 +73,22 @@
       "wind_direction": {
         "name": "Wind direction",
         "state": {
-          "north": "North",
-          "northnortheast": "North-northeast",
-          "northeast": "Northeast",
-          "eastnortheast": "East-northeast",
-          "east": "East",
-          "eastsoutheast": "East-southeast",
-          "southeast": "Southeast",
-          "southsoutheast": "South-southeast",
-          "south": "South",
-          "southsouthwest": "South-southwest",
-          "southwest": "Southwest",
-          "westsouthwest": "West-southwest",
-          "west": "West",
-          "westnorthwest": "West-northwest",
-          "northwest": "Northwest",
-          "northnorthwest": "North-Northwest"
+          "n": "N",
+          "nne": "NNE",
+          "ne": "NE",
+          "ene": "ENE",
+          "e": "E",
+          "ese": "ESE",
+          "se": "SE",
+          "sse": "SSE",
+          "s": "S",
+          "ssw": "SSW",
+          "sw": "SW",
+          "wsw": "WSW",
+          "w": "W",
+          "wnw": "WNW",
+          "nw": "NW",
+          "nnw": "NNW"
         }
       },
       "rain_today": {
