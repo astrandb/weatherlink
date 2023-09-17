@@ -29,6 +29,11 @@ Make sure you have the credentials available for your account with [Weatherlink 
 - Restart Home Assistant
 - Go to Settings->Devices & Services->Integrations and press Add Integration. Search for Weatherlink and select it. Follow the prompts.
 
+## Development and contributions
+The repo contains a development container that will simplify development and testing. Use VSCode and select Dev Containers: Clone Repository in Named Container Volume.
+
+Contributions are most welcome. Optimizations, new features, translations... Please submit a PR or just leave an issue in the repo.
+
 ## Disclaimer
 
 The package and its author are not affiliated with Davis Instruments or Weatherlink. Use at your own risk.
