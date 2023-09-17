@@ -46,7 +46,7 @@ class WLHub:
         params = {
             "user": self.username,
             "pass": self.password,
-            "apiToken": self.apitoken,
+            "apitoken": self.apitoken,
         }
         params_enc = urllib.parse.urlencode(params, quote_via=urllib.parse.quote)
 
@@ -75,10 +75,10 @@ class WLHubV2:
 
     def __init__(
         self,
-        station_id: str,
         api_key_v2: str,
         api_secret: str,
         websession: ClientSession,
+        station_id: str | None = None,
     ) -> None:
         """Initialize."""
         self.station_id = station_id
@@ -105,15 +105,18 @@ class WLHubV2:
         headers["x-api-secret"] = self.api_secret
         headers["User-Agent"] = f"Weatherlink for Home Assistant/{VERSION}"
         params = {
-            # "station_id": self.station_id,
             "api-key": self.api_key_v2,
-            # "api_secret": self.api_secret,
         }
         params_enc = urllib.parse.urlencode(params, quote_via=urllib.parse.quote)
 
+        if self.station_id is None:
+            station = ""
+        else:
+            station = f"{self.station_id}"
+
         res = await self.websession.request(
             method,
-            f"{API_V2_URL}{endpoint}{self.station_id}?{params_enc}",
+            f"{API_V2_URL}{endpoint}{station}?{params_enc}",
             **kwargs,
             headers=headers,
         )
@@ -138,6 +141,16 @@ class WLHubV2:
         except ClientResponseError as exc:
             _LOGGER.error(
                 "API get_station failed. Status: %s, - %s", exc.code, exc.message
+            )
+
+    async def get_all_stations(self):
+        """Get all stations from api."""
+        try:
+            res = await self.request("GET", endpoint="stations")
+            return await res.json()
+        except ClientResponseError as exc:
+            _LOGGER.error(
+                "API get_all_stations failed. Status: %s, - %s", exc.code, exc.message
             )
 
 

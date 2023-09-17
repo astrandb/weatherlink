@@ -7,14 +7,15 @@ from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import CONF_API_TOKEN, DOMAIN
+from .const import CONF_API_KEY_V2, CONF_API_SECRET, CONF_API_TOKEN, DOMAIN
 
 TO_REDACT = {
     CONF_PASSWORD,
     CONF_USERNAME,
     CONF_API_TOKEN,
-    "apitoken",
-    "DID",
+    CONF_API_SECRET,
+    CONF_API_KEY_V2,
+    "user_email",
 }
 
 
@@ -25,9 +26,13 @@ async def async_get_config_entry_diagnostics(
     coordinator: DataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id][
         "coordinator"
     ]
+    station_data = hass.data[DOMAIN][config_entry.entry_id]["station_data"]
+    current = hass.data[DOMAIN][config_entry.entry_id]["current"]
 
     diagnostics_data = {
         "info": async_redact_data(config_entry.data, TO_REDACT),
+        "station_data": async_redact_data(station_data, TO_REDACT),
+        "current_data": async_redact_data(current, TO_REDACT),
         "data": async_redact_data(coordinator.data, TO_REDACT),
     }
 

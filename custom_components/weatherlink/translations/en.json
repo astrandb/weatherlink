@@ -39,6 +39,9 @@
         "data_description": {
           "station_id": "Both integer or UUID station id types are accepted."
         }
+      },
+      "user_3": {
+        "description": "Select weather station"
       }
     }
   },

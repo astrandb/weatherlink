@@ -28,7 +28,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import get_coordinator
 from .config_flow import API_V1, API_V2
-from .const import DOMAIN
+from .const import CONF_API_VERSION, DOMAIN
 from .pyweatherlink import WLData
 
 _LOGGER = logging.getLogger(__name__)
@@ -195,25 +195,34 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, self.get_unique_id_base())},
             name=self.generate_name(),
-            manufacturer="Davis",
+            manufacturer="Davis Instruments",
             model=self.generate_model(),
+            sw_version=self.get_firmware(),
             configuration_url="https://www.weatherlink.com/",
         )
 
     def get_unique_id_base(self):
         """Generate base for unique_id."""
         unique_base = None
-        if self.entry.data["api_version"] == API_V1:
+        if self.entry.data[CONF_API_VERSION] == API_V1:
             unique_base = self.coordinator.data["DID"]
-        if self.entry.data["api_version"] == API_V2:
+        if self.entry.data[CONF_API_VERSION] == API_V2:
             unique_base = self.coordinator.data["station_id_uuid"]
         return unique_base
 
+    def get_firmware(self) -> str | None:
+        """Get firmware version."""
+        if self.entry.data[CONF_API_VERSION] == API_V2:
+            return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
+                "stations"
+            ][0].get("firmware_version")
+        return None
+
     def generate_name(self):
         """Generate device name."""
-        if self.entry.data["api_version"] == API_V1:
+        if self.entry.data[CONF_API_VERSION] == API_V1:
             return self.coordinator.data["station_name"]
-        if self.entry.data["api_version"] == API_V2:
+        if self.entry.data[CONF_API_VERSION] == API_V2:
             return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                 "stations"
             ][0]["station_name"]
@@ -222,14 +231,19 @@ class WLSensor(CoordinatorEntity, SensorEntity):
 
     def generate_model(self):
         """Generate model string."""
-        if self.entry.data["api_version"] == API_V1:
+        if self.entry.data[CONF_API_VERSION] == API_V1:
             return "Weatherlink - API V1"
-        if self.entry.data["api_version"] == API_V2:
-            model = self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
+        if self.entry.data[CONF_API_VERSION] == API_V2:
+            model: str = self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                 "stations"
             ][0].get("product_number")
-            return f"Weatherlink {model}"
-        return "Weatherlink"
+        if model == "6555":
+            return f"WeatherLinkIP {model}"
+        if model.startswith("6100"):
+            return f"WeatherLink Live {model}"
+        if model.startswith("6313"):
+            return f"WeatherLink Console {model}"
+        return "WeatherLink"
 
     @property
     def native_value(self):

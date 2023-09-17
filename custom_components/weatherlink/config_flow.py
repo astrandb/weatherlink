@@ -10,10 +10,22 @@ from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
-from homeassistant.helpers import selector
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.selector import (
+    SelectOptionDict,
+    SelectSelector,
+    SelectSelectorConfig,
+    TextSelector,
+)
 
-from .const import DOMAIN
+from .const import (
+    CONF_API_KEY_V2,
+    CONF_API_SECRET,
+    CONF_API_TOKEN,
+    CONF_API_VERSION,
+    CONF_STATION_ID,
+    DOMAIN,
+)
 from .pyweatherlink import WLHub, WLHubV2
 
 _LOGGER = logging.getLogger(__name__)
@@ -24,27 +36,30 @@ API_VERSIONS = [API_V1, API_V2]
 
 STEP_USER_APIVER_SCHEMA = vol.Schema(
     {
-        vol.Required("api_version", default=API_V2): selector.SelectSelector(
-            selector.SelectSelectorConfig(
-                options=API_VERSIONS, translation_key="set_api_ver"
-            )
+        vol.Required(CONF_API_VERSION, default=API_V2): SelectSelector(
+            SelectSelectorConfig(options=API_VERSIONS, translation_key="set_api_ver")
         ),
     }
 )
 
 STEP_USER_DATA_SCHEMA_V1 = vol.Schema(
     {
-        vol.Required("username"): selector.TextSelector(),
+        vol.Required("username"): TextSelector(),
         vol.Required("password"): str,
-        vol.Required("apitoken"): str,
+        vol.Required(CONF_API_TOKEN): str,
     }
 )
 
-STEP_USER_DATA_SCHEMA_V2 = vol.Schema(
+STEP_USER_DATA_SCHEMA_V2_A = vol.Schema(
     {
-        vol.Required("station_id"): selector.TextSelector(),
-        vol.Required("api_key_v2"): selector.TextSelector(),
-        vol.Required("api_secret"): selector.TextSelector(),
+        vol.Required(CONF_API_KEY_V2): TextSelector(),
+        vol.Required(CONF_API_SECRET): TextSelector(),
+    }
+)
+
+STEP_USER_DATA_SCHEMA_V2_B = vol.Schema(
+    {
+        vol.Required(CONF_STATION_ID): TextSelector(),
     }
 )
 
@@ -66,11 +81,13 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     hub = WLHub(
         username=data["username"],
         password=data["password"],
-        apitoken=data["apitoken"],
+        apitoken=data[CONF_API_TOKEN],
         websession=websession,
     )
 
-    if not await hub.authenticate(data["username"], data["password"], data["apitoken"]):
+    if not await hub.authenticate(
+        data["username"], data["password"], data[CONF_API_TOKEN]
+    ):
         raise InvalidAuth
 
     # If you cannot connect:
@@ -97,14 +114,14 @@ async def validate_input_v2(
 
     websession = async_get_clientsession(hass)
     hub = WLHubV2(
-        station_id=data["station_id"],
-        api_key_v2=data["api_key_v2"],
-        api_secret=data["api_secret"],
+        station_id=data.get(CONF_STATION_ID),
+        api_key_v2=data[CONF_API_KEY_V2],
+        api_secret=data[CONF_API_SECRET],
         websession=websession,
     )
 
     if not await hub.authenticate(
-        data["station_id"], data["api_key_v2"], data["api_secret"]
+        data.get(CONF_STATION_ID), data[CONF_API_KEY_V2], data[CONF_API_SECRET]
     ):
         raise InvalidAuth
 
@@ -128,6 +145,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     VERSION = 2
 
+    user_data_2 = {}
+
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
@@ -136,22 +155,22 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is None:
             return self.async_show_form(step_id="user", data_schema=data_schema)
 
-        if user_input["api_version"] == API_V1:
+        if user_input[CONF_API_VERSION] == API_V1:
             return await self.async_step_user_1()
-        if user_input["api_version"] == API_V2:
+        if user_input[CONF_API_VERSION] == API_V2:
             return await self.async_step_user_2()
 
     async def async_step_user_1(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Handle the initial step."""
+        """Handle the step for API_V1."""
         data_schema = STEP_USER_DATA_SCHEMA_V1
         if user_input is None:
             return self.async_show_form(step_id="user_1", data_schema=data_schema)
 
         errors = {}
 
-        user_input["api_version"] = API_V1
+        user_input[CONF_API_VERSION] = API_V1
         try:
             info = await validate_input(self.hass, user_input)
         except CannotConnect:
@@ -172,14 +191,65 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_user_2(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Handle the initial step."""
-        data_schema = STEP_USER_DATA_SCHEMA_V2
+        """Handle the first step for API_V2."""
+        data_schema = STEP_USER_DATA_SCHEMA_V2_A
         if user_input is None:
             return self.async_show_form(step_id="user_2", data_schema=data_schema)
 
         errors = {}
 
-        user_input["api_version"] = API_V2
+        user_input[CONF_API_VERSION] = API_V2
+        try:
+            await validate_input_v2(self.hass, user_input)
+        except CannotConnect:
+            errors["base"] = "cannot_connect"
+        except InvalidAuth:
+            errors["base"] = "invalid_auth"
+        except Exception:  # pylint: disable=broad-except
+            _LOGGER.exception("Unexpected exception")
+            errors["base"] = "unknown"
+        else:
+            self.user_data_2 = user_input
+            return await self.async_step_user_3()
+
+        return self.async_show_form(
+            step_id="user_2", data_schema=data_schema, errors=errors
+        )
+
+    async def async_step_user_3(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Handle the second step for API_V2."""
+        data_schema = STEP_USER_DATA_SCHEMA_V2_B
+        websession = async_get_clientsession(self.hass)
+        _api = WLHubV2(
+            api_key_v2=self.user_data_2[CONF_API_KEY_V2],
+            api_secret=self.user_data_2[CONF_API_SECRET],
+            websession=websession,
+        )
+        station_list_raw = await _api.get_all_stations()
+        station_list = [
+            SelectOptionDict(value=str(stn[CONF_STATION_ID]), label=stn["station_name"])
+            for stn in (station_list_raw["stations"])
+        ]
+
+        if user_input is None:
+            return self.async_show_form(
+                step_id="user_3",
+                data_schema=vol.Schema(
+                    {
+                        vol.Required(CONF_STATION_ID): SelectSelector(
+                            SelectSelectorConfig(options=station_list)
+                        ),
+                    }
+                ),
+            )
+        errors = {}
+
+        user_input[CONF_API_VERSION] = API_V2
+        user_input[CONF_API_KEY_V2] = self.user_data_2[CONF_API_KEY_V2]
+        user_input[CONF_API_SECRET] = self.user_data_2[CONF_API_SECRET]
+
         try:
             info = await validate_input_v2(self.hass, user_input)
         except CannotConnect:
@@ -190,11 +260,12 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             _LOGGER.exception("Unexpected exception")
             errors["base"] = "unknown"
         else:
-            await self.async_set_unique_id(user_input["station_id"])
+            await self.async_set_unique_id(user_input[CONF_STATION_ID])
+            self._abort_if_unique_id_configured()
             return self.async_create_entry(title=info["title"], data=user_input)
 
         return self.async_show_form(
-            step_id="user_2", data_schema=data_schema, errors=errors
+            step_id="user_3", data_schema=data_schema, errors=errors
         )
 
 

@@ -39,6 +39,9 @@
         "data_description": {
           "station_id": "Stations-id kan anges som heltal eller UUID."
         }
+      },
+      "user_3": {
+        "description": "Välj väderstation"
       }
     }
   },
