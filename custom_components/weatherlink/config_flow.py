@@ -7,6 +7,7 @@ from typing import Any
 import voluptuous as vol
 
 from homeassistant import config_entries
+from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
@@ -32,7 +33,7 @@ _LOGGER = logging.getLogger(__name__)
 
 API_V1 = "api_v1"
 API_V2 = "api_v2"
-API_VERSIONS = [API_V1, API_V2]
+API_VERSIONS = [API_V2, API_V1]
 
 STEP_USER_APIVER_SCHEMA = vol.Schema(
     {
@@ -44,8 +45,8 @@ STEP_USER_APIVER_SCHEMA = vol.Schema(
 
 STEP_USER_DATA_SCHEMA_V1 = vol.Schema(
     {
-        vol.Required("username"): TextSelector(),
-        vol.Required("password"): str,
+        vol.Required(CONF_USERNAME): TextSelector(),
+        vol.Required(CONF_PASSWORD): str,
         vol.Required(CONF_API_TOKEN): str,
     }
 )
@@ -79,14 +80,14 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
 
     websession = async_get_clientsession(hass)
     hub = WLHub(
-        username=data["username"],
-        password=data["password"],
+        username=data[CONF_USERNAME],
+        password=data[CONF_PASSWORD],
         apitoken=data[CONF_API_TOKEN],
         websession=websession,
     )
 
     if not await hub.authenticate(
-        data["username"], data["password"], data[CONF_API_TOKEN]
+        data[CONF_USERNAME], data[CONF_PASSWORD], data[CONF_API_TOKEN]
     ):
         raise InvalidAuth
 
@@ -181,7 +182,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             _LOGGER.exception("Unexpected exception")
             errors["base"] = "unknown"
         else:
-            await self.async_set_unique_id(user_input["username"])
+            await self.async_set_unique_id(user_input[CONF_USERNAME])
             return self.async_create_entry(title=info["title"], data=user_input)
 
         return self.async_show_form(

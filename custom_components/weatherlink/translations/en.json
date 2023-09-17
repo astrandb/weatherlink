@@ -30,14 +30,10 @@
         }
       },
       "user_2": {
-        "description": "Enter credentials to access your Weatherlink account",
+        "description": "Enter credentials to access your Weatherlink stations",
         "data": {
-          "station_id": "Station Id",
           "api_key_v2": "API key v2",
           "api_secret": "API secret"
-        },
-        "data_description": {
-          "station_id": "Both integer or UUID station id types are accepted."
         }
       },
       "user_3": {

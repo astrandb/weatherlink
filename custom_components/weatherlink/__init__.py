@@ -8,7 +8,7 @@ from aiohttp import ClientResponseError
 import async_timeout
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import Platform
+from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
@@ -37,8 +37,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if entry.data[CONF_API_VERSION] == API_V1:
         hass.data[DOMAIN][entry.entry_id]["api"] = WLHub(
             websession=async_get_clientsession(hass),
-            username=entry.data["username"],
-            password=entry.data["password"],
+            username=entry.data[CONF_USERNAME],
+            password=entry.data[CONF_PASSWORD],
             apitoken=entry.data[CONF_API_TOKEN],
         )
 
