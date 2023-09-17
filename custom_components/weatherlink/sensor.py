@@ -1,10 +1,9 @@
 """Platform for sensor integration."""
 from __future__ import annotations
 
-from collections.abc import Callable
 from dataclasses import dataclass
 import logging
-from typing import Any, Final
+from typing import Final
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -33,17 +32,12 @@ from .pyweatherlink import WLData
 
 _LOGGER = logging.getLogger(__name__)
 
-SUBTAG_1 = "davis_current_observation"
-
 
 @dataclass
 class WLSensorDescription(SensorEntityDescription):
     """Class describing Weatherlink sensor entities."""
 
     tag: str | None = None
-    subtag: str | None = None
-    convert: Callable[[Any], Any] | None = None
-    decimals: int = 1
 
 
 SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
@@ -119,7 +113,6 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     WLSensorDescription(
         key="RainRate",
         tag="rain_rate",
-        subtag=SUBTAG_1,
         translation_key="rain_rate",
         device_class=SensorDeviceClass.PRECIPITATION_INTENSITY,
         native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_HOUR,
