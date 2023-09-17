@@ -10,15 +10,46 @@
     },
     "step": {
       "user": {
-        "description": "Ange inloggningsuppgifter till ditt Weatherlink-konto",
+        "description": "Välj API-version",
+        "data": {
+          "api_version": "API version"
+        },
+        "data_description": {
+          "api_version": "V1 can användas för äldre enheter, V2 kan användas för alla enheter."
+        }
+      },
+      "user_1": {
+        "description": "Ange åtkomstuppgifter för ditt Weatherlink-konto",
         "data": {
           "apitoken": "API token v1",
           "password": "Lösenord",
           "username": "Användarnamn eller DID"
         },
         "data_description": {
-          "username": "Använd DID om du har tillgång till det, d v s om det är din egen station"
+          "username": "Använd DID här om du har tillgång till det - dvs om det är din egen station"
         }
+      },
+      "user_2": {
+        "description": "Ange åtkomstuppgifter för din Weatherlink-station",
+        "data": {
+          "station_id": "Station-id",
+          "api_key_v2": "API key v2",
+          "api_secret": "API secret"
+        },
+        "data_description": {
+          "station_id": "Stations-id kan anges som heltal eller UUID."
+        }
+      },
+      "user_3": {
+        "description": "Välj väderstation"
+      }
+    }
+  },
+  "selector": {
+    "set_api_ver": {
+      "options": {
+        "api_v1": "API V1",
+        "api_v2": "API V2"
       }
     }
   },
@@ -45,22 +76,22 @@
       "wind_direction": {
         "name": "Vindriktning",
         "state": {
-          "north": "Nord",
-          "northnortheast": "Nordnordost",
-          "northeast": "Nordost",
-          "eastnortheast": "Ostnordost",
-          "east": "Ost",
-          "eastsoutheast": "Ostsydost",
-          "southeast": "Sydost",
-          "southsoutheast": "Sydsydost",
-          "south": "Syd",
-          "southsouthwest": "Sydsydväst",
-          "southwest": "Sydväst",
-          "westsouthwest": "Västsydväst",
-          "west": "Väst",
-          "westnorthwest": "Västnordväst",
-          "northwest": "Nordväst",
-          "northnorthwest": "Nordnordväst"
+          "n": "N",
+          "nne": "NNO",
+          "ne": "NO",
+          "ene": "ONO",
+          "e": "O",
+          "ese": "OSO",
+          "se": "SO",
+          "sse": "SSO",
+          "s": "S",
+          "ssw": "SSV",
+          "sw": "SV",
+          "wsw": "VSV",
+          "w": "V",
+          "wnw": "VNV",
+          "nw": "NV",
+          "nnw": "NNv"
         }
       },
       "rain_today": {
