@@ -1,7 +1,7 @@
 """Constants for the Weatherlink integration."""
 
 DOMAIN = "weatherlink"
-VERSION = "0.0.16"
+VERSION = "0.9.0"
 
 CONF_API_VERSION = "api_version"
 CONF_API_KEY_V2 = "api_key_v2"
