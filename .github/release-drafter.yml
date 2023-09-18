@@ -15,6 +15,7 @@ categories:
   - title: "Dependencies"
     labels:
       - "dependencies"
+      - "dependency"
   - title: "Maintenance"
     label: "maintenance"
   - title: "Development environment and tools"
