@@ -26,18 +26,17 @@ from .const import (
     CONF_API_VERSION,
     CONF_STATION_ID,
     DOMAIN,
+    ApiVersion,
 )
 from .pyweatherlink import WLHub, WLHubV2
 
 _LOGGER = logging.getLogger(__name__)
 
-API_V1 = "api_v1"
-API_V2 = "api_v2"
-API_VERSIONS = [API_V2, API_V1]
+API_VERSIONS = [ApiVersion.API_V2, ApiVersion.API_V1]
 
 STEP_USER_APIVER_SCHEMA = vol.Schema(
     {
-        vol.Required(CONF_API_VERSION, default=API_V2): SelectSelector(
+        vol.Required(CONF_API_VERSION, default=ApiVersion.API_V2): SelectSelector(
             SelectSelectorConfig(options=API_VERSIONS, translation_key="set_api_ver")
         ),
     }
@@ -156,9 +155,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is None:
             return self.async_show_form(step_id="user", data_schema=data_schema)
 
-        if user_input[CONF_API_VERSION] == API_V1:
+        if user_input[CONF_API_VERSION] == ApiVersion.API_V1:
             return await self.async_step_user_1()
-        if user_input[CONF_API_VERSION] == API_V2:
+        if user_input[CONF_API_VERSION] == ApiVersion.API_V2:
             return await self.async_step_user_2()
 
     async def async_step_user_1(
@@ -171,7 +170,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         errors = {}
 
-        user_input[CONF_API_VERSION] = API_V1
+        user_input[CONF_API_VERSION] = ApiVersion.API_V1
         try:
             info = await validate_input(self.hass, user_input)
         except CannotConnect:
@@ -199,7 +198,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         errors = {}
 
-        user_input[CONF_API_VERSION] = API_V2
+        user_input[CONF_API_VERSION] = ApiVersion.API_V2
         try:
             await validate_input_v2(self.hass, user_input)
         except CannotConnect:
@@ -247,7 +246,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             )
         errors = {}
 
-        user_input[CONF_API_VERSION] = API_V2
+        user_input[CONF_API_VERSION] = ApiVersion.API_V2
         user_input[CONF_API_KEY_V2] = self.user_data_2[CONF_API_KEY_V2]
         user_input[CONF_API_SECRET] = self.user_data_2[CONF_API_SECRET]
 

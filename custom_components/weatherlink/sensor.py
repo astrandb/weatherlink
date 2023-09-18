@@ -1,10 +1,9 @@
 """Platform for sensor integration."""
 from __future__ import annotations
 
-from collections.abc import Callable
 from dataclasses import dataclass
 import logging
-from typing import Any, Final
+from typing import Final
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -15,6 +14,7 @@ from homeassistant.components.sensor import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     PERCENTAGE,
+    UnitOfElectricPotential,
     UnitOfPrecipitationDepth,
     UnitOfPressure,
     UnitOfSpeed,
@@ -22,13 +22,12 @@ from homeassistant.const import (
     UnitOfVolumetricFlux,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.entity import DeviceInfo, EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import get_coordinator
-from .config_flow import API_V1, API_V2
-from .const import CONF_API_VERSION, DOMAIN
+from .const import CONF_API_VERSION, DOMAIN, ApiVersion, DataKey
 from .pyweatherlink import WLData
 
 _LOGGER = logging.getLogger(__name__)
@@ -40,16 +39,15 @@ SUBTAG_1 = "davis_current_observation"
 class WLSensorDescription(SensorEntityDescription):
     """Class describing Weatherlink sensor entities."""
 
-    tag: str | None = None
-    subtag: str | None = None
-    convert: Callable[[Any], Any] | None = None
-    decimals: int = 1
+    tag: DataKey | None = None
+    exclude_api_ver: set = ()
+    exclude_data_structure: set = ()
 
 
 SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     WLSensorDescription(
         key="OutsideTemp",
-        tag="temp_out",
+        tag=DataKey.TEMP_OUT,
         device_class=SensorDeviceClass.TEMPERATURE,
         suggested_display_precision=1,
         translation_key="outside_temperature",
@@ -58,7 +56,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     ),
     WLSensorDescription(
         key="InsideTemp",
-        tag="temp_in",
+        tag=DataKey.TEMP_IN,
         device_class=SensorDeviceClass.TEMPERATURE,
         translation_key="inside_temperature",
         suggested_display_precision=1,
@@ -67,7 +65,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     ),
     WLSensorDescription(
         key="OutsideHumidity",
-        tag="hum_out",
+        tag=DataKey.HUM_OUT,
         device_class=SensorDeviceClass.HUMIDITY,
         suggested_display_precision=0,
         translation_key="outside_humidity",
@@ -76,7 +74,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     ),
     WLSensorDescription(
         key="InsideHumidity",
-        tag="hum_in",
+        tag=DataKey.HUM_IN,
         device_class=SensorDeviceClass.HUMIDITY,
         suggested_display_precision=0,
         translation_key="inside_humidity",
@@ -85,7 +83,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     ),
     WLSensorDescription(
         key="Pressure",
-        tag="bar_sea_level",
+        tag=DataKey.BAR_SEA_LEVEL,
         device_class=SensorDeviceClass.PRESSURE,
         translation_key="pressure",
         suggested_display_precision=0,
@@ -93,8 +91,14 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WLSensorDescription(
+        key="BarTrend",
+        tag=DataKey.BAR_TREND,
+        icon="mdi:trending-up",
+        translation_key="bar_trend",
+    ),
+    WLSensorDescription(
         key="Wind",
-        tag="wind_mph",
+        tag=DataKey.WIND_MPH,
         device_class=SensorDeviceClass.WIND_SPEED,
         translation_key="wind",
         suggested_display_precision=1,
@@ -103,13 +107,13 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     ),
     WLSensorDescription(
         key="WindDir",
-        tag="wind_dir",
+        tag=DataKey.WIND_DIR,
         icon="mdi:compass-outline",
         translation_key="wind_direction",
     ),
     WLSensorDescription(
         key="RainToday",
-        tag="rain_day",
+        tag=DataKey.RAIN_DAY,
         translation_key="rain_today",
         device_class=SensorDeviceClass.PRECIPITATION,
         suggested_display_precision=1,
@@ -118,8 +122,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     ),
     WLSensorDescription(
         key="RainRate",
-        tag="rain_rate",
-        subtag=SUBTAG_1,
+        tag=DataKey.RAIN_RATE,
         translation_key="rain_rate",
         device_class=SensorDeviceClass.PRECIPITATION_INTENSITY,
         native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_HOUR,
@@ -128,7 +131,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     ),
     WLSensorDescription(
         key="RainInMonth",
-        tag="rain_month",
+        tag=DataKey.RAIN_MONTH,
         translation_key="rain_this_month",
         suggested_display_precision=0,
         device_class=SensorDeviceClass.PRECIPITATION,
@@ -137,7 +140,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     ),
     WLSensorDescription(
         key="RainInYear",
-        tag="rain_year",
+        tag=DataKey.RAIN_YEAR,
         translation_key="rain_this_year",
         device_class=SensorDeviceClass.PRECIPITATION,
         suggested_display_precision=0,
@@ -146,12 +149,57 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     ),
     WLSensorDescription(
         key="Dewpoint",
-        tag="dewpoint",
+        tag=DataKey.DEWPOINT,
         translation_key="dewpoint",
         device_class=SensorDeviceClass.TEMPERATURE,
         suggested_display_precision=1,
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
+        key="TransBatteryVolt",
+        tag=DataKey.TRANS_BATTERY_VOLT,
+        translation_key="trans_battery_volt",
+        device_class=SensorDeviceClass.VOLTAGE,
+        suggested_display_precision=3,
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(
+            2,
+            10,
+        ),
+    ),
+    WLSensorDescription(
+        key="SolarPanelVolt",
+        tag=DataKey.SOLAR_PANEL_VOLT,
+        translation_key="solar_panel_volt",
+        device_class=SensorDeviceClass.VOLTAGE,
+        suggested_display_precision=3,
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(
+            2,
+            10,
+        ),
+    ),
+    WLSensorDescription(
+        key="SupercapVolt",
+        tag=DataKey.SUPERCAP_VOLT,
+        translation_key="supercap_volt",
+        device_class=SensorDeviceClass.VOLTAGE,
+        suggested_display_precision=3,
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(
+            2,
+            10,
+        ),
     ),
 )
 
@@ -167,6 +215,11 @@ async def async_setup_entry(
     async_add_entities(
         WLSensor(coordinator, hass, config_entry, description)
         for description in SENSOR_TYPES
+        if (config_entry.data[CONF_API_VERSION] not in description.exclude_api_ver)
+        and (
+            coordinator.data.get(DataKey.DATA_STRUCTURE)
+            not in description.exclude_data_structure
+        )
     )
 
 
@@ -204,15 +257,15 @@ class WLSensor(CoordinatorEntity, SensorEntity):
     def get_unique_id_base(self):
         """Generate base for unique_id."""
         unique_base = None
-        if self.entry.data[CONF_API_VERSION] == API_V1:
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             unique_base = self.coordinator.data["DID"]
-        if self.entry.data[CONF_API_VERSION] == API_V2:
-            unique_base = self.coordinator.data["station_id_uuid"]
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
+            unique_base = self.coordinator.data[DataKey.UUID]
         return unique_base
 
     def get_firmware(self) -> str | None:
         """Get firmware version."""
-        if self.entry.data[CONF_API_VERSION] == API_V2:
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                 "stations"
             ][0].get("firmware_version")
@@ -220,9 +273,9 @@ class WLSensor(CoordinatorEntity, SensorEntity):
 
     def generate_name(self):
         """Generate device name."""
-        if self.entry.data[CONF_API_VERSION] == API_V1:
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             return self.coordinator.data["station_name"]
-        if self.entry.data[CONF_API_VERSION] == API_V2:
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                 "stations"
             ][0]["station_name"]
@@ -231,9 +284,9 @@ class WLSensor(CoordinatorEntity, SensorEntity):
 
     def generate_model(self):
         """Generate model string."""
-        if self.entry.data[CONF_API_VERSION] == API_V1:
-            return "Weatherlink - API V1"
-        if self.entry.data[CONF_API_VERSION] == API_V2:
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
+            return "WeatherLink - API V1"
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             model: str = self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                 "stations"
             ][0].get("product_number")
@@ -250,21 +303,24 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         """Return the state of the sensor."""
         # _LOGGER.debug("Key: %s", self.entity_description.key)
         if self.entity_description.key in [
-            "OutsideTemp",
+            "Dewpoint",
+            "InsideHumidity",
             "InsideTemp",
             "OutsideHumidity",
-            "InsideHumidity",
+            "OutsideTemp",
             "Pressure",
-            "Wind",
-            "Dewpoint",
-            "RainToday",
-            "RainRate",
-            "RainInYear",
             "RainInMonth",
+            "RainInYear",
+            "RainRate",
+            "RainToday",
+            "SolarPanelVolt",
+            "SupercapVolt",
+            "TransBatteryVolt",
+            "Wind",
         ]:
             return self.coordinator.data.get(self.entity_description.tag)
 
-        if self.entity_description.tag in ["wind_dir"]:
+        if self.entity_description.tag in [DataKey.WIND_DIR]:
             directions = [
                 "n",
                 "nne",
@@ -294,4 +350,19 @@ class WLSensor(CoordinatorEntity, SensorEntity):
 
             return directions[index]
 
+        if self.entity_description.key == "BarTrend":
+            bar_trend = self.coordinator.data.get(self.entity_description.tag)
+            if bar_trend is None:
+                return None
+            if str(bar_trend).isnumeric():
+                if bar_trend >= 0.060:
+                    return "rising_rapidly"
+                if bar_trend >= 0.020:
+                    return "rising_slowly"
+                if bar_trend >= -0.020:
+                    return "steady"
+                if bar_trend >= -0.060:
+                    return "falling_slowly"
+                return "falling_rapidly"
+            return str(bar_trend).lower().replace(" ", "_")
         return None

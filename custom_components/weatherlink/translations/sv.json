@@ -66,6 +66,16 @@
       "pressure": {
         "name": "Lufttryck"
       },
+      "bar_trend": {
+        "name": "Lufttryck trend",
+        "state": {
+          "rising_rapidly": "Stiger snabbt",
+          "rising_slowly": "Stiger sakta",
+          "steady": "Stabilt",
+          "falling_slowly": "Sjunker sakta",
+          "falling_rapidly": "Sjunker snabbt"
+        }
+      },
       "wind": {
         "name": "Vindstyrka"
       },
@@ -104,6 +114,15 @@
       },
       "dewpoint": {
         "name": "Daggpunkt"
+      },
+      "trans_battery_volt": {
+        "name": "Sändarbatteri"
+      },
+      "solar_panel_volt": {
+        "name": "Solpanel"
+      },
+      "supercap_volt": {
+        "name": "Superkondensator"
       }
     }
   }

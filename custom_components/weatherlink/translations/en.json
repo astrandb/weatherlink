@@ -66,6 +66,16 @@
       "pressure": {
         "name": "Pressure"
       },
+      "bar_trend": {
+        "name": "Pressure trend",
+        "state": {
+          "rising_rapidly": "Rising rapidly",
+          "rising_slowly": "Rising slowly",
+          "steady": "Steady",
+          "falling_slowly": "Falling slowly",
+          "falling_rapidly": "Falling rapidly"
+        }
+      },
       "wind": {
         "name": "Wind"
       },
@@ -104,6 +114,15 @@
       },
       "dewpoint": {
         "name": "Dewpoint"
+      },
+      "trans_battery_volt": {
+        "name": "Transmitter battery"
+      },
+      "solar_panel_volt": {
+        "name": "Solar panel"
+      },
+      "supercap_volt": {
+        "name": "Supercapacitor"
       }
     }
   }
