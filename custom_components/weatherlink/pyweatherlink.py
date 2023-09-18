@@ -8,6 +8,8 @@ import urllib.parse
 
 from aiohttp import ClientResponse, ClientResponseError, ClientSession
 
+from homeassistant.exceptions import ConfigEntryAuthFailed
+
 from .const import VERSION
 
 API_V1_URL = "https://api.weatherlink.com/v1/NoaaExt.json"
@@ -29,8 +31,12 @@ class WLHub:
         self.apitoken = apitoken
         self.websession = websession
 
-    async def authenticate(self, username: str, password: str, apitoken: str) -> bool:
+    async def authenticate(self) -> bool:
         """Test if we can authenticate with the host."""
+        try:
+            await self.get_data()
+        except ConfigEntryAuthFailed:
+            return False
         return True
 
     async def request(self, method, **kwargs) -> ClientResponse:
@@ -68,6 +74,8 @@ class WLHub:
             _LOGGER.error(
                 "API get_data failed. Status: %s, - %s", exc.code, exc.message
             )
+            if exc.code == 401:
+                raise ConfigEntryAuthFailed from exc
 
 
 class WLHubV2:
@@ -86,10 +94,12 @@ class WLHubV2:
         self.api_secret = api_secret
         self.websession = websession
 
-    async def authenticate(
-        self, station_id: str, api_key_v2: str, api_secret: str
-    ) -> bool:
+    async def authenticate(self) -> bool:
         """Test if we can authenticate with the host."""
+        try:
+            await self.get_all_stations()
+        except ConfigEntryAuthFailed:
+            return False
         return True
 
     async def request(self, method, endpoint="current/", **kwargs) -> ClientResponse:
@@ -109,11 +119,11 @@ class WLHubV2:
         }
         params_enc = urllib.parse.urlencode(params, quote_via=urllib.parse.quote)
 
-        if self.station_id is None:
-            station = ""
-        else:
-            station = f"{self.station_id}"
-
+        station = (
+            self.station_id
+            if self.station_id is not None and endpoint.endswith("/")
+            else ""
+        )
         res = await self.websession.request(
             method,
             f"{API_V2_URL}{endpoint}{station}?{params_enc}",
@@ -151,6 +161,18 @@ class WLHubV2:
         except ClientResponseError as exc:
             _LOGGER.error(
                 "API get_all_stations failed. Status: %s, - %s", exc.code, exc.message
+            )
+            if exc.code == 401:
+                raise ConfigEntryAuthFailed from exc
+
+    async def get_all_sensors(self):
+        """Get all sensors from api."""
+        try:
+            res = await self.request("GET", endpoint="sensors")
+            return await res.json()
+        except ClientResponseError as exc:
+            _LOGGER.error(
+                "API get_all_sensors failed. Status: %s, - %s", exc.code, exc.message
             )
 
 
