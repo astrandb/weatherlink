@@ -2,7 +2,7 @@
 from enum import StrEnum
 
 DOMAIN = "weatherlink"
-VERSION = "0.9.0"
+VERSION = "0.9.1"
 
 CONF_API_VERSION = "api_version"
 CONF_API_KEY_V2 = "api_key_v2"
