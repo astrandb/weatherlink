@@ -354,7 +354,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             bar_trend = self.coordinator.data.get(self.entity_description.tag)
             if bar_trend is None:
                 return None
-            if str(bar_trend).isnumeric():
+            if self.is_float(bar_trend):
                 if bar_trend >= 0.060:
                     return "rising_rapidly"
                 if bar_trend >= 0.020:
@@ -366,3 +366,11 @@ class WLSensor(CoordinatorEntity, SensorEntity):
                 return "falling_rapidly"
             return str(bar_trend).lower().replace(" ", "_")
         return None
+
+    def is_float(self, in_string):
+        """Check if string is float."""
+        try:
+            float(in_string)
+            return True
+        except ValueError:
+            return False
