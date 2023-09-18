@@ -3,12 +3,13 @@
 # Weatherlink Integration for Home Assistant
 
 This integration will represent your data from Davis Weaterlink in Home Assistant.
-It will query the API every 5 minutes. The data update frequency in the API is depending on your supscription level.
+It will query the API every 5 minutes. The data update frequency in the API is depending on your subscription level. I e if you have the free "Basic" level, the observations data will only be updated every 15 minutes.
 
 ## Limitations
-In this first release only stations with Vue sensors are fully supported. Vantage Pro will come soon.
 
-Current version has limited error detection and recovery and will therefore log detailed error descriptions if unforeseen thing happen.
+There are lots of combinations of station types and sensor types. Please report an issue here if you are missing something essential.
+
+Current version has limited error detection and recovery and will therefore log detailed error descriptions if unforeseen things happen.
 
 
 ## Installation

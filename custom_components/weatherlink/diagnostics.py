@@ -26,7 +26,7 @@ async def async_get_config_entry_diagnostics(
     coordinator: DataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id][
         "coordinator"
     ]
-    station_data = hass.data[DOMAIN][config_entry.entry_id]["station_data"]
+    station_data = hass.data[DOMAIN][config_entry.entry_id].get("station_data", {})
     current = hass.data[DOMAIN][config_entry.entry_id]["current"]
 
     diagnostics_data = {

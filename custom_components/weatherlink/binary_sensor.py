@@ -17,8 +17,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import get_coordinator
-from .config_flow import API_V1, API_V2
-from .const import CONF_API_VERSION, DOMAIN
+from .const import CONF_API_VERSION, DOMAIN, ApiVersion, DataKey
 from .pyweatherlink import WLData
 
 _LOGGER = logging.getLogger(__name__)
@@ -29,17 +28,19 @@ class WLBinarySensorDescription(BinarySensorEntityDescription):
     """Class describing Weatherlink binarysensor entities."""
 
     tag: str | None = None
-    exclude: set = ()
+    exclude_api_ver: set = ()
+    exclude_data_structure: set = ()
 
 
 SENSOR_TYPES: Final[tuple[WLBinarySensorDescription, ...]] = (
     WLBinarySensorDescription(
         key="TransmitterBattery",
-        tag="trans_battery_flag",
+        tag=DataKey.TRANS_BATTERY_FLAG,
         device_class=BinarySensorDeviceClass.BATTERY,
         translation_key="trans_battery",
         entity_category=EntityCategory.DIAGNOSTIC,
-        exclude=(API_V1,),
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(2,),
     ),
 )
 
@@ -55,7 +56,11 @@ async def async_setup_entry(
     async_add_entities(
         WLSensor(coordinator, hass, config_entry, description)
         for description in SENSOR_TYPES
-        if config_entry.data[CONF_API_VERSION] not in description.exclude
+        if (config_entry.data[CONF_API_VERSION] not in description.exclude_api_ver)
+        and (
+            coordinator.data[DataKey.DATA_STRUCTURE]
+            not in description.exclude_data_structure
+        )
     )
 
 
@@ -92,17 +97,17 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
     def get_unique_id_base(self):
         """Generate base for unique_id."""
         unique_base = None
-        if self.entry.data[CONF_API_VERSION] == API_V1:
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             unique_base = self.coordinator.data["DID"]
-        if self.entry.data[CONF_API_VERSION] == API_V2:
-            unique_base = self.coordinator.data["station_id_uuid"]
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
+            unique_base = self.coordinator.data[DataKey.UUID]
         return unique_base
 
     def generate_name(self):
         """Generate device name."""
-        if self.entry.data[CONF_API_VERSION] == API_V1:
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             return self.coordinator.data["station_name"]
-        if self.entry.data[CONF_API_VERSION] == API_V2:
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                 "stations"
             ][0]["station_name"]
@@ -111,9 +116,9 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
 
     def generate_model(self):
         """Generate model string."""
-        if self.entry.data[CONF_API_VERSION] == API_V1:
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             return "Weatherlink - API V1"
-        if self.entry.data[CONF_API_VERSION] == API_V2:
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             model = self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                 "stations"
             ][0].get("product_number")

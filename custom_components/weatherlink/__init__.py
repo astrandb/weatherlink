@@ -13,7 +13,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .config_flow import API_V1, API_V2
 from .const import (
     CONF_API_KEY_V2,
     CONF_API_SECRET,
@@ -21,10 +20,38 @@ from .const import (
     CONF_API_VERSION,
     CONF_STATION_ID,
     DOMAIN,
+    ApiVersion,
+    DataKey,
 )
 from .pyweatherlink import WLHub, WLHubV2
 
 PLATFORMS = [Platform.BINARY_SENSOR, Platform.SENSOR]
+SENSOR_TYPE_VUE_AND_VANTAGE_PRO = (
+    23,
+    24,
+    27,
+    28,
+    37,
+    43,
+    44,
+    45,
+    46,
+    48,
+    49,
+    50,
+    51,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    87,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -34,7 +61,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = {}
-    if entry.data[CONF_API_VERSION] == API_V1:
+    if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
         hass.data[DOMAIN][entry.entry_id]["api"] = WLHub(
             websession=async_get_clientsession(hass),
             username=entry.data[CONF_USERNAME],
@@ -42,7 +69,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             apitoken=entry.data[CONF_API_TOKEN],
         )
 
-    if entry.data[CONF_API_VERSION] == API_V2:
+    if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
         hass.data[DOMAIN][entry.entry_id]["api"] = WLHubV2(
             websession=async_get_clientsession(hass),
             station_id=entry.data[CONF_STATION_ID],
@@ -82,84 +109,124 @@ async def get_coordinator(
     def _preprocess(indata: str):
         outdata = {}
         # _LOGGER.debug("Received data: %s", indata)
-        if entry.data[CONF_API_VERSION] == API_V1:
+        if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             outdata["DID"] = indata["davis_current_observation"].get("DID")
             outdata["station_name"] = indata["davis_current_observation"].get(
                 "station_name"
             )
-            outdata["temp_out"] = indata.get("temp_f")
-            outdata["temp_in"] = indata["davis_current_observation"].get("temp_in_f")
-            outdata["hum_in"] = indata["davis_current_observation"].get(
+            outdata[DataKey.TEMP_OUT] = indata.get("temp_f")
+            outdata[DataKey.TEMP_IN] = indata["davis_current_observation"].get(
+                "temp_in_f"
+            )
+            outdata[DataKey.HUM_IN] = indata["davis_current_observation"].get(
                 "relative_humidity_in"
             )
-            outdata["hum_out"] = indata.get("relative_humidity")
-            outdata["bar_sea_level"] = indata.get("pressure_in")
-            outdata["wind_mph"] = indata.get("wind_mph")
-            outdata["wind_dir"] = indata.get("wind_degrees")
-            outdata["dewpoint"] = indata.get("dewpoint_f")
-            outdata["rain_day"] = indata["davis_current_observation"].get("rain_day_in")
-            outdata["rain_rate"] = indata["davis_current_observation"].get(
+            outdata[DataKey.HUM_OUT] = indata.get("relative_humidity")
+            outdata[DataKey.BAR_SEA_LEVEL] = indata.get("pressure_in")
+            outdata[DataKey.WIND_MPH] = indata.get("wind_mph")
+            outdata[DataKey.WIND_DIR] = indata.get("wind_degrees")
+            outdata[DataKey.DEWPOINT] = indata.get("dewpoint_f")
+            outdata[DataKey.RAIN_DAY] = indata["davis_current_observation"].get(
+                "rain_day_in"
+            )
+            outdata[DataKey.RAIN_RATE] = indata["davis_current_observation"].get(
                 "rain_rate_in_per_hr"
             )
-            outdata["rain_month"] = indata["davis_current_observation"].get(
+            outdata[DataKey.RAIN_MONTH] = indata["davis_current_observation"].get(
                 "rain_month_in"
             )
-            outdata["rain_year"] = indata["davis_current_observation"].get(
+            outdata[DataKey.RAIN_YEAR] = indata["davis_current_observation"].get(
                 "rain_year_in"
             )
-        if entry.data[CONF_API_VERSION] == API_V2:
-            outdata["station_id_uuid"] = indata["station_id_uuid"]
+            outdata[DataKey.BAR_TREND] = indata["davis_current_observation"].get(
+                "pressure_tendency_string"
+            )
+
+        if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
+            outdata[DataKey.UUID] = indata["station_id_uuid"]
             for sensor in indata["sensors"]:
-                if sensor["sensor_type"] == 37 and sensor["data_structure_type"] == 10:
-                    outdata["temp_out"] = sensor["data"][0]["temp"]
-                    outdata["hum_out"] = sensor["data"][0]["hum"]
-                    outdata["wind_mph"] = sensor["data"][0]["wind_speed_last"]
-                    outdata["wind_dir"] = sensor["data"][0]["wind_dir_last"]
-                    outdata["dewpoint"] = sensor["data"][0]["dew_point"]
-                    outdata["rain_day"] = float(sensor["data"][0]["rainfall_daily_in"])
-                    outdata["rain_rate"] = sensor["data"][0]["rain_rate_last_in"]
-                    outdata["rain_month"] = sensor["data"][0]["rainfall_monthly_in"]
-                    outdata["rain_year"] = sensor["data"][0]["rainfall_year_in"]
-                    outdata["trans_battery_flag"] = sensor["data"][0][
+                # Vue
+                if (
+                    sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
+                    and sensor["data_structure_type"] == 10
+                ):
+                    outdata[DataKey.DATA_STRUCTURE] = sensor["data_structure_type"]
+                    outdata[DataKey.TEMP_OUT] = sensor["data"][0]["temp"]
+                    outdata[DataKey.HUM_OUT] = sensor["data"][0]["hum"]
+                    outdata[DataKey.WIND_MPH] = sensor["data"][0]["wind_speed_last"]
+                    outdata[DataKey.WIND_DIR] = sensor["data"][0]["wind_dir_last"]
+                    outdata[DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
+                    outdata[DataKey.RAIN_DAY] = float(
+                        sensor["data"][0]["rainfall_daily_in"]
+                    )
+                    outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_last_in"]
+                    outdata[DataKey.RAIN_MONTH] = sensor["data"][0][
+                        "rainfall_monthly_in"
+                    ]
+                    outdata[DataKey.RAIN_YEAR] = sensor["data"][0]["rainfall_year_in"]
+                    outdata[DataKey.TRANS_BATTERY_FLAG] = sensor["data"][0][
                         "trans_battery_flag"
                     ]
-                if sensor["sensor_type"] == 37 and sensor["data_structure_type"] == 2:
-                    outdata["temp_out"] = sensor["data"][0]["temp_out"]
-                    outdata["temp_in"] = sensor["data"][0]["temp_in"]
-                    outdata["bar_sea_level"] = sensor["data"][0]["bar"]
-                    outdata["hum_out"] = sensor["data"][0]["hum_out"]
-                    outdata["wind_mph"] = sensor["data"][0]["wind_speed"]
-                    outdata["wind_dir"] = sensor["data"][0]["wind_dir"]
-                    outdata["dewpoint"] = sensor["data"][0]["dew_point"]
-                    outdata["rain_day"] = float(sensor["data"][0]["rain_day_in"])
-                    outdata["rain_rate"] = sensor["data"][0]["rain_rate_in"]
-                    outdata["rain_month"] = sensor["data"][0]["rain_month_in"]
-                    outdata["rain_year"] = sensor["data"][0]["rain_year_in"]
-                if sensor["sensor_type"] == 37 and sensor["data_structure_type"] == 23:
-                    outdata["temp_out"] = sensor["data"][0]["temp"]
-                    outdata["hum_out"] = sensor["data"][0]["hum"]
-                    outdata["wind_mph"] = sensor["data"][0]["wind_speed_last"]
-                    outdata["wind_dir"] = sensor["data"][0]["wind_dir_last"]
-                    outdata["dewpoint"] = sensor["data"][0]["dew_point"]
-                    outdata["rain_day"] = float(sensor["data"][0]["rainfall_day_in"])
-                    outdata["rain_rate"] = sensor["data"][0]["rain_rate_last_in"]
-                    outdata["rain_month"] = sensor["data"][0]["rainfall_month_in"]
-                    outdata["rain_year"] = sensor["data"][0]["rainfall_year_in"]
-                    outdata["trans_battery_flag"] = sensor["data"][0][
+                if (
+                    sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
+                    and sensor["data_structure_type"] == 2
+                ):
+                    outdata[DataKey.DATA_STRUCTURE] = sensor["data_structure_type"]
+                    outdata[DataKey.TEMP_OUT] = sensor["data"][0]["temp_out"]
+                    outdata[DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]
+                    outdata[DataKey.BAR_SEA_LEVEL] = sensor["data"][0]["bar"]
+                    outdata[DataKey.BAR_TREND] = (
+                        sensor["data"][0]["bar_trend"] * 0.0295333727
+                    )
+                    outdata[DataKey.HUM_OUT] = sensor["data"][0]["hum_out"]
+                    outdata[DataKey.HUM_IN] = sensor["data"][0]["hum_in"]
+                    outdata[DataKey.WIND_MPH] = sensor["data"][0]["wind_speed"]
+                    outdata[DataKey.WIND_DIR] = sensor["data"][0]["wind_dir"]
+                    outdata[DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
+                    outdata[DataKey.RAIN_DAY] = float(sensor["data"][0]["rain_day_in"])
+                    outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_in"]
+                    outdata[DataKey.RAIN_MONTH] = sensor["data"][0]["rain_month_in"]
+                    outdata[DataKey.RAIN_YEAR] = sensor["data"][0]["rain_year_in"]
+
+                if (
+                    sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
+                    and sensor["data_structure_type"] == 23
+                ):
+                    outdata[DataKey.DATA_STRUCTURE] = sensor["data_structure_type"]
+                    outdata[DataKey.TEMP_OUT] = sensor["data"][0]["temp"]
+                    outdata[DataKey.HUM_OUT] = sensor["data"][0]["hum"]
+                    outdata[DataKey.WIND_MPH] = sensor["data"][0]["wind_speed_last"]
+                    outdata[DataKey.WIND_DIR] = sensor["data"][0]["wind_dir_last"]
+                    outdata[DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
+                    outdata[DataKey.RAIN_DAY] = float(
+                        sensor["data"][0]["rainfall_day_in"]
+                    )
+                    outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_last_in"]
+                    outdata[DataKey.RAIN_MONTH] = sensor["data"][0]["rainfall_month_in"]
+                    outdata[DataKey.RAIN_YEAR] = sensor["data"][0]["rainfall_year_in"]
+                    outdata[DataKey.TRANS_BATTERY_FLAG] = sensor["data"][0][
                         "trans_battery_flag"
                     ]
+                    outdata[DataKey.TRANS_BATTERY_VOLT] = sensor["data"][0][
+                        "trans_battery_volt"
+                    ]
+                    outdata[DataKey.SUPERCAP_VOLT] = sensor["data"][0]["supercap_volt"]
+                    outdata[DataKey.SOLAR_PANEL_VOLT] = sensor["data"][0][
+                        "solar_panel_volt"
+                    ]
+
                 if sensor["sensor_type"] == 365 and sensor["data_structure_type"] == 21:
-                    outdata["temp_in"] = sensor["data"][0]["temp_in"]
-                    outdata["hum_in"] = sensor["data"][0]["hum_in"]
+                    outdata[DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]
+                    outdata[DataKey.HUM_IN] = sensor["data"][0]["hum_in"]
                 if sensor["sensor_type"] == 243 and sensor["data_structure_type"] == 12:
-                    outdata["temp_in"] = sensor["data"][0]["temp_in"]
-                    outdata["hum_in"] = sensor["data"][0]["hum_in"]
+                    outdata[DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]
+                    outdata[DataKey.HUM_IN] = sensor["data"][0]["hum_in"]
                 if sensor["sensor_type"] == 242 and sensor["data_structure_type"] == 12:
-                    outdata["bar_sea_level"] = sensor["data"][0]["bar_sea_level"]
-                    outdata["bar_trend"] = sensor["data"][0]["bar_trend"]
+                    outdata[DataKey.BAR_SEA_LEVEL] = sensor["data"][0]["bar_sea_level"]
+                    outdata[DataKey.BAR_TREND] = sensor["data"][0]["bar_trend"]
                 if sensor["sensor_type"] == 242 and sensor["data_structure_type"] == 19:
-                    outdata["bar_sea_level"] = sensor["data"][0]["bar_sea_level"]
-                    outdata["bar_trend"] = sensor["data"][0]["bar_trend"]
+                    outdata[DataKey.BAR_SEA_LEVEL] = sensor["data"][0]["bar_sea_level"]
+                    outdata[DataKey.BAR_TREND] = sensor["data"][0]["bar_trend"]
 
         return outdata
 
@@ -193,7 +260,7 @@ async def async_migrate_entry(hass, config_entry: ConfigEntry):
     if config_entry.version == 1:
         new_data = {**config_entry.data}
 
-        new_data[CONF_API_VERSION] = API_V1
+        new_data[CONF_API_VERSION] = ApiVersion.API_V1
 
         config_entry.version = 2
         hass.config_entries.async_update_entry(config_entry, data=new_data)
