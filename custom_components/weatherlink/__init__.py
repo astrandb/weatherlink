@@ -176,7 +176,7 @@ async def get_coordinator(
                     outdata[DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]
                     outdata[DataKey.BAR_SEA_LEVEL] = sensor["data"][0]["bar"]
                     outdata[DataKey.BAR_TREND] = (
-                        sensor["data"][0]["bar_trend"] * 0.0295333727
+                        float(sensor["data"][0]["bar_trend"]) / 1000
                     )
                     outdata[DataKey.HUM_OUT] = sensor["data"][0]["hum_out"]
                     outdata[DataKey.HUM_IN] = sensor["data"][0]["hum_in"]
