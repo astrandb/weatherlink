@@ -359,9 +359,9 @@ class WLSensor(CoordinatorEntity, SensorEntity):
                     return "rising_rapidly"
                 if bar_trend >= 0.020:
                     return "rising_slowly"
-                if bar_trend >= -0.020:
+                if bar_trend > -0.020:
                     return "steady"
-                if bar_trend >= -0.060:
+                if bar_trend > -0.060:
                     return "falling_slowly"
                 return "falling_rapidly"
             return str(bar_trend).lower().replace(" ", "_")
