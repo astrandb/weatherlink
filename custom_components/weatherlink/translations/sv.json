@@ -5,7 +5,7 @@
     },
     "error": {
       "cannot_connect": "Lyckades inte ansluta",
-      "invalid_auth": "Ogiltig autentisering",
+      "invalid_auth": "Felaktiga autentiseringsuppgifter",
       "unknown": "Oväntat fel"
     },
     "step": {

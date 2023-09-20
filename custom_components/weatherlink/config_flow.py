@@ -69,13 +69,6 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
 
     Data has the keys from STEP_USER_DATA_SCHEMA_V1 with values provided by the user.
     """
-    # TODO validate the data can be used to set up a connection.
-
-    # If your PyPI package is not built with async, pass your methods
-    # to the executor:
-    # await hass.async_add_executor_job(
-    #     your_validate_func, data["username"], data["password"]
-    # )
 
     websession = async_get_clientsession(hass)
     hub = WLHub(
@@ -85,9 +78,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
         websession=websession,
     )
 
-    if not await hub.authenticate(
-        data[CONF_USERNAME], data[CONF_PASSWORD], data[CONF_API_TOKEN]
-    ):
+    if not await hub.authenticate():
         raise InvalidAuth
 
     # If you cannot connect:
@@ -110,8 +101,6 @@ async def validate_input_v2(
 
     Data has the keys from STEP_USER_DATA_SCHEMA_V2 with values provided by the user.
     """
-    # TODO validate the data can be used to set up a connection.
-
     websession = async_get_clientsession(hass)
     hub = WLHubV2(
         station_id=data.get(CONF_STATION_ID),
@@ -120,15 +109,8 @@ async def validate_input_v2(
         websession=websession,
     )
 
-    if not await hub.authenticate(
-        data.get(CONF_STATION_ID), data[CONF_API_KEY_V2], data[CONF_API_SECRET]
-    ):
+    if not await hub.authenticate():
         raise InvalidAuth
-
-    # If you cannot connect:
-    # throw CannotConnect
-    # If the authentication is wrong:
-    # InvalidAuth
 
     # Return info that you want to store in the config entry.
     data = await hub.get_station()
@@ -153,7 +135,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Handle the initial step."""
         data_schema = STEP_USER_APIVER_SCHEMA
         if user_input is None:
-            return self.async_show_form(step_id="user", data_schema=data_schema)
+            return self.async_show_form(
+                step_id="user", data_schema=data_schema, last_step=False
+            )
 
         if user_input[CONF_API_VERSION] == ApiVersion.API_V1:
             return await self.async_step_user_1()
@@ -182,6 +166,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             errors["base"] = "unknown"
         else:
             await self.async_set_unique_id(user_input[CONF_USERNAME])
+            self._abort_if_unique_id_configured()
             return self.async_create_entry(title=info["title"], data=user_input)
 
         return self.async_show_form(
@@ -194,7 +179,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Handle the first step for API_V2."""
         data_schema = STEP_USER_DATA_SCHEMA_V2_A
         if user_input is None:
-            return self.async_show_form(step_id="user_2", data_schema=data_schema)
+            return self.async_show_form(
+                step_id="user_2", data_schema=data_schema, last_step=False
+            )
 
         errors = {}
 
@@ -213,7 +200,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return await self.async_step_user_3()
 
         return self.async_show_form(
-            step_id="user_2", data_schema=data_schema, errors=errors
+            step_id="user_2", data_schema=data_schema, errors=errors, last_step=False
         )
 
     async def async_step_user_3(
@@ -265,7 +252,10 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return self.async_create_entry(title=info["title"], data=user_input)
 
         return self.async_show_form(
-            step_id="user_3", data_schema=data_schema, errors=errors
+            step_id="user_3",
+            data_schema=data_schema,
+            errors=errors,
+            last_step=True,
         )
 
 
