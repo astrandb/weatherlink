@@ -35,6 +35,20 @@ autolabeler:
     files:
       - "*.md"
       - ".github/*"
+      - ".ruff.toml"
+      - ".pre-commit-config.yaml"
   - label: "bugfix"
     title:
       - "/fix/i"
+  - label: "code quality"
+    title:
+      - "lint"
+  - label: "translation"
+    title:
+      - "Lokalise:"
+    files:
+      - "*/translations/*.json"
+  - label: "development tools"
+    files:
+      - ".devcontainer/*"
+      - ".devcontainer.json"
