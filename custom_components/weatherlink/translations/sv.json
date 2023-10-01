@@ -10,16 +10,15 @@
     },
     "step": {
       "user": {
-        "description": "Välj API-version",
         "data": {
           "api_version": "API version"
         },
         "data_description": {
-          "api_version": "V1 can användas för äldre enheter, V2 kan användas för alla enheter."
-        }
+          "api_version": "V1 kan användas för äldre enheter, V2 kan användas för alla enheter."
+        },
+        "description": "Välj API-version"
       },
       "user_1": {
-        "description": "Ange åtkomstuppgifter för ditt Weatherlink-konto",
         "data": {
           "apitoken": "API token v1",
           "password": "Lösenord",
@@ -27,32 +26,38 @@
         },
         "data_description": {
           "username": "Använd DID här om du har tillgång till det - dvs om det är din egen station"
-        }
+        },
+        "description": "Ange åtkomstuppgifter för ditt Weatherlink-konto"
       },
       "user_2": {
-        "description": "Ange åtkomstuppgifter för dina Weatherlink-stationer",
         "data": {
           "api_key_v2": "API key v2",
           "api_secret": "API secret"
-        }
+        },
+        "description": "Ange åtkomstuppgifter för dina Weatherlink-stationer"
       },
       "user_3": {
         "description": "Välj väderstation"
       }
     }
   },
-  "selector": {
-    "set_api_ver": {
-      "options": {
-        "api_v1": "API V1",
-        "api_v2": "API V2"
-      }
-    }
-  },
   "entity": {
     "sensor": {
-      "outside_temperature": {
-        "name": "Temperatur ute"
+      "bar_trend": {
+        "name": "Lufttryck trend",
+        "state": {
+          "falling_rapidly": "Sjunker snabbt",
+          "falling_slowly": "Sjunker sakta",
+          "rising_rapidly": "Stiger snabbt",
+          "rising_slowly": "Stiger sakta",
+          "steady": "Stabilt"
+        }
+      },
+      "dewpoint": {
+        "name": "Daggpunkt"
+      },
+      "inside_humidity": {
+        "name": "Luftfuktighet inne"
       },
       "inside_temperature": {
         "name": "Temperatur inne"
@@ -60,48 +65,11 @@
       "outside_humidity": {
         "name": "Luftfuktighet ute"
       },
-      "inside_humidity": {
-        "name": "Luftfuktighet inne"
+      "outside_temperature": {
+        "name": "Temperatur ute"
       },
       "pressure": {
         "name": "Lufttryck"
-      },
-      "bar_trend": {
-        "name": "Lufttryck trend",
-        "state": {
-          "rising_rapidly": "Stiger snabbt",
-          "rising_slowly": "Stiger sakta",
-          "steady": "Stabilt",
-          "falling_slowly": "Sjunker sakta",
-          "falling_rapidly": "Sjunker snabbt"
-        }
-      },
-      "wind": {
-        "name": "Vindstyrka"
-      },
-      "wind_direction": {
-        "name": "Vindriktning",
-        "state": {
-          "n": "N",
-          "nne": "NNO",
-          "ne": "NO",
-          "ene": "ONO",
-          "e": "O",
-          "ese": "OSO",
-          "se": "SO",
-          "sse": "SSO",
-          "s": "S",
-          "ssw": "SSV",
-          "sw": "SV",
-          "wsw": "VSV",
-          "w": "V",
-          "wnw": "VNV",
-          "nw": "NV",
-          "nnw": "NNv"
-        }
-      },
-      "rain_today": {
-        "name": "Regn idag"
       },
       "rain_rate": {
         "name": "Regntakt"
@@ -112,17 +80,49 @@
       "rain_this_year": {
         "name": "Regn i år"
       },
-      "dewpoint": {
-        "name": "Daggpunkt"
-      },
-      "trans_battery_volt": {
-        "name": "Sändarbatteri"
+      "rain_today": {
+        "name": "Regn idag"
       },
       "solar_panel_volt": {
         "name": "Solpanel"
       },
       "supercap_volt": {
         "name": "Superkondensator"
+      },
+      "trans_battery_volt": {
+        "name": "Sändarbatteri"
+      },
+      "wind": {
+        "name": "Vindstyrka"
+      },
+      "wind_direction": {
+        "name": "Vindriktning",
+        "state": {
+          "e": "O",
+          "ene": "ONO",
+          "ese": "OSO",
+          "n": "N",
+          "ne": "NO",
+          "nne": "NNO",
+          "nnw": "NNV",
+          "nw": "NV",
+          "s": "S",
+          "se": "SO",
+          "sse": "SSO",
+          "ssw": "SSV",
+          "sw": "SV",
+          "w": "V",
+          "wnw": "VNV",
+          "wsw": "VSV"
+        }
+      }
+    }
+  },
+  "selector": {
+    "set_api_ver": {
+      "options": {
+        "api_v1": "API V1",
+        "api_v2": "API V2"
       }
     }
   }
