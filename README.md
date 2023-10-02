@@ -35,6 +35,17 @@ The repo contains a development container that will simplify development and tes
 
 Contributions are most welcome. Optimizations, new features, translations... Please submit a PR or just leave an issue in the repo.
 
+## Translation
+To handle submission of translations we are using [Lokalise](https://lokalise.com/login/). They provide us with an amazing platform that is easy to use and maintain.
+
+To help out with the translation of Miele integration  you need an account on Lokalise, the easiest way to get one is to [click here](https://lokalise.com/login/)  then select "Log in with GitHub".
+
+When you have created the account, the [click here](https://app.lokalise.com/public/7686649965196d3196cb85.23152808/) to join the project. If you want to add a new language, please open an issue.
+
+The translations are pulled when a new release of the integration is prepared. So you must wait until there is a new release until your look for your updates.
+
+If you want to add new elements that needs translation you should enter them in /translations/en.json and submit a PR. The new keys will appear in Lokalise when the PR is merged.
+
 ## Disclaimer
 
 The package and its author are not affiliated with Davis Instruments or Weatherlink. Use at your own risk.
@@ -42,3 +53,8 @@ The package and its author are not affiliated with Davis Instruments or Weatherl
 ## License
 
 The package is released under the MIT license.
+
+## Support and cooperation
+This project is supported by
+
+[<img src="https://raw.githubusercontent.com/astrandb/documents/fef0776bbb7924e0253b9755d7928631fb19d5c7/img/Lokalise_logo_colour_black_text.svg" width=120>](https://lokalise.com)
