@@ -321,6 +321,9 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             return self.coordinator.data.get(self.entity_description.tag)
 
         if self.entity_description.tag in [DataKey.WIND_DIR]:
+            if self.coordinator.data[self.entity_description.tag] is None:
+                return None
+
             directions = [
                 "n",
                 "nne",
