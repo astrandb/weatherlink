@@ -1,4 +1,4 @@
-[![weatherlink](https://img.shields.io/github/v/release/astrandb/weatherlink)](https://github.com/astrandb/weatherlink/releases/latest) [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration) ![Validate with hassfest](https://github.com/astrandb/weatherlink/workflows/Validate%20with%20hassfest/badge.svg) ![Maintenance](https://img.shields.io/maintenance/yes/2023.svg) [![weatherlink_downloads](https://img.shields.io/github/downloads/astrandb/weatherlink/total)](https://github.com/astrandb/weatherlink) [![Weatherlink_downloads](https://img.shields.io/github/downloads/astrandb/weatherlink/latest/total)](https://github.com/astrandb/weatherlink)
+[![weatherlink](https://img.shields.io/github/v/release/astrandb/weatherlink)](https://github.com/astrandb/weatherlink/releases/latest) [![hacs_badge](https://img.shields.io/badge/HACS-Default-blue.svg)](https://github.com/hacs/integration) ![Validate with hassfest](https://github.com/astrandb/weatherlink/workflows/Validate%20with%20hassfest/badge.svg) ![Maintenance](https://img.shields.io/maintenance/yes/2023.svg) [![weatherlink_downloads](https://img.shields.io/github/downloads/astrandb/weatherlink/total)](https://github.com/astrandb/weatherlink) [![Weatherlink_downloads](https://img.shields.io/github/downloads/astrandb/weatherlink/latest/total)](https://github.com/astrandb/weatherlink)
 
 # Weatherlink Integration for Home Assistant
 
@@ -19,7 +19,6 @@ Make sure you have the credentials available for your account with [Weatherlink 
 ### Preferred download and setup method
 
 - Use HACS
-- Until this integration is included in the HACS default repository you must add this repo as a custom repository.
 - Search for the integration Weatherlink and download the integration.
 - Restart Home Assistant
 - Go to Settings->Devices & Services->Integrations and press Add Integration. Search for Weatherlink and select it. Follow the prompts.
