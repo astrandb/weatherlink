@@ -37,9 +37,9 @@ Contributions are most welcome. Optimizations, new features, translations... Ple
 ## Translation
 To handle submission of translations we are using [Lokalise](https://lokalise.com/login/). They provide us with an amazing platform that is easy to use and maintain.
 
-To help out with the translation of Miele integration  you need an account on Lokalise, the easiest way to get one is to [click here](https://lokalise.com/login/)  then select "Log in with GitHub".
+To help out with the translation of Weatherlink integration you need to join the project on Localise, the easiest way is to [click here](https://app.lokalise.com/public/7686649965196d3196cb85.23152808/)  then select "Log in with GitHub".
 
-When you have created the account, the [click here](https://app.lokalise.com/public/7686649965196d3196cb85.23152808/) to join the project. If you want to add a new language, please open an issue.
+If you want to add a new language, please open an issue here in this repo. When you get a response that the new language is added you can start to translate in Lokalise.
 
 The translations are pulled when a new release of the integration is prepared. So you must wait until there is a new release until your look for your updates.
 
