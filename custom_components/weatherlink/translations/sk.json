@@ -1,0 +1,129 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Zariadenie je už nakonfigurované"
+    },
+    "error": {
+      "cannot_connect": "Nepodarilo sa pripojiť",
+      "invalid_auth": "Neplatné overenie",
+      "unknown": "Neočakávaná chyba"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "api_version": "API verzia"
+        },
+        "data_description": {
+          "api_version": "V1 je možné použiť pre staršie zariadenia, V2 je možné použiť pre všetky zariadenia."
+        },
+        "description": "Vyberte verziu API"
+      },
+      "user_1": {
+        "data": {
+          "apitoken": "API token v1",
+          "password": "Heslo",
+          "username": "Používateľské meno alebo DID"
+        },
+        "data_description": {
+          "username": "Tu použite DID, ak k nemu máte prístup – teda ak ide o vašu vlastnú stanicu"
+        },
+        "description": "Zadajte prihlasovacie údaje na prístup k svojmu účtu Weatherlink"
+      },
+      "user_2": {
+        "data": {
+          "api_key_v2": "API kľúč v2",
+          "api_secret": "API tajný"
+        },
+        "description": "Zadajte prihlasovacie údaje na prístup k svojim staniciam Weatherlink"
+      },
+      "user_3": {
+        "description": "Vyberte meteorologickú stanicu"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "bar_trend": {
+        "name": "Trend tlaku",
+        "state": {
+          "falling_rapidly": "Rýchly pád",
+          "falling_slowly": "Pomalý pád",
+          "rising_rapidly": "Rýchly rast",
+          "rising_slowly": "Pomalý rast",
+          "steady": "Stabilný"
+        }
+      },
+      "dewpoint": {
+        "name": "Rosný bod"
+      },
+      "inside_humidity": {
+        "name": "Vnútorná vlhkosť"
+      },
+      "inside_temperature": {
+        "name": "Vnútorná teplota"
+      },
+      "outside_humidity": {
+        "name": "Vonkajšia vlhkosť"
+      },
+      "outside_temperature": {
+        "name": "Vonkajšia teplota"
+      },
+      "pressure": {
+        "name": "Tlak"
+      },
+      "rain_rate": {
+        "name": "Miera dažďa"
+      },
+      "rain_this_month": {
+        "name": "Dážď tento mesiac"
+      },
+      "rain_this_year": {
+        "name": "Dážď tento rok"
+      },
+      "rain_today": {
+        "name": "Dážď dnes"
+      },
+      "solar_panel_volt": {
+        "name": "Solárny panel"
+      },
+      "supercap_volt": {
+        "name": "Superkondenzátor"
+      },
+      "trans_battery_volt": {
+        "name": "Batéria vysielača"
+      },
+      "wind": {
+        "name": "Vietor"
+      },
+      "wind_direction": {
+        "name": "Smer vetra",
+        "state": {
+          "e": "V",
+          "ene": "VSV",
+          "ese": "VJV",
+          "n": "S",
+          "ne": "SV",
+          "nne": "SSV",
+          "nnw": "SSZ",
+          "nw": "SZ",
+          "s": "J",
+          "se": "JV",
+          "sse": "JJV",
+          "ssw": "JJZ",
+          "sw": "JZ",
+          "w": "Z",
+          "wnw": "ZSZ",
+          "wsw": "ZJZ"
+        }
+      }
+    }
+  },
+  "selector": {
+    "set_api_ver": {
+      "options": {
+        "api_v1": "API V1",
+        "api_v2": "API V2"
+      }
+    }
+  }
+}
