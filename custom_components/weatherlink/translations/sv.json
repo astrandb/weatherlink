@@ -74,6 +74,9 @@
       "rain_rate": {
         "name": "Regntakt"
       },
+      "rain_storm": {
+        "name": "Regnväder"
+      },
       "rain_this_month": {
         "name": "Regn denna månad"
       },
@@ -115,6 +118,9 @@
           "wnw": "VNV",
           "wsw": "VSV"
         }
+      },
+      "wind_gust": {
+        "name": "Vindby"
       }
     }
   },
