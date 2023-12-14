@@ -74,6 +74,9 @@
       "rain_rate": {
         "name": "Rain rate"
       },
+      "rain_storm": {
+        "name": "Rain storm"
+      },
       "rain_this_month": {
         "name": "Rain this month"
       },
@@ -94,6 +97,9 @@
       },
       "wind": {
         "name": "Wind"
+      },
+      "wind_gust": {
+        "name": "Wind gust"
       },
       "wind_direction": {
         "name": "Wind direction",

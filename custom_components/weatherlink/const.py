@@ -30,6 +30,7 @@ class DataKey(StrEnum):
     RAIN_DAY = "rain_day"
     RAIN_MONTH = "rain_month"
     RAIN_RATE = "rain_rate"
+    RAIN_STORM = "rain_storm"
     RAIN_YEAR = "rain_year"
     SOLAR_PANEL_VOLT = "solar_panel_volt"
     SUPERCAP_VOLT = "supercap_volt"
@@ -40,3 +41,4 @@ class DataKey(StrEnum):
     UUID = "station_id_uuid"
     WIND_DIR = "wind_dir"
     WIND_MPH = "wind_mph"
+    WIND_GUST_MPH = "wind_gust_mph"

@@ -106,6 +106,15 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WLSensorDescription(
+        key="WindGust",
+        tag=DataKey.WIND_MPH,
+        device_class=SensorDeviceClass.WIND_SPEED,
+        translation_key="wind_gust",
+        suggested_display_precision=1,
+        native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
         key="WindDir",
         tag=DataKey.WIND_DIR,
         icon="mdi:compass-outline",
@@ -126,6 +135,15 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         translation_key="rain_rate",
         device_class=SensorDeviceClass.PRECIPITATION_INTENSITY,
         native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_HOUR,
+        suggested_display_precision=1,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
+        key="RainStorm",
+        tag=DataKey.RAIN_STORM,
+        translation_key="rain_storm",
+        device_class=SensorDeviceClass.PRECIPITATION,
+        native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         suggested_display_precision=1,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -312,11 +330,13 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             "RainInMonth",
             "RainInYear",
             "RainRate",
+            "RainStorm",
             "RainToday",
             "SolarPanelVolt",
             "SupercapVolt",
             "TransBatteryVolt",
             "Wind",
+            "WindGust",
         ]:
             return self.coordinator.data.get(self.entity_description.tag)
 
