@@ -130,6 +130,15 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WLSensorDescription(
+        key="RainStorm",
+        tag=DataKey.RAIN_STORM,
+        translation_key="rain_storm",
+        device_class=SensorDeviceClass.PRECIPITATION,
+        native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
+        suggested_display_precision=1,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
         key="RainInMonth",
         tag=DataKey.RAIN_MONTH,
         translation_key="rain_this_month",
@@ -312,6 +321,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             "RainInMonth",
             "RainInYear",
             "RainRate",
+            "RainStorm",
             "RainToday",
             "SolarPanelVolt",
             "SupercapVolt",
