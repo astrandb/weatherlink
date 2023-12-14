@@ -107,7 +107,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     ),
     WLSensorDescription(
         key="WindGust",
-        tag=DataKey.WIND_MPH,
+        tag=DataKey.WIND_GUST_MPH,
         device_class=SensorDeviceClass.WIND_SPEED,
         translation_key="wind_gust",
         suggested_display_precision=1,

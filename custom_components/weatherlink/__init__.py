@@ -124,7 +124,9 @@ async def get_coordinator(
             outdata[DataKey.HUM_OUT] = indata.get("relative_humidity")
             outdata[DataKey.BAR_SEA_LEVEL] = indata.get("pressure_in")
             outdata[DataKey.WIND_MPH] = indata.get("wind_mph")
-            outdata[DataKey.WIND_GUST_MPH] = indata.get("wind_gust_mph")
+            outdata[DataKey.WIND_GUST_MPH] = indata["davis_current_observation"].get(
+                "wind_ten_min_gust_mph"
+            )
             outdata[DataKey.WIND_DIR] = indata.get("wind_degrees")
             outdata[DataKey.DEWPOINT] = indata.get("dewpoint_f")
             outdata[DataKey.RAIN_DAY] = indata["davis_current_observation"].get(
