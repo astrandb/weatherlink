@@ -98,6 +98,9 @@
       "wind": {
         "name": "Wind"
       },
+      "wind_gust": {
+        "name": "Wind gust"
+      },
       "wind_direction": {
         "name": "Wind direction",
         "state": {

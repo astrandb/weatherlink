@@ -124,10 +124,14 @@ async def get_coordinator(
             outdata[DataKey.HUM_OUT] = indata.get("relative_humidity")
             outdata[DataKey.BAR_SEA_LEVEL] = indata.get("pressure_in")
             outdata[DataKey.WIND_MPH] = indata.get("wind_mph")
+            outdata[DataKey.WIND_GUST_MPH] = indata.get("wind_gust_mph")
             outdata[DataKey.WIND_DIR] = indata.get("wind_degrees")
             outdata[DataKey.DEWPOINT] = indata.get("dewpoint_f")
             outdata[DataKey.RAIN_DAY] = indata["davis_current_observation"].get(
                 "rain_day_in"
+            )
+            outdata[DataKey.RAIN_STORM] = indata["davis_current_observation"].get(
+                "rain_storm_in"
             )
             outdata[DataKey.RAIN_RATE] = indata["davis_current_observation"].get(
                 "rain_rate_in_per_hr"
@@ -154,6 +158,9 @@ async def get_coordinator(
                     outdata[DataKey.TEMP_OUT] = sensor["data"][0]["temp"]
                     outdata[DataKey.HUM_OUT] = sensor["data"][0]["hum"]
                     outdata[DataKey.WIND_MPH] = sensor["data"][0]["wind_speed_last"]
+                    outdata[DataKey.WIND_GUST_MPH] = sensor["data"][0][
+                        "wind_speed_hi_last_10_min"
+                    ]
                     outdata[DataKey.WIND_DIR] = sensor["data"][0]["wind_dir_last"]
                     outdata[DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
                     outdata[DataKey.RAIN_DAY] = float(
@@ -184,6 +191,9 @@ async def get_coordinator(
                     outdata[DataKey.HUM_OUT] = sensor["data"][0]["hum_out"]
                     outdata[DataKey.HUM_IN] = sensor["data"][0]["hum_in"]
                     outdata[DataKey.WIND_MPH] = sensor["data"][0]["wind_speed"]
+                    outdata[DataKey.WIND_GUST_MPH] = sensor["data"][0][
+                        "wind_gust_10_min"
+                    ]
                     outdata[DataKey.WIND_DIR] = sensor["data"][0]["wind_dir"]
                     outdata[DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
                     outdata[DataKey.RAIN_DAY] = float(sensor["data"][0]["rain_day_in"])
@@ -202,6 +212,9 @@ async def get_coordinator(
                     outdata[DataKey.TEMP_OUT] = sensor["data"][0]["temp"]
                     outdata[DataKey.HUM_OUT] = sensor["data"][0]["hum"]
                     outdata[DataKey.WIND_MPH] = sensor["data"][0]["wind_speed_last"]
+                    outdata[DataKey.WIND_GUST_MPH] = sensor["data"][0][
+                        "wind_speed_hi_last_10_min"
+                    ]
                     outdata[DataKey.WIND_DIR] = sensor["data"][0]["wind_dir_last"]
                     outdata[DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
                     outdata[DataKey.RAIN_DAY] = float(

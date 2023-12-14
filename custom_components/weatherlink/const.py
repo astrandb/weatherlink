@@ -41,3 +41,4 @@ class DataKey(StrEnum):
     UUID = "station_id_uuid"
     WIND_DIR = "wind_dir"
     WIND_MPH = "wind_mph"
+    WIND_GUST_MPH = "wind_gust_mph"

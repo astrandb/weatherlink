@@ -106,6 +106,15 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WLSensorDescription(
+        key="WindGust",
+        tag=DataKey.WIND_MPH,
+        device_class=SensorDeviceClass.WIND_SPEED,
+        translation_key="wind_gust",
+        suggested_display_precision=1,
+        native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
         key="WindDir",
         tag=DataKey.WIND_DIR,
         icon="mdi:compass-outline",
@@ -327,6 +336,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             "SupercapVolt",
             "TransBatteryVolt",
             "Wind",
+            "WindGust",
         ]:
             return self.coordinator.data.get(self.entity_description.tag)
 
