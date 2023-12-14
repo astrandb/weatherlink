@@ -31,6 +31,7 @@ class DataKey(StrEnum):
     RAIN_MONTH = "rain_month"
     RAIN_RATE = "rain_rate"
     RAIN_STORM = "rain_storm"
+    RAIN_STORM_START = "rain_storm_start"
     RAIN_YEAR = "rain_year"
     SOLAR_PANEL_VOLT = "solar_panel_volt"
     SUPERCAP_VOLT = "supercap_volt"

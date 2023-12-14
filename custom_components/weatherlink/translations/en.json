@@ -75,7 +75,12 @@
         "name": "Rain rate"
       },
       "rain_storm": {
-        "name": "Rain storm"
+        "name": "Rain storm",
+        "state_attributes": {
+          "rain_storm_start": {
+            "name": "Rain storm start"
+          }
+        }
       },
       "rain_this_month": {
         "name": "Rain this month"

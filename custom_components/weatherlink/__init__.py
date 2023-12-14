@@ -171,6 +171,10 @@ async def get_coordinator(
                     outdata[DataKey.RAIN_STORM] = float(
                         sensor["data"][0]["rain_storm_in"]
                     )
+                    outdata[DataKey.RAIN_STORM_START] = sensor["data"][0].get(
+                        "rain_storm_start_at"
+                    )
+
                     outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_last_in"]
                     outdata[DataKey.RAIN_MONTH] = sensor["data"][0][
                         "rainfall_monthly_in"
@@ -202,6 +206,9 @@ async def get_coordinator(
                     outdata[DataKey.RAIN_STORM] = float(
                         sensor["data"][0]["rain_storm_in"]
                     )
+                    outdata[DataKey.RAIN_STORM_START] = sensor["data"][0].get(
+                        "rain_storm_start_date"
+                    )
                     outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_in"]
                     outdata[DataKey.RAIN_MONTH] = sensor["data"][0]["rain_month_in"]
                     outdata[DataKey.RAIN_YEAR] = sensor["data"][0]["rain_year_in"]
@@ -225,6 +232,9 @@ async def get_coordinator(
                     x_storm = sensor["data"][0]["rain_storm_current_in"]
                     outdata[DataKey.RAIN_STORM] = float(
                         x_storm if x_storm is not None else 0.0
+                    )
+                    outdata[DataKey.RAIN_STORM_START] = sensor["data"][0].get(
+                        "rain_storm_start_at"
                     )
                     outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_last_in"]
                     outdata[DataKey.RAIN_MONTH] = sensor["data"][0]["rainfall_month_in"]

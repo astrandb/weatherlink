@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 import logging
 from typing import Final
 
@@ -397,3 +398,19 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             return True
         except ValueError:
             return False
+
+    @property
+    def extra_state_attributes(self) -> dict[str, str] | None:
+        """Return the state attributes, if any."""
+        if self.entity_description.key in [
+            "RainStorm",
+        ]:
+            if self.coordinator.data.get(DataKey.RAIN_STORM_START) is None:
+                return None
+            dt_object = datetime.fromtimestamp(
+                self.coordinator.data.get(DataKey.RAIN_STORM_START)
+            )
+            return {
+                "rain_storm_start": dt_object,
+            }
+        return
