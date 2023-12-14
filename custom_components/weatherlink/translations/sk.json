@@ -74,6 +74,9 @@
       "rain_rate": {
         "name": "Miera dažďa"
       },
+      "rain_storm": {
+        "name": "Dažďová búrka"
+      },
       "rain_this_month": {
         "name": "Dážď tento mesiac"
       },
@@ -115,6 +118,9 @@
           "wnw": "ZSZ",
           "wsw": "ZJZ"
         }
+      },
+      "wind_gust": {
+        "name": "Nárazový vietor"
       }
     }
   },
