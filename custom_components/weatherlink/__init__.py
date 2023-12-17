@@ -165,6 +165,11 @@ async def get_coordinator(
                     ]
                     outdata[DataKey.WIND_DIR] = sensor["data"][0]["wind_dir_last"]
                     outdata[DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
+                    outdata[DataKey.HEAT_INDEX] = sensor["data"][0]["heat_index"]
+                    outdata[DataKey.THW_INDEX] = sensor["data"][0]["thw_index"]
+                    outdata[DataKey.THSW_INDEX] = sensor["data"][0]["thsw_index"]
+                    outdata[DataKey.WET_BULB] = sensor["data"][0]["wet_bulb"]
+                    outdata[DataKey.WIND_CHILL] = sensor["data"][0]["wind_chill"]
                     outdata[DataKey.RAIN_DAY] = float(
                         sensor["data"][0]["rainfall_daily_in"]
                     )
@@ -172,7 +177,7 @@ async def get_coordinator(
                         sensor["data"][0]["rain_storm_in"]
                     )
                     outdata[DataKey.RAIN_STORM_START] = sensor["data"][0].get(
-                        "rain_storm_start_at"
+                        "rain_storm_start_time"
                     )
 
                     outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_last_in"]
@@ -203,6 +208,8 @@ async def get_coordinator(
                     ]
                     outdata[DataKey.WIND_DIR] = sensor["data"][0]["wind_dir"]
                     outdata[DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
+                    outdata[DataKey.HEAT_INDEX] = sensor["data"][0]["heat_index"]
+                    outdata[DataKey.WIND_CHILL] = sensor["data"][0]["wind_chill"]
                     outdata[DataKey.RAIN_DAY] = float(sensor["data"][0]["rain_day_in"])
                     outdata[DataKey.RAIN_STORM] = float(
                         sensor["data"][0]["rain_storm_in"]
@@ -228,6 +235,11 @@ async def get_coordinator(
                     ]
                     outdata[DataKey.WIND_DIR] = sensor["data"][0]["wind_dir_last"]
                     outdata[DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
+                    outdata[DataKey.HEAT_INDEX] = sensor["data"][0]["heat_index"]
+                    outdata[DataKey.THW_INDEX] = sensor["data"][0]["thw_index"]
+                    outdata[DataKey.THSW_INDEX] = sensor["data"][0]["thsw_index"]
+                    outdata[DataKey.WET_BULB] = sensor["data"][0]["wet_bulb"]
+                    outdata[DataKey.WIND_CHILL] = sensor["data"][0]["wind_chill"]
                     outdata[DataKey.RAIN_DAY] = float(
                         sensor["data"][0]["rainfall_day_in"]
                     )
@@ -236,7 +248,7 @@ async def get_coordinator(
                         x_storm if x_storm is not None else 0.0
                     )
                     outdata[DataKey.RAIN_STORM_START] = sensor["data"][0].get(
-                        "rain_storm_start_at"
+                        "rain_storm_current_start_at"
                     )
                     outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_last_in"]
                     outdata[DataKey.RAIN_MONTH] = sensor["data"][0]["rainfall_month_in"]

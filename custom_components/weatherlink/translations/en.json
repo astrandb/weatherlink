@@ -126,6 +126,21 @@
       },
       "wind_gust": {
         "name": "Wind gust"
+      },
+      "heat_index": {
+        "name": "Heat index"
+      },
+      "thw_index": {
+        "name": "THW index"
+      },
+      "thsw_index": {
+        "name": "THSW index"
+      },
+      "wind_chill": {
+        "name": "Wind chill"
+      },
+      "wet_bulb": {
+        "name": "Wet bulb"
       }
     }
   },
