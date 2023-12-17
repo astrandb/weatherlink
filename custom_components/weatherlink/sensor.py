@@ -14,6 +14,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
+    DEGREE,
     PERCENTAGE,
     UnitOfElectricPotential,
     UnitOfIrradiance,
@@ -121,6 +122,15 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         tag=DataKey.WIND_DIR,
         icon="mdi:compass-outline",
         translation_key="wind_direction",
+    ),
+    WLSensorDescription(
+        key="WindDirDeg",
+        tag=DataKey.WIND_DIR,
+        icon="mdi:compass-outline",
+        native_unit_of_measurement=DEGREE,
+        translation_key="wind_direction_deg",
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
     ),
     WLSensorDescription(
         key="RainToday",
@@ -403,6 +413,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             "WetBulb",
             "Wind",
             "WindChill",
+            "WindDirDeg",
             "WindGust",
         ]:
             return self.coordinator.data.get(self.entity_description.tag)
