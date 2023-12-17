@@ -183,6 +183,7 @@ async def get_coordinator(
                     outdata[DataKey.TRANS_BATTERY_FLAG] = sensor["data"][0][
                         "trans_battery_flag"
                     ]
+                    outdata[DataKey.SOLAR_RADIATION] = sensor["data"][0]["solar_rad"]
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
                     and sensor["data_structure_type"] == 2
@@ -212,6 +213,7 @@ async def get_coordinator(
                     outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_in"]
                     outdata[DataKey.RAIN_MONTH] = sensor["data"][0]["rain_month_in"]
                     outdata[DataKey.RAIN_YEAR] = sensor["data"][0]["rain_year_in"]
+                    outdata[DataKey.SOLAR_RADIATION] = sensor["data"][0]["solar_rad"]
 
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
@@ -249,6 +251,7 @@ async def get_coordinator(
                     outdata[DataKey.SOLAR_PANEL_VOLT] = sensor["data"][0][
                         "solar_panel_volt"
                     ]
+                    outdata[DataKey.SOLAR_RADIATION] = sensor["data"][0]["solar_rad"]
 
                 if sensor["sensor_type"] == 365 and sensor["data_structure_type"] == 21:
                     outdata[DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]

@@ -16,6 +16,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     PERCENTAGE,
     UnitOfElectricPotential,
+    UnitOfIrradiance,
     UnitOfPrecipitationDepth,
     UnitOfPressure,
     UnitOfSpeed,
@@ -173,6 +174,15 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         device_class=SensorDeviceClass.TEMPERATURE,
         suggested_display_precision=1,
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
+        key="SolarRadiation",
+        tag=DataKey.SOLAR_RADIATION,
+        # translation_key="solar_radiation",
+        device_class=SensorDeviceClass.IRRADIANCE,
+        suggested_display_precision=0,
+        native_unit_of_measurement=UnitOfIrradiance.WATTS_PER_SQUARE_METER,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WLSensorDescription(
@@ -334,6 +344,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             "RainStorm",
             "RainToday",
             "SolarPanelVolt",
+            "SolarRadiation",
             "SupercapVolt",
             "TransBatteryVolt",
             "Wind",
