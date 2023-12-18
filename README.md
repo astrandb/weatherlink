@@ -15,6 +15,8 @@ If a sensor is showing unknown value it means that the value is unavailable, eit
 
 There are lots of combinations of station types and sensor types. Please report an issue here if you are missing something essential.
 
+This version will only display data from primary devices, such as Vantage Vue and Vantage Pro. It will not detect the presence of extra sensor suites or similar add-ons. This will be addressed in an upcoming release. No delivery time promised!
+
 Current version has limited error detection and recovery and will therefore log detailed error descriptions if unforeseen things happen.
 
 
