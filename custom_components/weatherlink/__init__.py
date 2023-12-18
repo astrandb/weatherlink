@@ -151,6 +151,7 @@ async def get_coordinator(
         if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             outdata[DataKey.UUID] = indata["station_id_uuid"]
             for sensor in indata["sensors"]:
+                # outdata[DataKey.SENSOR_TYPE] = sensor["sensor_type"]
                 # Vue
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
