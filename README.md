@@ -7,7 +7,7 @@ It will query the API every 5 minutes. The data update frequency in the API is d
 
 The integration does not have the ambition to display everything that a Davis weatherstation can report. It is a reasonable compromise between details and clutter. It also tries to "normalize" the data so that e.g. outdoor temperature is labelled "Temperature out" irrespective of model of the station and the gateway device.
 
-Some sensors that are more rárely requested, are disabled and hidden by default. They can be enabled by the user in the device overview page.
+Some sensors, that are more rárely requested, are disabled and hidden by default. They can be enabled by the user in the device overview page.
 
 If a sensor is showing unknown value it means that the value is unavailable, either temporarily or because it is not available with the current hardware.
 
