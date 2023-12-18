@@ -292,6 +292,18 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     ),
 )
 
+SENSOR_TYPES_2: Final[tuple[WLSensorDescription, ...]] = (
+    WLSensorDescription(
+        key="OutsideTemp",
+        tag=DataKey.TEMP_OUT,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        suggested_display_precision=1,
+        translation_key="outside_temperature",
+        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+)
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -302,11 +314,20 @@ async def async_setup_entry(
     coordinator = await get_coordinator(hass, config_entry)
 
     async_add_entities(
-        WLSensor(coordinator, hass, config_entry, description)
+        WLSensor(coordinator, hass, config_entry, description, 1)  # todo
         for description in SENSOR_TYPES
         if (config_entry.data[CONF_API_VERSION] not in description.exclude_api_ver)
         and (
-            coordinator.data.get(DataKey.DATA_STRUCTURE)
+            coordinator.data[1].get(DataKey.DATA_STRUCTURE)  # todo
+            not in description.exclude_data_structure
+        )
+    )
+    async_add_entities(
+        WLSensor(coordinator, hass, config_entry, description, 2)
+        for description in SENSOR_TYPES_2
+        if (config_entry.data[CONF_API_VERSION] not in description.exclude_api_ver)
+        and (
+            coordinator.data[2].get(DataKey.DATA_STRUCTURE)  # todo
             not in description.exclude_data_structure
         )
     )
@@ -324,6 +345,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         hass: HomeAssistant,
         entry: ConfigEntry,
         description: WLSensorDescription,
+        tx_id: int,
     ):
         """Initialize the sensor."""
         super().__init__(coordinator)
@@ -331,23 +353,33 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         self.entry: ConfigEntry = entry
         self.entity_description = description
         self._attr_has_entity_name = True
+        self.tx_id = tx_id
         self._attr_unique_id = (
-            f"{self.get_unique_id_base()}-{self.entity_description.key}"
+            f"{self.get_unique_id_base()}-{self.tx_id}-{self.entity_description.key}"
+        )
+        via = (
+            None
+            if self.tx_id == 1
+            else (
+                DOMAIN,
+                f"{self.get_unique_id_base()}-{1}",
+            )
         )
         self._attr_device_info = DeviceInfo(
-            identifiers={(DOMAIN, self.get_unique_id_base())},
+            identifiers={(DOMAIN, f"{self.get_unique_id_base()}-{self.tx_id}")},
             name=self.generate_name(),
             manufacturer="Davis Instruments",
             model=self.generate_model(),
             sw_version=self.get_firmware(),
             configuration_url="https://www.weatherlink.com/",
+            via_device=via,
         )
 
     def get_unique_id_base(self):
         """Generate base for unique_id."""
         unique_base = None
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
-            unique_base = self.coordinator.data["DID"]
+            unique_base = self.coordinator.data[self.tx_id]["DID"]
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             unique_base = self.coordinator.data[DataKey.UUID]
         return unique_base
@@ -363,7 +395,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
     def generate_name(self):
         """Generate device name."""
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
-            return self.coordinator.data["station_name"]
+            return self.coordinator.data[self.tx_id]["station_name"]
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                 "stations"
@@ -416,10 +448,10 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             "WindDirDeg",
             "WindGust",
         ]:
-            return self.coordinator.data.get(self.entity_description.tag)
+            return self.coordinator.data[self.tx_id].get(self.entity_description.tag)
 
         if self.entity_description.tag in [DataKey.WIND_DIR]:
-            if self.coordinator.data[self.entity_description.tag] is None:
+            if self.coordinator.data[self.tx_id][self.entity_description.tag] is None:
                 return None
 
             directions = [
@@ -443,7 +475,14 @@ class WLSensor(CoordinatorEntity, SensorEntity):
 
             index = int(
                 (
-                    (float(self.coordinator.data[self.entity_description.tag]) + 11.25)
+                    (
+                        float(
+                            self.coordinator.data[self.tx_id][
+                                self.entity_description.tag
+                            ]
+                        )
+                        + 11.25
+                    )
                     % 360
                 )
                 // 22.5
@@ -452,7 +491,9 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             return directions[index]
 
         if self.entity_description.key == "BarTrend":
-            bar_trend = self.coordinator.data.get(self.entity_description.tag)
+            bar_trend = self.coordinator.data[self.tx_id].get(
+                self.entity_description.tag
+            )
             if bar_trend is None:
                 return None
             if self.is_float(bar_trend):
@@ -482,10 +523,10 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         if self.entity_description.key in [
             "RainStorm",
         ]:
-            if self.coordinator.data.get(DataKey.RAIN_STORM_START) is None:
+            if self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_START) is None:
                 return None
             dt_object = datetime.fromtimestamp(
-                self.coordinator.data.get(DataKey.RAIN_STORM_START)
+                self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_START)
             )
             return {
                 "rain_storm_start": dt_object,
