@@ -30,7 +30,14 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import get_coordinator
-from .const import CONF_API_VERSION, DOMAIN, ApiVersion, DataKey
+from .const import (
+    CONF_API_VERSION,
+    CONFIG_URL,
+    DOMAIN,
+    MANUFACTURER,
+    ApiVersion,
+    DataKey,
+)
 from .pyweatherlink import WLData
 
 _LOGGER = logging.getLogger(__name__)
@@ -355,10 +362,11 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, self.get_unique_id_base())},
             name=self.generate_name(),
-            manufacturer="Davis Instruments",
+            manufacturer=MANUFACTURER,
             model=self.generate_model(),
             sw_version=self.get_firmware(),
-            configuration_url="https://www.weatherlink.com/",
+            serial_number=self.get_serial(),
+            configuration_url=CONFIG_URL,
         )
 
     def get_unique_id_base(self):
@@ -376,6 +384,14 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                 "stations"
             ][0].get("firmware_version")
+        return None
+
+    def get_serial(self) -> str | None:
+        """Get serial number."""
+        if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
+            return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
+                "stations"
+            ][0].get("gateway_id_hex")
         return None
 
     def generate_name(self):
