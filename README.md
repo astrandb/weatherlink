@@ -5,6 +5,12 @@
 This integration will represent your data from Davis Weaterlink in Home Assistant.
 It will query the API every 5 minutes. The data update frequency in the API is depending on your subscription level. I e if you have the free "Basic" level, the observations data will only be updated every 15 minutes.
 
+The integration does not have the ambition to display everything that a Davis weatherstation can report. It is a reasonable compromise between details and clutter. It also tries to "normalize" the data so that e.g. outdoor temperature is labelled "Temperature out" irrespective of model of the station and the gateway device.
+
+Some sensors that are more rárely requested, are disabled and hidden by default. They can be enabled by the user in the device overview page.
+
+If a sensor is showing unknown value it means that the value is unavailable, either temporarily or because it is not available with the current hardware.
+
 ## Limitations
 
 There are lots of combinations of station types and sensor types. Please report an issue here if you are missing something essential.
@@ -14,7 +20,7 @@ Current version has limited error detection and recovery and will therefore log 
 
 ## Installation
 
-Make sure you have the credentials available for your account with [Weatherlink cloud service](https://www.weatherlink.com). You will need API Token and API Secret when using API V2. For the legacy API V1 you will need the DID for your Davis weather station, your password and the API v1 access token.
+Make sure you have the credentials available for your account with [Weatherlink cloud service](https://www.weatherlink.com). You will need API Token and API Secret when using API V2. For the legacy API V1 you will need the DID for your Davis weather station, your password and the API V1 access token.
 
 ### Preferred download and setup method
 
