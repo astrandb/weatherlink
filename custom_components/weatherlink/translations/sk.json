@@ -75,7 +75,12 @@
         "name": "Miera dažďa"
       },
       "rain_storm": {
-        "name": "Dažďová búrka"
+        "name": "Dažďová búrka",
+        "state_attributes": {
+          "rain_storm_start": {
+            "name": "Začiatok dažďovej búrky"
+          }
+        }
       },
       "rain_this_month": {
         "name": "Dážď tento mesiac"

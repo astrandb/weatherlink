@@ -56,6 +56,9 @@
       "dewpoint": {
         "name": "Dewpoint"
       },
+      "heat_index": {
+        "name": "Heat index"
+      },
       "inside_humidity": {
         "name": "Inside humidity"
       },
@@ -85,11 +88,11 @@
       "rain_storm_last": {
         "name": "Last rain storm",
         "state_attributes": {
-          "rain_storm_start": {
-            "name": "Rain storm start"
-          },
           "rain_storm_end": {
             "name": "Rain storm end"
+          },
+          "rain_storm_start": {
+            "name": "Rain storm start"
           }
         }
       },
@@ -108,11 +111,23 @@
       "supercap_volt": {
         "name": "Supercapacitor"
       },
+      "thsw_index": {
+        "name": "THSW index"
+      },
+      "thw_index": {
+        "name": "THW index"
+      },
       "trans_battery_volt": {
         "name": "Transmitter battery"
       },
+      "wet_bulb": {
+        "name": "Wet bulb"
+      },
       "wind": {
         "name": "Wind"
+      },
+      "wind_chill": {
+        "name": "Wind chill"
       },
       "wind_direction": {
         "name": "Wind direction",
@@ -140,21 +155,6 @@
       },
       "wind_gust": {
         "name": "Wind gust"
-      },
-      "heat_index": {
-        "name": "Heat index"
-      },
-      "thw_index": {
-        "name": "THW index"
-      },
-      "thsw_index": {
-        "name": "THSW index"
-      },
-      "wind_chill": {
-        "name": "Wind chill"
-      },
-      "wet_bulb": {
-        "name": "Wet bulb"
       }
     }
   },

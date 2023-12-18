@@ -56,6 +56,9 @@
       "dewpoint": {
         "name": "Daggpunkt"
       },
+      "heat_index": {
+        "name": "Upplevd temp (TH)"
+      },
       "inside_humidity": {
         "name": "Luftfuktighet inne"
       },
@@ -75,7 +78,23 @@
         "name": "Regntakt"
       },
       "rain_storm": {
-        "name": "Regnväder"
+        "name": "Regnväder",
+        "state_attributes": {
+          "rain_storm_start": {
+            "name": "Regnväder började"
+          }
+        }
+      },
+      "rain_storm_last": {
+        "name": "Föregående regnväder",
+        "state_attributes": {
+          "rain_storm_end": {
+            "name": "Regnväder slutade"
+          },
+          "rain_storm_start": {
+            "name": "Regnväder började"
+          }
+        }
       },
       "rain_this_month": {
         "name": "Regn denna månad"
@@ -92,11 +111,23 @@
       "supercap_volt": {
         "name": "Superkondensator"
       },
+      "thsw_index": {
+        "name": "Upplevd temp (THSW)"
+      },
+      "thw_index": {
+        "name": "Upplevd temp (THW)"
+      },
       "trans_battery_volt": {
         "name": "Sändarbatteri"
       },
+      "wet_bulb": {
+        "name": "Våttemperatur"
+      },
       "wind": {
         "name": "Vindstyrka"
+      },
+      "wind_chill": {
+        "name": "Temp vindeffekt"
       },
       "wind_direction": {
         "name": "Vindriktning",
@@ -118,6 +149,9 @@
           "wnw": "VNV",
           "wsw": "VSV"
         }
+      },
+      "wind_direction_deg": {
+        "name": "Vindriktning gr"
       },
       "wind_gust": {
         "name": "Vindby"
