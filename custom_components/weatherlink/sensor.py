@@ -14,8 +14,10 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
+    DEGREE,
     PERCENTAGE,
     UnitOfElectricPotential,
+    UnitOfIrradiance,
     UnitOfPrecipitationDepth,
     UnitOfPressure,
     UnitOfSpeed,
@@ -122,6 +124,15 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         translation_key="wind_direction",
     ),
     WLSensorDescription(
+        key="WindDirDeg",
+        tag=DataKey.WIND_DIR,
+        icon="mdi:compass-outline",
+        native_unit_of_measurement=DEGREE,
+        translation_key="wind_direction_deg",
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    WLSensorDescription(
         key="RainToday",
         tag=DataKey.RAIN_DAY,
         translation_key="rain_today",
@@ -149,6 +160,17 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WLSensorDescription(
+        key="RainStormLast",
+        tag=DataKey.RAIN_STORM_LAST,
+        translation_key="rain_storm_last",
+        device_class=SensorDeviceClass.PRECIPITATION,
+        native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
+        suggested_display_precision=1,
+        state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(2,),
+    ),
+    WLSensorDescription(
         key="RainInMonth",
         tag=DataKey.RAIN_MONTH,
         translation_key="rain_this_month",
@@ -174,6 +196,72 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         suggested_display_precision=1,
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
+    ),
+    WLSensorDescription(
+        key="WindChill",
+        tag=DataKey.WIND_CHILL,
+        translation_key="wind_chill",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        suggested_display_precision=1,
+        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    WLSensorDescription(
+        key="HeatIndex",
+        tag=DataKey.HEAT_INDEX,
+        translation_key="heat_index",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        suggested_display_precision=1,
+        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    WLSensorDescription(
+        key="WetBulb",
+        tag=DataKey.WET_BULB,
+        translation_key="wet_bulb",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        suggested_display_precision=1,
+        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(2,),
+    ),
+    WLSensorDescription(
+        key="ThwIndex",
+        tag=DataKey.THW_INDEX,
+        translation_key="thw_index",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        suggested_display_precision=1,
+        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(2,),
+    ),
+    WLSensorDescription(
+        key="ThswIndex",
+        tag=DataKey.THSW_INDEX,
+        translation_key="thsw_index",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        suggested_display_precision=1,
+        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(2,),
+    ),
+    WLSensorDescription(
+        key="SolarRadiation",
+        tag=DataKey.SOLAR_RADIATION,
+        # translation_key="solar_radiation",
+        device_class=SensorDeviceClass.IRRADIANCE,
+        suggested_display_precision=0,
+        native_unit_of_measurement=UnitOfIrradiance.WATTS_PER_SQUARE_METER,
+        state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
     ),
     WLSensorDescription(
         key="TransBatteryVolt",
@@ -323,6 +411,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         # _LOGGER.debug("Key: %s", self.entity_description.key)
         if self.entity_description.key in [
             "Dewpoint",
+            "HeatIndex",
             "InsideHumidity",
             "InsideTemp",
             "OutsideHumidity",
@@ -332,11 +421,18 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             "RainInYear",
             "RainRate",
             "RainStorm",
+            "RainStormLast",
             "RainToday",
             "SolarPanelVolt",
+            "SolarRadiation",
             "SupercapVolt",
+            "ThwIndex",
+            "ThswIndex",
             "TransBatteryVolt",
+            "WetBulb",
             "Wind",
+            "WindChill",
+            "WindDirDeg",
             "WindGust",
         ]:
             return self.coordinator.data.get(self.entity_description.tag)
@@ -412,5 +508,22 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             )
             return {
                 "rain_storm_start": dt_object,
+            }
+        if self.entity_description.key in [
+            "RainStormLast",
+        ]:
+            if self.coordinator.data.get(DataKey.RAIN_STORM_LAST_START) is None:
+                return None
+            dt_object = datetime.fromtimestamp(
+                self.coordinator.data.get(DataKey.RAIN_STORM_LAST_START)
+            )
+            if self.coordinator.data.get(DataKey.RAIN_STORM_LAST_END) is None:
+                return None
+            dt_object_end = datetime.fromtimestamp(
+                self.coordinator.data.get(DataKey.RAIN_STORM_LAST_END)
+            )
+            return {
+                "rain_storm_start": dt_object,
+                "rain_storm_end": dt_object_end,
             }
         return

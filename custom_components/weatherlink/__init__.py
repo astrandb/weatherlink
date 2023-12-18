@@ -108,13 +108,15 @@ async def get_coordinator(
 
     def _preprocess(indata: str):
         outdata = {}
-        _LOGGER.debug("Received data: %s", indata)
+        # _LOGGER.debug("Received data: %s", indata)
         if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             outdata["DID"] = indata["davis_current_observation"].get("DID")
             outdata["station_name"] = indata["davis_current_observation"].get(
                 "station_name"
             )
             outdata[DataKey.TEMP_OUT] = indata.get("temp_f")
+            outdata[DataKey.HEAT_INDEX] = indata.get("heat_index_f")
+            outdata[DataKey.WIND_CHILL] = indata.get("wind_chill_f")
             outdata[DataKey.TEMP_IN] = indata["davis_current_observation"].get(
                 "temp_in_f"
             )
@@ -151,6 +153,7 @@ async def get_coordinator(
         if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             outdata[DataKey.UUID] = indata["station_id_uuid"]
             for sensor in indata["sensors"]:
+                # outdata[DataKey.SENSOR_TYPE] = sensor["sensor_type"]
                 # Vue
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
@@ -165,6 +168,11 @@ async def get_coordinator(
                     ]
                     outdata[DataKey.WIND_DIR] = sensor["data"][0]["wind_dir_last"]
                     outdata[DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
+                    outdata[DataKey.HEAT_INDEX] = sensor["data"][0]["heat_index"]
+                    outdata[DataKey.THW_INDEX] = sensor["data"][0]["thw_index"]
+                    outdata[DataKey.THSW_INDEX] = sensor["data"][0]["thsw_index"]
+                    outdata[DataKey.WET_BULB] = sensor["data"][0]["wet_bulb"]
+                    outdata[DataKey.WIND_CHILL] = sensor["data"][0]["wind_chill"]
                     outdata[DataKey.RAIN_DAY] = float(
                         sensor["data"][0]["rainfall_daily_in"]
                     )
@@ -173,6 +181,15 @@ async def get_coordinator(
                     )
                     outdata[DataKey.RAIN_STORM_START] = sensor["data"][0].get(
                         "rain_storm_start_at"
+                    )
+                    outdata[DataKey.RAIN_STORM_LAST] = float(
+                        sensor["data"][0]["rain_storm_last_in"]
+                    )
+                    outdata[DataKey.RAIN_STORM_LAST_START] = sensor["data"][0].get(
+                        "rain_storm_last_start_at"
+                    )
+                    outdata[DataKey.RAIN_STORM_LAST_END] = sensor["data"][0].get(
+                        "rain_storm_last_end_at"
                     )
 
                     outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_last_in"]
@@ -183,6 +200,7 @@ async def get_coordinator(
                     outdata[DataKey.TRANS_BATTERY_FLAG] = sensor["data"][0][
                         "trans_battery_flag"
                     ]
+                    outdata[DataKey.SOLAR_RADIATION] = sensor["data"][0]["solar_rad"]
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
                     and sensor["data_structure_type"] == 2
@@ -202,6 +220,8 @@ async def get_coordinator(
                     ]
                     outdata[DataKey.WIND_DIR] = sensor["data"][0]["wind_dir"]
                     outdata[DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
+                    outdata[DataKey.HEAT_INDEX] = sensor["data"][0]["heat_index"]
+                    outdata[DataKey.WIND_CHILL] = sensor["data"][0]["wind_chill"]
                     outdata[DataKey.RAIN_DAY] = float(sensor["data"][0]["rain_day_in"])
                     outdata[DataKey.RAIN_STORM] = float(
                         sensor["data"][0]["rain_storm_in"]
@@ -212,6 +232,7 @@ async def get_coordinator(
                     outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_in"]
                     outdata[DataKey.RAIN_MONTH] = sensor["data"][0]["rain_month_in"]
                     outdata[DataKey.RAIN_YEAR] = sensor["data"][0]["rain_year_in"]
+                    outdata[DataKey.SOLAR_RADIATION] = sensor["data"][0]["solar_rad"]
 
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
@@ -226,6 +247,11 @@ async def get_coordinator(
                     ]
                     outdata[DataKey.WIND_DIR] = sensor["data"][0]["wind_dir_last"]
                     outdata[DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
+                    outdata[DataKey.HEAT_INDEX] = sensor["data"][0]["heat_index"]
+                    outdata[DataKey.THW_INDEX] = sensor["data"][0]["thw_index"]
+                    outdata[DataKey.THSW_INDEX] = sensor["data"][0]["thsw_index"]
+                    outdata[DataKey.WET_BULB] = sensor["data"][0]["wet_bulb"]
+                    outdata[DataKey.WIND_CHILL] = sensor["data"][0]["wind_chill"]
                     outdata[DataKey.RAIN_DAY] = float(
                         sensor["data"][0]["rainfall_day_in"]
                     )
@@ -234,8 +260,19 @@ async def get_coordinator(
                         x_storm if x_storm is not None else 0.0
                     )
                     outdata[DataKey.RAIN_STORM_START] = sensor["data"][0].get(
-                        "rain_storm_start_at"
+                        "rain_storm_current_start_at"
                     )
+                    x_storm = sensor["data"][0]["rain_storm_last_in"]
+                    outdata[DataKey.RAIN_STORM_LAST] = float(
+                        x_storm if x_storm is not None else 0.0
+                    )
+                    outdata[DataKey.RAIN_STORM_LAST_START] = sensor["data"][0].get(
+                        "rain_storm_last_start_at"
+                    )
+                    outdata[DataKey.RAIN_STORM_LAST_END] = sensor["data"][0].get(
+                        "rain_storm_last_end_at"
+                    )
+
                     outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_last_in"]
                     outdata[DataKey.RAIN_MONTH] = sensor["data"][0]["rainfall_month_in"]
                     outdata[DataKey.RAIN_YEAR] = sensor["data"][0]["rainfall_year_in"]
@@ -249,6 +286,7 @@ async def get_coordinator(
                     outdata[DataKey.SOLAR_PANEL_VOLT] = sensor["data"][0][
                         "solar_panel_volt"
                     ]
+                    outdata[DataKey.SOLAR_RADIATION] = sensor["data"][0]["solar_rad"]
 
                 if sensor["sensor_type"] == 365 and sensor["data_structure_type"] == 21:
                     outdata[DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]
