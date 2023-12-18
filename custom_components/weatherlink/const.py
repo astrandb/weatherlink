@@ -4,6 +4,9 @@ from enum import StrEnum
 DOMAIN = "weatherlink"
 VERSION = "0.9.4"
 
+MANUFACTURER = "Davis Instruments"
+CONFIG_URL = "https://www.weatherlink.com/"
+
 CONF_API_VERSION = "api_version"
 CONF_API_KEY_V2 = "api_key_v2"
 CONF_API_SECRET = "api_secret"
