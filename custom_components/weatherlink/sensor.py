@@ -160,6 +160,17 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     WLSensorDescription(
+        key="RainStormLast",
+        tag=DataKey.RAIN_STORM_LAST,
+        translation_key="rain_storm_last",
+        device_class=SensorDeviceClass.PRECIPITATION,
+        native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
+        suggested_display_precision=1,
+        state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(2,),
+    ),
+    WLSensorDescription(
         key="RainInMonth",
         tag=DataKey.RAIN_MONTH,
         translation_key="rain_this_month",
@@ -215,6 +226,8 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
         entity_registry_enabled_default=False,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(2,),
     ),
     WLSensorDescription(
         key="ThwIndex",
@@ -225,6 +238,8 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
         entity_registry_enabled_default=False,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(2,),
     ),
     WLSensorDescription(
         key="ThswIndex",
@@ -235,6 +250,8 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
         entity_registry_enabled_default=False,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(2,),
     ),
     WLSensorDescription(
         key="SolarRadiation",
@@ -244,6 +261,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         suggested_display_precision=0,
         native_unit_of_measurement=UnitOfIrradiance.WATTS_PER_SQUARE_METER,
         state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
     ),
     WLSensorDescription(
         key="TransBatteryVolt",
@@ -403,6 +421,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             "RainInYear",
             "RainRate",
             "RainStorm",
+            "RainStormLast",
             "RainToday",
             "SolarPanelVolt",
             "SolarRadiation",
@@ -489,5 +508,22 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             )
             return {
                 "rain_storm_start": dt_object,
+            }
+        if self.entity_description.key in [
+            "RainStormLast",
+        ]:
+            if self.coordinator.data.get(DataKey.RAIN_STORM_LAST_START) is None:
+                return None
+            dt_object = datetime.fromtimestamp(
+                self.coordinator.data.get(DataKey.RAIN_STORM_LAST_START)
+            )
+            if self.coordinator.data.get(DataKey.RAIN_STORM_LAST_END) is None:
+                return None
+            dt_object_end = datetime.fromtimestamp(
+                self.coordinator.data.get(DataKey.RAIN_STORM_LAST_END)
+            )
+            return {
+                "rain_storm_start": dt_object,
+                "rain_storm_end": dt_object_end,
             }
         return

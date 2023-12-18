@@ -82,6 +82,17 @@
           }
         }
       },
+      "rain_storm_last": {
+        "name": "Last rain storm",
+        "state_attributes": {
+          "rain_storm_start": {
+            "name": "Rain storm start"
+          },
+          "rain_storm_end": {
+            "name": "Rain storm end"
+          }
+        }
+      },
       "rain_this_month": {
         "name": "Rain this month"
       },

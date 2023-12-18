@@ -108,13 +108,15 @@ async def get_coordinator(
 
     def _preprocess(indata: str):
         outdata = {}
-        _LOGGER.debug("Received data: %s", indata)
+        # _LOGGER.debug("Received data: %s", indata)
         if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             outdata["DID"] = indata["davis_current_observation"].get("DID")
             outdata["station_name"] = indata["davis_current_observation"].get(
                 "station_name"
             )
             outdata[DataKey.TEMP_OUT] = indata.get("temp_f")
+            outdata[DataKey.HEAT_INDEX] = indata.get("heat_index_f")
+            outdata[DataKey.WIND_CHILL] = indata.get("wind_chill_f")
             outdata[DataKey.TEMP_IN] = indata["davis_current_observation"].get(
                 "temp_in_f"
             )
@@ -178,7 +180,16 @@ async def get_coordinator(
                         sensor["data"][0]["rain_storm_in"]
                     )
                     outdata[DataKey.RAIN_STORM_START] = sensor["data"][0].get(
-                        "rain_storm_start_time"
+                        "rain_storm_start_at"
+                    )
+                    outdata[DataKey.RAIN_STORM_LAST] = float(
+                        sensor["data"][0]["rain_storm_last_in"]
+                    )
+                    outdata[DataKey.RAIN_STORM_LAST_START] = sensor["data"][0].get(
+                        "rain_storm_last_start_at"
+                    )
+                    outdata[DataKey.RAIN_STORM_LAST_END] = sensor["data"][0].get(
+                        "rain_storm_last_end_at"
                     )
 
                     outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_last_in"]
@@ -251,6 +262,17 @@ async def get_coordinator(
                     outdata[DataKey.RAIN_STORM_START] = sensor["data"][0].get(
                         "rain_storm_current_start_at"
                     )
+                    x_storm = sensor["data"][0]["rain_storm_last_in"]
+                    outdata[DataKey.RAIN_STORM_LAST] = float(
+                        x_storm if x_storm is not None else 0.0
+                    )
+                    outdata[DataKey.RAIN_STORM_LAST_START] = sensor["data"][0].get(
+                        "rain_storm_last_start_at"
+                    )
+                    outdata[DataKey.RAIN_STORM_LAST_END] = sensor["data"][0].get(
+                        "rain_storm_last_end_at"
+                    )
+
                     outdata[DataKey.RAIN_RATE] = sensor["data"][0]["rain_rate_last_in"]
                     outdata[DataKey.RAIN_MONTH] = sensor["data"][0]["rainfall_month_in"]
                     outdata[DataKey.RAIN_YEAR] = sensor["data"][0]["rainfall_year_in"]
