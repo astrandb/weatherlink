@@ -173,7 +173,6 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         device_class=SensorDeviceClass.PRECIPITATION,
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         suggested_display_precision=1,
-        state_class=SensorStateClass.MEASUREMENT,
         aux_sensors=(55,),
     ),
     WLSensorDescription(
@@ -183,7 +182,6 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         device_class=SensorDeviceClass.PRECIPITATION,
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         suggested_display_precision=1,
-        state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2,),
         aux_sensors=(55,),
