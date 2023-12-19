@@ -52,6 +52,7 @@ class WLSensorDescription(SensorEntityDescription):
     tag: DataKey | None = None
     exclude_api_ver: set = ()
     exclude_data_structure: set = ()
+    aux_sensors: set = ()
 
 
 SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
@@ -63,6 +64,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         translation_key="outside_temperature",
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="InsideTemp",
@@ -81,6 +83,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         translation_key="outside_humidity",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="InsideHumidity",
@@ -114,6 +117,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         suggested_display_precision=1,
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
         state_class=SensorStateClass.MEASUREMENT,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="WindGust",
@@ -123,12 +127,14 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         suggested_display_precision=1,
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
         state_class=SensorStateClass.MEASUREMENT,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="WindDir",
         tag=DataKey.WIND_DIR,
         icon="mdi:compass-outline",
         translation_key="wind_direction",
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="WindDirDeg",
@@ -138,6 +144,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         translation_key="wind_direction_deg",
         state_class=SensorStateClass.MEASUREMENT,
         entity_registry_enabled_default=False,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="RainToday",
@@ -147,6 +154,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         suggested_display_precision=1,
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         state_class=SensorStateClass.TOTAL_INCREASING,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="RainRate",
@@ -156,6 +164,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_HOUR,
         suggested_display_precision=1,
         state_class=SensorStateClass.MEASUREMENT,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="RainStorm",
@@ -165,6 +174,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         suggested_display_precision=1,
         state_class=SensorStateClass.MEASUREMENT,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="RainStormLast",
@@ -176,6 +186,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2,),
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="RainInMonth",
@@ -185,6 +196,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         device_class=SensorDeviceClass.PRECIPITATION,
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         state_class=SensorStateClass.TOTAL_INCREASING,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="RainInYear",
@@ -194,6 +206,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         suggested_display_precision=0,
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         state_class=SensorStateClass.TOTAL_INCREASING,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="Dewpoint",
@@ -203,6 +216,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         suggested_display_precision=1,
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="WindChill",
@@ -213,6 +227,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
         entity_registry_enabled_default=False,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="HeatIndex",
@@ -223,6 +238,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
         entity_registry_enabled_default=False,
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="WetBulb",
@@ -235,6 +251,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         entity_registry_enabled_default=False,
         exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2,),
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="ThwIndex",
@@ -247,6 +264,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         entity_registry_enabled_default=False,
         exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2,),
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="ThswIndex",
@@ -259,6 +277,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         entity_registry_enabled_default=False,
         exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2,),
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="SolarRadiation",
@@ -269,6 +288,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         native_unit_of_measurement=UnitOfIrradiance.WATTS_PER_SQUARE_METER,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
+        aux_sensors=(55,),
     ),
     WLSensorDescription(
         key="TransBatteryVolt",
@@ -326,15 +346,29 @@ async def async_setup_entry(
     """Set up the sensor platform."""
     coordinator = await get_coordinator(hass, config_entry)
 
-    async_add_entities(
-        WLSensor(coordinator, hass, config_entry, description)
+    entities = [
+        WLSensor(coordinator, hass, config_entry, description, 1)
         for description in SENSOR_TYPES
         if (config_entry.data[CONF_API_VERSION] not in description.exclude_api_ver)
         and (
             coordinator.data.get(DataKey.DATA_STRUCTURE)
             not in description.exclude_data_structure
         )
-    )
+    ]
+
+    aux_entities = []
+    if config_entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
+        for sensor in hass.data[DOMAIN][config_entry.entry_id]["sensors_metadata"]:
+            if sensor["tx_id"] is not None and sensor["tx_id"] > 1:
+                aux_entities = [
+                    WLSensor(
+                        coordinator, hass, config_entry, description, sensor["tx_id"]
+                    )
+                    for description in SENSOR_TYPES
+                    if (sensor["sensor_type"] in description.aux_sensors)
+                ]
+
+    async_add_entities(entities + aux_entities)
 
 
 class WLSensor(CoordinatorEntity, SensorEntity):
@@ -349,31 +383,37 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         hass: HomeAssistant,
         entry: ConfigEntry,
         description: WLSensorDescription,
+        tx_id: int,
     ):
         """Initialize the sensor."""
         super().__init__(coordinator)
         self.hass = hass
         self.entry: ConfigEntry = entry
         self.entity_description = description
+        self.tx_id = tx_id
         self._attr_has_entity_name = True
+        tx_id_part = f"-{self.tx_id}" if self.tx_id > 1 else ""
         self._attr_unique_id = (
-            f"{self.get_unique_id_base()}-{self.entity_description.key}"
+            f"{self.get_unique_id_base()}{tx_id_part}-{self.entity_description.key}"
         )
         self._attr_device_info = DeviceInfo(
-            identifiers={(DOMAIN, self.get_unique_id_base())},
+            identifiers={(DOMAIN, f"{self.get_unique_id_base()}{tx_id_part}")},
             name=self.generate_name(),
             manufacturer=MANUFACTURER,
             model=self.generate_model(),
             sw_version=self.get_firmware(),
             serial_number=self.get_serial(),
             configuration_url=CONFIG_URL,
+            via_device=(DOMAIN, self.get_unique_id_base())
+            if tx_id_part != ""
+            else None,
         )
 
     def get_unique_id_base(self):
         """Generate base for unique_id."""
         unique_base = None
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
-            unique_base = self.coordinator.data["DID"]
+            unique_base = self.coordinator.data[self.tx_id]["DID"]
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             unique_base = self.coordinator.data[DataKey.UUID]
         return unique_base
@@ -397,11 +437,17 @@ class WLSensor(CoordinatorEntity, SensorEntity):
     def generate_name(self):
         """Generate device name."""
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
-            return self.coordinator.data["station_name"]
+            return self.coordinator.data[1]["station_name"]
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
-            return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
-                "stations"
-            ][0]["station_name"]
+            if self.tx_id == 1:
+                return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
+                    "stations"
+                ][0]["station_name"]
+            for sensor in self.hass.data[DOMAIN][self.entry.entry_id][
+                "sensors_metadata"
+            ]:
+                if sensor["sensor_type"] in (55, 56) and sensor["tx_id"] == self.tx_id:
+                    return f"{sensor['product_name']} ID{sensor['tx_id']}"
 
         return "Unknown devicename"
 
@@ -451,10 +497,10 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             "WindDirDeg",
             "WindGust",
         ]:
-            return self.coordinator.data.get(self.entity_description.tag)
+            return self.coordinator.data[self.tx_id].get(self.entity_description.tag)
 
         if self.entity_description.tag in [DataKey.WIND_DIR]:
-            if self.coordinator.data[self.entity_description.tag] is None:
+            if self.coordinator.data[self.tx_id][self.entity_description.tag] is None:
                 return None
 
             directions = [
@@ -478,7 +524,14 @@ class WLSensor(CoordinatorEntity, SensorEntity):
 
             index = int(
                 (
-                    (float(self.coordinator.data[self.entity_description.tag]) + 11.25)
+                    (
+                        float(
+                            self.coordinator.data[self.tx_id][
+                                self.entity_description.tag
+                            ]
+                        )
+                        + 11.25
+                    )
                     % 360
                 )
                 // 22.5
@@ -487,7 +540,9 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             return directions[index]
 
         if self.entity_description.key == "BarTrend":
-            bar_trend = self.coordinator.data.get(self.entity_description.tag)
+            bar_trend = self.coordinator.data[self.tx_id].get(
+                self.entity_description.tag
+            )
             if bar_trend is None:
                 return None
             if self.is_float(bar_trend):
@@ -517,10 +572,10 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         if self.entity_description.key in [
             "RainStorm",
         ]:
-            if self.coordinator.data.get(DataKey.RAIN_STORM_START) is None:
+            if self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_START) is None:
                 return None
             dt_object = datetime.fromtimestamp(
-                self.coordinator.data.get(DataKey.RAIN_STORM_START)
+                self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_START)
             )
             return {
                 "rain_storm_start": dt_object,
@@ -528,15 +583,21 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         if self.entity_description.key in [
             "RainStormLast",
         ]:
-            if self.coordinator.data.get(DataKey.RAIN_STORM_LAST_START) is None:
+            if (
+                self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_LAST_START)
+                is None
+            ):
                 return None
             dt_object = datetime.fromtimestamp(
-                self.coordinator.data.get(DataKey.RAIN_STORM_LAST_START)
+                self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_LAST_START)
             )
-            if self.coordinator.data.get(DataKey.RAIN_STORM_LAST_END) is None:
+            if (
+                self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_LAST_END)
+                is None
+            ):
                 return None
             dt_object_end = datetime.fromtimestamp(
-                self.coordinator.data.get(DataKey.RAIN_STORM_LAST_END)
+                self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_LAST_END)
             )
             return {
                 "rain_storm_start": dt_object,
