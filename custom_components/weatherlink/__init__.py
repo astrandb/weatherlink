@@ -92,8 +92,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 ]
             ):
                 sensors.append(sensor)
-                # todo Remove
-                # print(f"{sensor['parent_device_id']} {sensor['sensor_type']}")
         hass.data[DOMAIN][entry.entry_id]["sensors_metadata"] = sensors
     coordinator = await get_coordinator(hass, entry)
     if not coordinator.last_update_success:

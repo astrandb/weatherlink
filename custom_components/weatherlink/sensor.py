@@ -29,7 +29,7 @@ from homeassistant.helpers.entity import DeviceInfo, EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from . import get_coordinator
+from . import SENSOR_TYPE_VUE_AND_VANTAGE_PRO, get_coordinator
 from .const import (
     CONF_API_VERSION,
     CONFIG_URL,
@@ -459,13 +459,25 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             model: str = self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                 "stations"
             ][0].get("product_number")
-        if model == "6555":
-            return f"WeatherLinkIP {model}"
-        if model.startswith("6100"):
-            return f"WeatherLink Live {model}"
-        if model.startswith("6313"):
-            return f"WeatherLink Console {model}"
-        return "WeatherLink"
+            for sensor in self.hass.data[DOMAIN][self.entry.entry_id][
+                "sensors_metadata"
+            ]:
+                if (
+                    sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
+                    and sensor["tx_id"] is None
+                    or sensor["tx_id"] == self.tx_id
+                ):
+                    product_name = sensor["product_name"]
+                    break
+            gateway_type = "WeatherLink"
+            if model == "6555":
+                gateway_type = f"WLIP {model}"
+            if model.startswith("6100"):
+                gateway_type = f"WLL {model}"
+            if model.startswith("6313"):
+                gateway_type = f"WLC {model}"
+
+        return f"{gateway_type} / {product_name}" if self.tx_id == 1 else product_name
 
     @property
     def native_value(self):
