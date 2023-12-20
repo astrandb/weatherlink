@@ -35,7 +35,7 @@ change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add
 template: |
   [![Downloads for this release](https://img.shields.io/github/downloads/astrandb/weatherlink/v$RESOLVED_VERSION/total.svg)](https://github.com/astrandb/weatherlink/releases/v$RESOLVED_VERSION)
 
- ### Checklist for release
+  ### Checklist for release
   - Download translations PR from Lokalize
   - Run make lint
   - Run make bump
