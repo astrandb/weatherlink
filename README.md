@@ -38,6 +38,7 @@ Make sure you have the credentials available for your account with [Weatherlink 
 - Go to Settings->Devices & Services->Integrations and press Add Integration. Search for Weatherlink and select it. Follow the prompts.
 
 ## Support
+[Support and dicussions forum](https://github.com/astrandb/weatherlink/discussions/categories/q-a)
 
 [Discord chat](https://discord.gg/DcF5vTBU)
 
