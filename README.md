@@ -37,6 +37,10 @@ Make sure you have the credentials available for your account with [Weatherlink 
 - Restart Home Assistant
 - Go to Settings->Devices & Services->Integrations and press Add Integration. Search for Weatherlink and select it. Follow the prompts.
 
+## Support
+
+[Discord chat](https://discord.gg/DcF5vTBU)
+
 ## Development and contributions
 The repo contains a development container that will simplify development and testing. Use VSCode and select Dev Containers: Clone Repository in Named Container Volume.
 
