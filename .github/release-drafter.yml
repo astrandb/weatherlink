@@ -7,21 +7,27 @@ categories:
     labels:
       - "feature"
       - "enhancement"
-  - title: "Bug Fixes"
+  - title: "Breaking changes"
+    labels:
+      - "breaking"
+  - title: "Bug fixes"
     labels:
       - "fix"
       - "bugfix"
       - "bug"
+  - title: "Translation"
+    labels:
+      - "translation"
   - title: "Dependencies"
     labels:
       - "dependencies"
       - "dependency"
   - title: "Maintenance"
     label: "maintenance"
-  - title: "Development environment and tools"
-    label:
-      - "dev-tools"
-      - "development tools"
+  - title: "Code quality and optimizations"
+    label: "code quality"
+  - title: "Development tools"
+    label: "development tools"
 
 change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
@@ -29,7 +35,14 @@ change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add
 template: |
   [![Downloads for this release](https://img.shields.io/github/downloads/astrandb/weatherlink/v$RESOLVED_VERSION/total.svg)](https://github.com/astrandb/weatherlink/releases/v$RESOLVED_VERSION)
 
-  ## Changes
+ ### Checklist for release
+  - Download translations PR from Lokalize
+  - Run make lint
+  - Run make bump
+  - Review the draft below
+  - Remove this checklist
+
+  ## Notable Changes
 
   $CHANGES
 
