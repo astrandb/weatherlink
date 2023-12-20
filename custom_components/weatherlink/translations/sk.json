@@ -56,6 +56,9 @@
       "dewpoint": {
         "name": "Rosný bod"
       },
+      "heat_index": {
+        "name": "Index tepla"
+      },
       "inside_humidity": {
         "name": "Vnútorná vlhkosť"
       },
@@ -82,6 +85,17 @@
           }
         }
       },
+      "rain_storm_last": {
+        "name": "Posledná dažďová búrka",
+        "state_attributes": {
+          "rain_storm_end": {
+            "name": "Koniec dažďovej búrky"
+          },
+          "rain_storm_start": {
+            "name": "Začiatok dažďovej búrky"
+          }
+        }
+      },
       "rain_this_month": {
         "name": "Dážď tento mesiac"
       },
@@ -97,11 +111,23 @@
       "supercap_volt": {
         "name": "Superkondenzátor"
       },
+      "thsw_index": {
+        "name": "THSW index"
+      },
+      "thw_index": {
+        "name": "THW index"
+      },
       "trans_battery_volt": {
         "name": "Batéria vysielača"
       },
+      "wet_bulb": {
+        "name": "Mokrá žiarovka"
+      },
       "wind": {
         "name": "Vietor"
+      },
+      "wind_chill": {
+        "name": "Chladný vietor"
       },
       "wind_direction": {
         "name": "Smer vetra",
@@ -123,6 +149,9 @@
           "wnw": "ZSZ",
           "wsw": "ZJZ"
         }
+      },
+      "wind_direction_deg": {
+        "name": "Smer vetra deg"
       },
       "wind_gust": {
         "name": "Nárazový vietor"
