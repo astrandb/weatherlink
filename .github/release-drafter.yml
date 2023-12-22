@@ -40,8 +40,8 @@ template: |
 
   ### Checklist for release
   - Download translations PR from Lokalize
-  - Run make lint
-  - Run make bump
+  - Run ruff linter
+  - Run make bump - select proper variank in Makefile
   - Review the draft below
   - Remove this checklist
 
