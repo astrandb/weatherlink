@@ -23,7 +23,7 @@
                 "ryanluker.vscode-coverage-gutters",
                 "ms-python.vscode-pylance",
                 "ms-python.pylint",
-                "charliermarsh.ruff",
+                "charliermarsh.ruff"
             ],
             "settings": {
                 "files.eol": "\n",
