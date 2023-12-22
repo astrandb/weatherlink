@@ -2,7 +2,9 @@
     "name": "dev-weatherlink",
     "image": "mcr.microsoft.com/vscode/devcontainers/python:0-3.11-bullseye",
     "postCreateCommand": "scripts/setup",
-    "appPort": ["9126:8123"],
+    "appPort": [
+        "9126:8123"
+    ],
     "portsAttributes": {
         "8123": {
             "label": "Home Assistant internal",
@@ -22,7 +24,6 @@
                 "ms-python.vscode-pylance",
                 "ms-python.pylint",
                 "charliermarsh.ruff",
-                "thibault-vanderseypen.i18n-json-editor"
             ],
             "settings": {
                 "files.eol": "\n",
@@ -39,9 +40,7 @@
                 "files.trimTrailingWhitespace": true,
                 "[markdown]": {
                     "files.trimTrailingWhitespace": false
-                },
-                "i18nJsonEditor.forceKeyUPPERCASE": false,
-                "i18nJsonEditor.supportedFolders": ["translations", "i18n"]
+                }
             }
         }
     },
