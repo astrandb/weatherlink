@@ -31,6 +31,11 @@ body:
         Can be found in the HACS page -> Weatherlink.
   - type: textarea
     attributes:
+      label: Diagnostic data file
+      description: >
+        Please create a diagnostic download from the Integration overview page and drag the file into this box.
+  - type: textarea
+    attributes:
       label: Anything in the logs that might be useful for us?
       description: For example, error message, or stack traces.
       render: txt
