@@ -28,9 +28,9 @@ body:
       required: true
     attributes:
       label: Version of Weatherlink integration having the issue?
-      placeholder: weatherlink-
+      placeholder: YYYY.MM.NN
       description: >
-        Can be found in the Configuration panel -> Info.
+        Can be found in HACS page -> Weatherlink.
   - type: input
     id: version
     validations:
@@ -39,12 +39,17 @@ body:
       label: Version of Home Assistant Core having the issue?
       placeholder: core-
       description: >
-        Can be found in the Configuration panel -> Info.
+        Can be found in the Settings page -> About.
   - type: textarea
     attributes:
       label: Anything in the logs that might be useful for us?
       description: For example, error message, or stack traces.
       render: txt
+  - type: textarea
+    attributes:
+      label: Diagnostic data file
+      description: >
+        Please create a diagnostic download from the Weatherlink device's overview page and drag the file into this box.
   - type: textarea
     attributes:
       label: Additional information

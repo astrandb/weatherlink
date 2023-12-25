@@ -26,9 +26,14 @@ body:
       required: true
     attributes:
       label: What version of the integration are you using?
-      placeholder: weatherlink-
+      placeholder: YYYY.MM.NN
       description: >
-        Can be found in the Configuration panel -> Info.
+        Can be found in the HACS page -> Weatherlink.
+  - type: textarea
+    attributes:
+      label: Diagnostic data file
+      description: >
+        Please create a diagnostic download from the Weatherlink device's overview page and drag the file into this box.
   - type: textarea
     attributes:
       label: Anything in the logs that might be useful for us?
