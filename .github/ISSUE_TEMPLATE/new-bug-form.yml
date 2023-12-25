@@ -49,7 +49,7 @@ body:
     attributes:
       label: Diagnostic data file
       description: >
-        Please create a diagnostic download from the Integration overview page and drag the file into this box.
+        Please create a diagnostic download from the Weatherlink device's overview page and drag the file into this box.
   - type: textarea
     attributes:
       label: Additional information
