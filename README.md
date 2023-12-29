@@ -3,7 +3,7 @@
 # Weatherlink Integration for Home Assistant
 
 This integration will represent your data from Davis Weaterlink in Home Assistant.
-It will query the API every 5 minutes. The data update frequency in the API is depending on your subscription level. I e if you have the free "Basic" level, the observations data will only be updated every 15 minutes.
+It will query the cloud API every 5 minutes. The data update frequency in the API is depending on your subscription level. I e if you have the free "Basic" level, the observations data will only be updated every 15 minutes.
 
 The integration does not have the ambition to display everything that a Davis weatherstation can report. It is a reasonable compromise between details and clutter. It also tries to "normalize" the data so that e.g. outdoor temperature is labelled "Temperature out" irrespective of model of the station and the gateway device.
 
@@ -15,14 +15,14 @@ If a sensor is showing unknown value it means that the value is unavailable, eit
 
 There are lots of combinations of station types and sensor types. Please report an issue here if you are missing something essential.
 
-This version will only display data from primary devices, such as Vantage Vue and Vantage Pro. It will not detect the presence of extra sensor suites or similar add-ons. This will be addressed in an upcoming release. No delivery time promised!
+This version will mainly display data from primary devices, such as Vantage Vue and Vantage Pro. It will detect the presence of some extra sensor suites or similar add-ons. A more complete support if such devices will be addressed in upcoming releases. No delivery time promised!
 
-Current version has limited error detection and recovery and will therefore log detailed error descriptions if unforeseen things happen.
+Current version has limited error detection and recovery and will therefore log detailed error descriptions if unforeseen things happen. If you see recurring stack traces from this integration in your log, please file an issue report.
 
 
 ## Installation
 
-Make sure you have the credentials available for your account with [Weatherlink cloud service](https://www.weatherlink.com). You will need API Token and API Secret when using API V2. For the legacy API V1 you will need the DID for your Davis weather station, your password and the API V1 access token.
+Make sure you have the credentials available for your account with [Weatherlink cloud service](https://www.weatherlink.com). You will need API Token and API Secret when using API V2. For the legacy API V1 you will need the DID for your Davis weather station, your password and the API V1 access token. If you have another weatherlink integration installed you must remove it before installing this one. You cannot have two different integrations with the same name in Home Assistant.
 
 ### Preferred download and setup method
 
