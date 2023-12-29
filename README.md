@@ -22,7 +22,9 @@ Current version has limited error detection and recovery and will therefore log 
 
 ## Installation
 
-Make sure you have the credentials available for your account with [Weatherlink cloud service](https://www.weatherlink.com). You will need API Token and API Secret when using API V2. For the legacy API V1 you will need the DID for your Davis weather station, your password and the API V1 access token. If you have another weatherlink integration installed you must remove it before installing this one. You cannot have two different integrations with the same name in Home Assistant.
+Make sure you have the credentials available for your account with [Weatherlink cloud service](https://www.weatherlink.com). You will need API Token and API Secret when using API V2. For the legacy API V1 you will need the DID for your Davis weather station, your password and the API V1 access token. 
+
+If you have another weatherlink integration installed you must remove it before installing this one. You cannot have two different integrations with the same name in Home Assistant.
 
 ### Preferred download and setup method
 
