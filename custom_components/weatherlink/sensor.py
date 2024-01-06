@@ -349,7 +349,7 @@ async def async_setup_entry(
         for description in SENSOR_TYPES
         if (config_entry.data[CONF_API_VERSION] not in description.exclude_api_ver)
         and (
-            coordinator.data.get(DataKey.DATA_STRUCTURE)
+            coordinator.data[primary_tx_id].get(DataKey.DATA_STRUCTURE)
             not in description.exclude_data_structure
         )
     ]
@@ -358,13 +358,17 @@ async def async_setup_entry(
     if config_entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
         for sensor in hass.data[DOMAIN][config_entry.entry_id]["sensors_metadata"]:
             if sensor["tx_id"] is not None and sensor["tx_id"] != primary_tx_id:
-                aux_entities = [
-                    WLSensor(
-                        coordinator, hass, config_entry, description, sensor["tx_id"]
-                    )
-                    for description in SENSOR_TYPES
-                    if (sensor["sensor_type"] in description.aux_sensors)
-                ]
+                for description in SENSOR_TYPES:
+                    if sensor["sensor_type"] in description.aux_sensors:
+                        aux_entities.append(
+                            WLSensor(
+                                coordinator,
+                                hass,
+                                config_entry,
+                                description,
+                                sensor["tx_id"],
+                            )
+                        )
 
     async_add_entities(entities + aux_entities)
 
@@ -389,7 +393,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         self.entry: ConfigEntry = entry
         self.entity_description = description
         self.tx_id = tx_id
-        self.primary_tx_id = hass.data[DOMAIN][entry.entry_id]["primary_tx_id"]
+        self.primary_tx_id = self.hass.data[DOMAIN][entry.entry_id]["primary_tx_id"]
         self._attr_has_entity_name = True
         tx_id_part = f"-{self.tx_id}" if self.tx_id != self.primary_tx_id else ""
         self._attr_unique_id = (
