@@ -343,9 +343,9 @@ async def async_setup_entry(
 ) -> None:
     """Set up the sensor platform."""
     coordinator = await get_coordinator(hass, config_entry)
-
+    primary_tx_id = hass.data[DOMAIN][config_entry.entry_id]["primary_tx_id"]
     entities = [
-        WLSensor(coordinator, hass, config_entry, description, 1)
+        WLSensor(coordinator, hass, config_entry, description, primary_tx_id)
         for description in SENSOR_TYPES
         if (config_entry.data[CONF_API_VERSION] not in description.exclude_api_ver)
         and (
@@ -357,7 +357,7 @@ async def async_setup_entry(
     aux_entities = []
     if config_entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
         for sensor in hass.data[DOMAIN][config_entry.entry_id]["sensors_metadata"]:
-            if sensor["tx_id"] is not None and sensor["tx_id"] > 1:
+            if sensor["tx_id"] is not None and sensor["tx_id"] != primary_tx_id:
                 aux_entities = [
                     WLSensor(
                         coordinator, hass, config_entry, description, sensor["tx_id"]
@@ -389,8 +389,9 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         self.entry: ConfigEntry = entry
         self.entity_description = description
         self.tx_id = tx_id
+        self.primary_tx_id = hass.data[DOMAIN][entry.entry_id]["primary_tx_id"]
         self._attr_has_entity_name = True
-        tx_id_part = f"-{self.tx_id}" if self.tx_id > 1 else ""
+        tx_id_part = f"-{self.tx_id}" if self.tx_id != self.primary_tx_id else ""
         self._attr_unique_id = (
             f"{self.get_unique_id_base()}{tx_id_part}-{self.entity_description.key}"
         )
@@ -437,7 +438,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             return self.coordinator.data[1]["station_name"]
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
-            if self.tx_id == 1:
+            if self.tx_id == self.primary_tx_id:
                 return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                     "stations"
                 ][0]["station_name"]
@@ -465,7 +466,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
                     and sensor["tx_id"] is None
                     or sensor["tx_id"] == self.tx_id
                 ):
-                    product_name = sensor["product_name"]
+                    product_name = sensor.get("product_name")
                     break
             gateway_type = "WeatherLink"
             if model == "6555":
@@ -475,7 +476,11 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             if model.startswith("6313"):
                 gateway_type = f"WLC {model}"
 
-        return f"{gateway_type} / {product_name}" if self.tx_id == 1 else product_name
+        return (
+            f"{gateway_type} / {product_name}"
+            if self.tx_id == self.primary_tx_id
+            else product_name
+        )
 
     @property
     def native_value(self):
