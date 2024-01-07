@@ -479,6 +479,8 @@ class WLSensor(CoordinatorEntity, SensorEntity):
                 gateway_type = f"WLL {model}"
             if model.startswith("6313"):
                 gateway_type = f"WLC {model}"
+            if model.endswith("6558"):
+                gateway_type = f"WL {model}"
 
         return (
             f"{gateway_type} / {product_name}"
