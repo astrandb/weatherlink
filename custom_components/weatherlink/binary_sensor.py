@@ -48,8 +48,8 @@ SENSOR_TYPES: Final[tuple[WLBinarySensorDescription, ...]] = (
         translation_key="trans_battery",
         entity_category=EntityCategory.DIAGNOSTIC,
         exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(2,),
-        aux_sensors=(55,),
+        exclude_data_structure=(2, 12),
+        aux_sensors=(55, 56),
     ),
 )
 
@@ -78,7 +78,13 @@ async def async_setup_entry(
         for sensor in hass.data[DOMAIN][config_entry.entry_id]["sensors_metadata"]:
             if sensor["tx_id"] is not None and sensor["tx_id"] != primary_tx_id:
                 for description in SENSOR_TYPES:
-                    if sensor["sensor_type"] in description.aux_sensors:
+                    if (
+                        sensor["sensor_type"] in description.aux_sensors
+                        and coordinator.data[sensor["tx_id"]].get(
+                            DataKey.DATA_STRUCTURE
+                        )
+                        not in description.exclude_data_structure
+                    ):
                         aux_entities.append(
                             WLSensor(
                                 coordinator,
