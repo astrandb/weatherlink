@@ -31,6 +31,8 @@ SENSOR_TYPE_VUE_AND_VANTAGE_PRO = (
     24,
     27,
     28,
+    33,
+    34,
     37,
     43,
     44,
@@ -40,7 +42,7 @@ SENSOR_TYPE_VUE_AND_VANTAGE_PRO = (
     49,
     50,
     51,
-    55,
+    # 55,
     76,
     77,
     78,
@@ -69,6 +71,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             password=entry.data[CONF_PASSWORD],
             apitoken=entry.data[CONF_API_TOKEN],
         )
+        hass.data[DOMAIN][entry.entry_id]["primary_tx_id"] = 1
+        tx_ids = [1]
 
     if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
         hass.data[DOMAIN][entry.entry_id]["api"] = WLHubV2(
@@ -84,6 +88,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         all_sensors = await hass.data[DOMAIN][entry.entry_id]["api"].get_all_sensors()
 
         sensors = []
+        tx_ids = []
         for sensor in all_sensors["sensors"]:
             if (
                 sensor["parent_device_id"]
@@ -92,7 +97,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 ]
             ):
                 sensors.append(sensor)
+                if (
+                    sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
+                    and sensor["tx_id"] is not None
+                    and sensor["tx_id"] not in tx_ids
+                ):
+                    tx_ids.append(sensor["tx_id"])
         hass.data[DOMAIN][entry.entry_id]["sensors_metadata"] = sensors
+        # todo Make primary_tx_id configurable by user - perhaps in config flow.
+        if len(tx_ids) == 0:
+            tx_ids = [1]
+        hass.data[DOMAIN][entry.entry_id]["primary_tx_id"] = min(tx_ids)
+    _LOGGER.debug("Primary tx_ids: %s", tx_ids)
     coordinator = await get_coordinator(hass, entry)
     if not coordinator.last_update_success:
         await coordinator.async_config_entry_first_refresh()
@@ -121,10 +137,10 @@ async def get_coordinator(
 
     def _preprocess(indata: str):
         outdata = {}
-        outdata[1] = {}
-        tx_id = 1
         # _LOGGER.debug("Received data: %s", indata)
         if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
+            tx_id = 1
+            outdata.setdefault(tx_id, {})
             outdata[tx_id]["DID"] = indata["davis_current_observation"].get("DID")
             outdata[tx_id]["station_name"] = indata["davis_current_observation"].get(
                 "station_name"
@@ -166,17 +182,22 @@ async def get_coordinator(
             )
 
         if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
+            primary_tx_id = tx_id = hass.data[DOMAIN][entry.entry_id]["primary_tx_id"]
+            outdata.setdefault(tx_id, {})
             outdata[DataKey.UUID] = indata["station_id_uuid"]
             for sensor in indata["sensors"]:
-                # outdata[tx_id][DataKey.SENSOR_TYPE] = sensor["sensor_type"]
                 # Vue
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
-                    and sensor["data_structure_type"] == 10
-                ):
+                    or sensor["sensor_type"] in [55]
+                ) and sensor["data_structure_type"] == 10:
+                    # _LOGGER.debug("Sensor: %s | %s", sensor["sensor_type"], sensor)
                     tx_id = sensor["data"][0]["tx_id"]
                     outdata.setdefault(tx_id, {})
-                    outdata[DataKey.DATA_STRUCTURE] = sensor["data_structure_type"]
+                    outdata[tx_id][DataKey.SENSOR_TYPE] = sensor["sensor_type"]
+                    outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
+                        "data_structure_type"
+                    ]
                     outdata[tx_id][DataKey.TEMP_OUT] = sensor["data"][0]["temp"]
                     outdata[tx_id][DataKey.HUM_OUT] = sensor["data"][0]["hum"]
                     outdata[tx_id][DataKey.WIND_MPH] = sensor["data"][0][
@@ -194,17 +215,18 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.THSW_INDEX] = sensor["data"][0]["thsw_index"]
                     outdata[tx_id][DataKey.WET_BULB] = sensor["data"][0]["wet_bulb"]
                     outdata[tx_id][DataKey.WIND_CHILL] = sensor["data"][0]["wind_chill"]
-                    outdata[tx_id][DataKey.RAIN_DAY] = float(
-                        sensor["data"][0].get("rainfall_daily_in", 0.0)
+                    outdata[tx_id][DataKey.RAIN_DAY] = sensor["data"][0].get(
+                        "rainfall_daily_in", 0.0
                     )
-                    outdata[tx_id][DataKey.RAIN_STORM] = float(
-                        sensor["data"][0].get("rain_storm_in", 0.0)
+
+                    outdata[tx_id][DataKey.RAIN_STORM] = sensor["data"][0].get(
+                        "rain_storm_in", 0.0
                     )
                     outdata[tx_id][DataKey.RAIN_STORM_START] = sensor["data"][0].get(
                         "rain_storm_start_at"
                     )
-                    outdata[tx_id][DataKey.RAIN_STORM_LAST] = float(
-                        sensor["data"][0].get("rain_storm_last_in", 0.0)
+                    outdata[tx_id][DataKey.RAIN_STORM_LAST] = sensor["data"][0].get(
+                        "rain_storm_last_in", 0.0
                     )
                     outdata[tx_id][DataKey.RAIN_STORM_LAST_START] = sensor["data"][
                         0
@@ -234,7 +256,10 @@ async def get_coordinator(
                 ):
                     tx_id = sensor["data"][0].get("tx_id", 1)
                     outdata.setdefault(tx_id, {})
-                    outdata[DataKey.DATA_STRUCTURE] = sensor["data_structure_type"]
+                    outdata[tx_id][DataKey.SENSOR_TYPE] = sensor["sensor_type"]
+                    outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
+                        "data_structure_type"
+                    ]
                     outdata[tx_id][DataKey.TEMP_OUT] = sensor["data"][0]["temp_out"]
                     outdata[tx_id][DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]
                     outdata[tx_id][DataKey.BAR_SEA_LEVEL] = sensor["data"][0]["bar"]
@@ -279,7 +304,10 @@ async def get_coordinator(
                 ):
                     tx_id = sensor["data"][0]["tx_id"]
                     outdata.setdefault(tx_id, {})
-                    outdata[DataKey.DATA_STRUCTURE] = sensor["data_structure_type"]
+                    outdata[tx_id][DataKey.SENSOR_TYPE] = sensor["sensor_type"]
+                    outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
+                        "data_structure_type"
+                    ]
                     outdata[tx_id][DataKey.TEMP_OUT] = sensor["data"][0]["temp"]
                     outdata[tx_id][DataKey.HUM_OUT] = sensor["data"][0]["hum"]
                     outdata[tx_id][DataKey.WIND_MPH] = sensor["data"][0][
@@ -297,19 +325,17 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.THSW_INDEX] = sensor["data"][0]["thsw_index"]
                     outdata[tx_id][DataKey.WET_BULB] = sensor["data"][0]["wet_bulb"]
                     outdata[tx_id][DataKey.WIND_CHILL] = sensor["data"][0]["wind_chill"]
-                    outdata[tx_id][DataKey.RAIN_DAY] = float(
-                        sensor["data"][0].get("rainfall_day_in", 0.0)
+                    outdata[tx_id][DataKey.RAIN_DAY] = sensor["data"][0].get(
+                        "rainfall_day_in", 0.0
                     )
-                    x_storm = sensor["data"][0]["rain_storm_current_in"]
-                    outdata[tx_id][DataKey.RAIN_STORM] = float(
-                        x_storm if x_storm is not None else 0.0
+                    outdata[tx_id][DataKey.RAIN_STORM] = sensor["data"][0].get(
+                        "rain_storm_current_in", 0.0
                     )
                     outdata[tx_id][DataKey.RAIN_STORM_START] = sensor["data"][0].get(
                         "rain_storm_current_start_at"
                     )
-                    x_storm = sensor["data"][0]["rain_storm_last_in"]
-                    outdata[tx_id][DataKey.RAIN_STORM_LAST] = float(
-                        x_storm if x_storm is not None else 0.0
+                    outdata[tx_id][DataKey.RAIN_STORM_LAST] = sensor["data"][0].get(
+                        "rain_storm_last_in", 0.0
                     )
                     outdata[tx_id][DataKey.RAIN_STORM_LAST_START] = sensor["data"][
                         0
@@ -344,17 +370,21 @@ async def get_coordinator(
                     ]
 
                 if sensor["sensor_type"] == 365 and sensor["data_structure_type"] == 21:
+                    tx_id = primary_tx_id
                     outdata[tx_id][DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]
                     outdata[tx_id][DataKey.HUM_IN] = sensor["data"][0]["hum_in"]
                 if sensor["sensor_type"] == 243 and sensor["data_structure_type"] == 12:
+                    tx_id = primary_tx_id
                     outdata[tx_id][DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]
                     outdata[tx_id][DataKey.HUM_IN] = sensor["data"][0]["hum_in"]
                 if sensor["sensor_type"] == 242 and sensor["data_structure_type"] == 12:
+                    tx_id = primary_tx_id
                     outdata[tx_id][DataKey.BAR_SEA_LEVEL] = sensor["data"][0][
                         "bar_sea_level"
                     ]
                     outdata[tx_id][DataKey.BAR_TREND] = sensor["data"][0]["bar_trend"]
                 if sensor["sensor_type"] == 242 and sensor["data_structure_type"] == 19:
+                    tx_id = primary_tx_id
                     outdata[tx_id][DataKey.BAR_SEA_LEVEL] = sensor["data"][0][
                         "bar_sea_level"
                     ]
