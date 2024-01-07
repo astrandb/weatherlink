@@ -65,6 +65,18 @@
       "inside_temperature": {
         "name": "Inside temperature"
       },
+      "moist_soil_1": {
+        "name": "Soil moisture 1"
+      },
+      "moist_soil_2": {
+        "name": "Soil moisture 2"
+      },
+      "moist_soil_3": {
+        "name": "Soil moisture 3"
+      },
+      "moist_soil_4": {
+        "name": "Soil moisture 4"
+      },
       "outside_humidity": {
         "name": "Outside humidity"
       },
@@ -111,6 +123,18 @@
       "supercap_volt": {
         "name": "Supercapacitor"
       },
+      "temp_1": {
+        "name": "Temperature 1"
+      },
+      "temp_2": {
+        "name": "Temperature 2"
+      },
+      "temp_3": {
+        "name": "Temperature 3"
+      },
+      "temp_4": {
+        "name": "Temperature 4"
+      },
       "thsw_index": {
         "name": "THSW index"
       },
@@ -125,6 +149,12 @@
       },
       "wet_bulb": {
         "name": "Wet bulb"
+      },
+      "wet_leaf_1": {
+        "name": "Leaf wetness 1"
+      },
+      "wet_leaf_2": {
+        "name": "Leaf wetness 2"
       },
       "wind": {
         "name": "Wind"

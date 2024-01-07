@@ -42,7 +42,6 @@ SENSOR_TYPE_VUE_AND_VANTAGE_PRO = (
     49,
     50,
     51,
-    # 55,
     76,
     77,
     78,
@@ -302,8 +301,8 @@ async def get_coordinator(
 
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
-                    and sensor["data_structure_type"] == 23
-                ):
+                    or sensor["sensor_type"] in [55]
+                ) and sensor["data_structure_type"] == 23:
                     tx_id = sensor["data"][0]["tx_id"]
                     outdata.setdefault(tx_id, {})
                     outdata[tx_id][DataKey.SENSOR_TYPE] = sensor["sensor_type"]
@@ -371,6 +370,60 @@ async def get_coordinator(
                         "solar_rad"
                     ]
                     outdata[tx_id][DataKey.UV_INDEX] = sensor["data"][0]["uv_index"]
+
+                if sensor["sensor_type"] == 56 and sensor["data_structure_type"] == 12:
+                    tx_id = sensor["data"][0]["tx_id"]
+                    outdata.setdefault(tx_id, {})
+                    outdata[tx_id][DataKey.SENSOR_TYPE] = sensor["sensor_type"]
+                    outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
+                        "data_structure_type"
+                    ]
+                    outdata[tx_id][DataKey.TEMP_1] = sensor["data"][0]["temp_1"]
+                    outdata[tx_id][DataKey.TEMP_2] = sensor["data"][0]["temp_2"]
+                    outdata[tx_id][DataKey.TEMP_3] = sensor["data"][0]["temp_3"]
+                    outdata[tx_id][DataKey.TEMP_4] = sensor["data"][0]["temp_4"]
+                    outdata[tx_id][DataKey.MOIST_SOIL_1] = sensor["data"][0][
+                        "moist_soil_1"
+                    ]
+                    outdata[tx_id][DataKey.MOIST_SOIL_2] = sensor["data"][0][
+                        "moist_soil_2"
+                    ]
+                    outdata[tx_id][DataKey.MOIST_SOIL_3] = sensor["data"][0][
+                        "moist_soil_3"
+                    ]
+                    outdata[tx_id][DataKey.MOIST_SOIL_4] = sensor["data"][0][
+                        "moist_soil_4"
+                    ]
+                    outdata[tx_id][DataKey.WET_LEAF_1] = sensor["data"][0]["wet_leaf_1"]
+                    outdata[tx_id][DataKey.WET_LEAF_2] = sensor["data"][0]["wet_leaf_2"]
+                if sensor["sensor_type"] == 56 and sensor["data_structure_type"] == 25:
+                    tx_id = sensor["data"][0]["tx_id"]
+                    outdata.setdefault(tx_id, {})
+                    outdata[tx_id][DataKey.SENSOR_TYPE] = sensor["sensor_type"]
+                    outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
+                        "data_structure_type"
+                    ]
+                    outdata[tx_id][DataKey.TEMP_1] = sensor["data"][0]["temp_1"]
+                    outdata[tx_id][DataKey.TEMP_2] = sensor["data"][0]["temp_2"]
+                    outdata[tx_id][DataKey.TEMP_3] = sensor["data"][0]["temp_3"]
+                    outdata[tx_id][DataKey.TEMP_4] = sensor["data"][0]["temp_4"]
+                    outdata[tx_id][DataKey.MOIST_SOIL_1] = sensor["data"][0][
+                        "moist_soil_1"
+                    ]
+                    outdata[tx_id][DataKey.MOIST_SOIL_2] = sensor["data"][0][
+                        "moist_soil_2"
+                    ]
+                    outdata[tx_id][DataKey.MOIST_SOIL_3] = sensor["data"][0][
+                        "moist_soil_3"
+                    ]
+                    outdata[tx_id][DataKey.MOIST_SOIL_4] = sensor["data"][0][
+                        "moist_soil_4"
+                    ]
+                    outdata[tx_id][DataKey.WET_LEAF_1] = sensor["data"][0]["wet_leaf_1"]
+                    outdata[tx_id][DataKey.WET_LEAF_2] = sensor["data"][0]["wet_leaf_2"]
+                    outdata[tx_id][DataKey.TRANS_BATTERY_FLAG] = sensor["data"][0][
+                        "trans_battery_flag"
+                    ]
 
                 if sensor["sensor_type"] == 365 and sensor["data_structure_type"] == 21:
                     tx_id = primary_tx_id
