@@ -117,6 +117,9 @@
       "rain_today": {
         "name": "Rain today"
       },
+      "solar_irradiance": {
+        "name": "Solar irradiance"
+      },
       "solar_panel_volt": {
         "name": "Solar panel"
       },
