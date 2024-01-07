@@ -31,6 +31,8 @@ SENSOR_TYPE_VUE_AND_VANTAGE_PRO = (
     24,
     27,
     28,
+    33,
+    34,
     37,
     43,
     44,
@@ -103,6 +105,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                     tx_ids.append(sensor["tx_id"])
         hass.data[DOMAIN][entry.entry_id]["sensors_metadata"] = sensors
         # todo Make primary_tx_id configurable by user - perhaps in config flow.
+        if len(tx_ids) == 0:
+            tx_ids = [1]
         hass.data[DOMAIN][entry.entry_id]["primary_tx_id"] = min(tx_ids)
     _LOGGER.debug("Primary tx_ids: %s", tx_ids)
     coordinator = await get_coordinator(hass, entry)
