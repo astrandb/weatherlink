@@ -280,7 +280,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
     WLSensorDescription(
         key="SolarRadiation",
         tag=DataKey.SOLAR_RADIATION,
-        # translation_key="solar_radiation",
+        translation_key="solar_irradiance",
         device_class=SensorDeviceClass.IRRADIANCE,
         suggested_display_precision=0,
         native_unit_of_measurement=UnitOfIrradiance.WATTS_PER_SQUARE_METER,
