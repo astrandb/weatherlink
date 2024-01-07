@@ -87,7 +87,7 @@
         "name": "Pressure"
       },
       "rain_rate": {
-        "name": "Rain rate"
+        "name": "Rain intensity"
       },
       "rain_storm": {
         "name": "Rain storm",

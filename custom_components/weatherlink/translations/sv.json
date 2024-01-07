@@ -65,6 +65,18 @@
       "inside_temperature": {
         "name": "Temperatur inne"
       },
+      "moist_soil_1": {
+        "name": "Jordfuktighet 1"
+      },
+      "moist_soil_2": {
+        "name": "Jordfuktighet 2"
+      },
+      "moist_soil_3": {
+        "name": "Jordfuktighet 3"
+      },
+      "moist_soil_4": {
+        "name": "Jordfuktighet 4"
+      },
       "outside_humidity": {
         "name": "Luftfuktighet ute"
       },
@@ -75,7 +87,7 @@
         "name": "Lufttryck"
       },
       "rain_rate": {
-        "name": "Regntakt"
+        "name": "Regnintensitet"
       },
       "rain_storm": {
         "name": "Regnväder",
@@ -105,11 +117,26 @@
       "rain_today": {
         "name": "Regn idag"
       },
+      "solar_irradiance": {
+        "name": "Solinstrålning"
+      },
       "solar_panel_volt": {
         "name": "Solpanel"
       },
       "supercap_volt": {
         "name": "Superkondensator"
+      },
+      "temp_1": {
+        "name": "Temperatur 1"
+      },
+      "temp_2": {
+        "name": "Temperatur 2"
+      },
+      "temp_3": {
+        "name": "Temperatur 3"
+      },
+      "temp_4": {
+        "name": "Temperatur 4"
       },
       "thsw_index": {
         "name": "Upplevd temp (THSW)"
@@ -120,8 +147,17 @@
       "trans_battery_volt": {
         "name": "Sändarbatteri"
       },
+      "uv_index": {
+        "name": "UV-index"
+      },
       "wet_bulb": {
         "name": "Våttemperatur"
+      },
+      "wet_leaf_1": {
+        "name": "Bladfuktighet 1"
+      },
+      "wet_leaf_2": {
+        "name": "Bladfuktighet 2"
       },
       "wind": {
         "name": "Vindstyrka"
