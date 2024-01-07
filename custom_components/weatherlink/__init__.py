@@ -197,6 +197,7 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
                         "data_structure_type"
                     ]
+                    outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP_OUT] = sensor["data"][0]["temp"]
                     outdata[tx_id][DataKey.HUM_OUT] = sensor["data"][0]["hum"]
                     outdata[tx_id][DataKey.WIND_MPH] = sensor["data"][0][
@@ -260,6 +261,7 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
                         "data_structure_type"
                     ]
+                    outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP_OUT] = sensor["data"][0]["temp_out"]
                     outdata[tx_id][DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]
                     outdata[tx_id][DataKey.BAR_SEA_LEVEL] = sensor["data"][0]["bar"]
@@ -309,6 +311,7 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
                         "data_structure_type"
                     ]
+                    outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP_OUT] = sensor["data"][0]["temp"]
                     outdata[tx_id][DataKey.HUM_OUT] = sensor["data"][0]["hum"]
                     outdata[tx_id][DataKey.WIND_MPH] = sensor["data"][0][
@@ -378,6 +381,7 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
                         "data_structure_type"
                     ]
+                    outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP_1] = sensor["data"][0]["temp_1"]
                     outdata[tx_id][DataKey.TEMP_2] = sensor["data"][0]["temp_2"]
                     outdata[tx_id][DataKey.TEMP_3] = sensor["data"][0]["temp_3"]
@@ -403,6 +407,7 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
                         "data_structure_type"
                     ]
+                    outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP_1] = sensor["data"][0]["temp_1"]
                     outdata[tx_id][DataKey.TEMP_2] = sensor["data"][0]["temp_2"]
                     outdata[tx_id][DataKey.TEMP_3] = sensor["data"][0]["temp_3"]
