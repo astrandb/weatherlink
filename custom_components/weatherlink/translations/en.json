@@ -120,6 +120,9 @@
       "trans_battery_volt": {
         "name": "Transmitter battery"
       },
+      "uv_index": {
+        "name": "UV index"
+      },
       "wet_bulb": {
         "name": "Wet bulb"
       },
