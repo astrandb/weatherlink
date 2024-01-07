@@ -28,6 +28,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo, EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util import dt as dt_util
 
 from . import SENSOR_TYPE_VUE_AND_VANTAGE_PRO, get_coordinator
 from .const import (
@@ -750,7 +751,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
                 is None
             ):
                 return None
-            dt_object = datetime.fromtimestamp(
+            dt_object = dt_util.utc_from_timestamp(
                 self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_LAST_START)
             )
             if (
@@ -758,7 +759,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
                 is None
             ):
                 return None
-            dt_object_end = datetime.fromtimestamp(
+            dt_object_end = dt_util.utc_from_timestamp(
                 self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_LAST_END)
             )
             return {
