@@ -364,6 +364,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         exclude_data_structure=(
             2,
             10,
+            23,
         ),
         aux_sensors=(56,),
     ),
@@ -379,6 +380,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         exclude_data_structure=(
             2,
             10,
+            23,
         ),
         aux_sensors=(56,),
     ),
@@ -394,6 +396,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         exclude_data_structure=(
             2,
             10,
+            23,
         ),
         aux_sensors=(56,),
     ),
@@ -409,6 +412,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         exclude_data_structure=(
             2,
             10,
+            23,
         ),
         aux_sensors=(56,),
     ),
@@ -423,6 +427,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         exclude_data_structure=(
             2,
             10,
+            23,
         ),
         aux_sensors=(56,),
     ),
@@ -437,6 +442,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         exclude_data_structure=(
             2,
             10,
+            23,
         ),
         aux_sensors=(56,),
     ),
@@ -452,6 +458,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         exclude_data_structure=(
             2,
             10,
+            23,
         ),
         aux_sensors=(56,),
     ),
@@ -467,6 +474,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         exclude_data_structure=(
             2,
             10,
+            23,
         ),
         aux_sensors=(56,),
     ),
@@ -482,6 +490,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         exclude_data_structure=(
             2,
             10,
+            23,
         ),
         aux_sensors=(56,),
     ),
@@ -497,6 +506,7 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         exclude_data_structure=(
             2,
             10,
+            23,
         ),
         aux_sensors=(56,),
     ),
