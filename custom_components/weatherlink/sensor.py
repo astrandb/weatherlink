@@ -285,6 +285,18 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         suggested_display_precision=0,
         native_unit_of_measurement=UnitOfIrradiance.WATTS_PER_SQUARE_METER,
         state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        aux_sensors=(55,),
+    ),
+    WLSensorDescription(
+        key="UvIndex",
+        tag=DataKey.UV_INDEX,
+        translation_key="uv_index",
+        icon="mdi:sun-wireless-outline",
+        suggested_display_precision=1,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
         exclude_api_ver=(ApiVersion.API_V1,),
         aux_sensors=(55,),
     ),
@@ -646,32 +658,7 @@ class WLSensor(CoordinatorEntity, SensorEntity):
     def native_value(self):
         """Return the state of the sensor."""
         # _LOGGER.debug("Key: %s", self.entity_description.key)
-        if self.entity_description.key in [
-            "Dewpoint",
-            "HeatIndex",
-            "InsideHumidity",
-            "InsideTemp",
-            "OutsideHumidity",
-            "OutsideTemp",
-            "Pressure",
-            "RainInMonth",
-            "RainInYear",
-            "RainRate",
-            "RainStorm",
-            "RainStormLast",
-            "RainToday",
-            "SolarPanelVolt",
-            "SolarRadiation",
-            "SupercapVolt",
-            "ThwIndex",
-            "ThswIndex",
-            "TransBatteryVolt",
-            "WetBulb",
-            "Wind",
-            "WindChill",
-            "WindDirDeg",
-            "WindGust",
-        ]:
+        if self.entity_description.key not in ["WindDir", "BarTrend"]:
             return self.coordinator.data[self.tx_id].get(self.entity_description.tag)
 
         if self.entity_description.tag in [DataKey.WIND_DIR]:

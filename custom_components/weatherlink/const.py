@@ -60,6 +60,7 @@ class DataKey(StrEnum):
     TRANS_BATTERY_FLAG = "trans_battery_flag"
     TRANS_BATTERY_VOLT = "trans_battery_volt"
     UUID = "station_id_uuid"
+    UV_INDEX = "uv_index"
     WET_BULB = "wet_bulb"
     WET_LEAF_1 = "wet_leaf_1"
     WET_LEAF_2 = "wet_leaf_2"

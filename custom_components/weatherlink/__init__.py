@@ -246,6 +246,7 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.TRANS_BATTERY_FLAG] = sensor["data"][0][
                         "trans_battery_flag"
                     ]
+                    outdata[tx_id][DataKey.UV_INDEX] = sensor["data"][0]["uv_index"]
                     outdata[tx_id][DataKey.SOLAR_RADIATION] = sensor["data"][0][
                         "solar_rad"
                     ]
@@ -296,6 +297,7 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.SOLAR_RADIATION] = sensor["data"][0][
                         "solar_rad"
                     ]
+                    outdata[tx_id][DataKey.UV_INDEX] = sensor["data"][0]["uv"]
 
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
@@ -367,6 +369,8 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.SOLAR_RADIATION] = sensor["data"][0][
                         "solar_rad"
                     ]
+                    outdata[tx_id][DataKey.UV_INDEX] = sensor["data"][0]["uv_index"]
+
                 if sensor["sensor_type"] == 56 and sensor["data_structure_type"] == 12:
                     tx_id = sensor["data"][0]["tx_id"]
                     outdata.setdefault(tx_id, {})
