@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import timedelta
+from email.utils import mktime_tz, parsedate_tz
 import logging
 
 from aiohttp import ClientResponseError
@@ -178,6 +179,10 @@ async def get_coordinator(
             )
             outdata[tx_id][DataKey.BAR_TREND] = indata["davis_current_observation"].get(
                 "pressure_tendency_string"
+            )
+
+            outdata[tx_id][DataKey.TIMESTAMP] = mktime_tz(
+                parsedate_tz(indata["observation_time_rfc822"])
             )
 
         if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:

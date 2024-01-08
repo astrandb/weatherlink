@@ -58,7 +58,7 @@ SENSOR_TYPES: Final[tuple[WLBinarySensorDescription, ...]] = (
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         translation_key="timestamp",
         entity_category=EntityCategory.DIAGNOSTIC,
-        exclude_api_ver=(ApiVersion.API_V1,),
+        # exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2,),
         aux_sensors=(55, 56),
     ),
@@ -152,7 +152,7 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
         """Generate base for unique_id."""
         unique_base = None
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
-            unique_base = self.coordinator.data["DID"]
+            unique_base = self.coordinator.data[self.tx_id]["DID"]
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             unique_base = self.coordinator.data[DataKey.UUID]
         return unique_base
@@ -176,7 +176,7 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
     def generate_name(self):
         """Generate device name."""
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
-            return self.coordinator.data["station_name"]
+            return self.coordinator.data[1]["station_name"]
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             if self.tx_id == self.primary_tx_id:
                 return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
