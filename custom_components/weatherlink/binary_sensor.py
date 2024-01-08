@@ -15,6 +15,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo, EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util import dt as dt_util
 
 from . import SENSOR_TYPE_VUE_AND_VANTAGE_PRO, get_coordinator
 from .const import (
@@ -49,6 +50,16 @@ SENSOR_TYPES: Final[tuple[WLBinarySensorDescription, ...]] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2, 12),
+        aux_sensors=(55, 56),
+    ),
+    WLBinarySensorDescription(
+        key="Timestamp",
+        tag=DataKey.TIMESTAMP,
+        device_class=BinarySensorDeviceClass.CONNECTIVITY,
+        translation_key="timestamp",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        # exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(2,),
         aux_sensors=(55, 56),
     ),
 )
@@ -141,7 +152,7 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
         """Generate base for unique_id."""
         unique_base = None
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
-            unique_base = self.coordinator.data["DID"]
+            unique_base = self.coordinator.data[self.tx_id]["DID"]
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             unique_base = self.coordinator.data[DataKey.UUID]
         return unique_base
@@ -165,7 +176,7 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
     def generate_name(self):
         """Generate device name."""
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
-            return self.coordinator.data["station_name"]
+            return self.coordinator.data[1]["station_name"]
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             if self.tx_id == self.primary_tx_id:
                 return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
@@ -216,5 +227,29 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
     @property
     def is_on(self):
         """Return the state of the sensor."""
-        # _LOGGER.debug("Key: %s", self.entity_description.key)
-        return self.coordinator.data[self.tx_id].get(self.entity_description.tag)
+        if self.entity_description.key == "TransmitterBattery":
+            return self.coordinator.data[self.tx_id].get(self.entity_description.tag)
+        if self.entity_description.key == "Timestamp":
+            dt_update = dt_util.utc_from_timestamp(
+                self.coordinator.data[self.tx_id].get(DataKey.TIMESTAMP)
+            )
+            dt_now = dt_util.now()
+            diff = dt_now - dt_update
+            return (diff.total_seconds()) / 60 < 32
+        return None
+
+    @property
+    def extra_state_attributes(self) -> dict[str, str] | None:
+        """Return the state attributes, if any."""
+        if self.entity_description.key in [
+            "Timestamp",
+        ]:
+            if self.coordinator.data[self.tx_id].get(DataKey.TIMESTAMP) is None:
+                return None
+            dt_object = dt_util.utc_from_timestamp(
+                self.coordinator.data[self.tx_id].get(DataKey.TIMESTAMP)
+            )
+            return {
+                "last_update": dt_object,
+            }
+        return None

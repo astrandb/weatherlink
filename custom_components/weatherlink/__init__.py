@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import timedelta
+from email.utils import mktime_tz, parsedate_tz
 import logging
 
 from aiohttp import ClientResponseError
@@ -180,6 +181,10 @@ async def get_coordinator(
                 "pressure_tendency_string"
             )
 
+            outdata[tx_id][DataKey.TIMESTAMP] = mktime_tz(
+                parsedate_tz(indata["observation_time_rfc822"])
+            )
+
         if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             primary_tx_id = tx_id = hass.data[DOMAIN][entry.entry_id]["primary_tx_id"]
             outdata.setdefault(tx_id, {})
@@ -197,6 +202,7 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
                         "data_structure_type"
                     ]
+                    outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP_OUT] = sensor["data"][0]["temp"]
                     outdata[tx_id][DataKey.HUM_OUT] = sensor["data"][0]["hum"]
                     outdata[tx_id][DataKey.WIND_MPH] = sensor["data"][0][
@@ -260,6 +266,7 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
                         "data_structure_type"
                     ]
+                    outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP_OUT] = sensor["data"][0]["temp_out"]
                     outdata[tx_id][DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]
                     outdata[tx_id][DataKey.BAR_SEA_LEVEL] = sensor["data"][0]["bar"]
@@ -309,6 +316,7 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
                         "data_structure_type"
                     ]
+                    outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP_OUT] = sensor["data"][0]["temp"]
                     outdata[tx_id][DataKey.HUM_OUT] = sensor["data"][0]["hum"]
                     outdata[tx_id][DataKey.WIND_MPH] = sensor["data"][0][
@@ -378,6 +386,7 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
                         "data_structure_type"
                     ]
+                    outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP_1] = sensor["data"][0]["temp_1"]
                     outdata[tx_id][DataKey.TEMP_2] = sensor["data"][0]["temp_2"]
                     outdata[tx_id][DataKey.TEMP_3] = sensor["data"][0]["temp_3"]
@@ -403,6 +412,7 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
                         "data_structure_type"
                     ]
+                    outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP_1] = sensor["data"][0]["temp_1"]
                     outdata[tx_id][DataKey.TEMP_2] = sensor["data"][0]["temp_2"]
                     outdata[tx_id][DataKey.TEMP_3] = sensor["data"][0]["temp_3"]
