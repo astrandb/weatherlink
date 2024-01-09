@@ -167,7 +167,7 @@ async def get_coordinator(
             )
             outdata[tx_id][DataKey.RAIN_STORM] = indata[
                 "davis_current_observation"
-            ].get("rain_storm_in")
+            ].get("rain_storm_in", 0.0)
             outdata[tx_id][DataKey.RAIN_RATE] = indata["davis_current_observation"].get(
                 "rain_rate_in_per_hr"
             )
@@ -224,15 +224,15 @@ async def get_coordinator(
                         "rainfall_daily_in", 0.0
                     )
 
-                    outdata[tx_id][DataKey.RAIN_STORM] = sensor["data"][0].get(
-                        "rain_storm_in", 0.0
-                    )
+                    if (xx := sensor["data"][0].get("rain_storm_in", 0.0)) is None:
+                        xx = 0.0
+                    outdata[tx_id][DataKey.RAIN_STORM] = xx
                     outdata[tx_id][DataKey.RAIN_STORM_START] = sensor["data"][0].get(
                         "rain_storm_start_at"
                     )
-                    outdata[tx_id][DataKey.RAIN_STORM_LAST] = sensor["data"][0].get(
-                        "rain_storm_last_in", 0.0
-                    )
+                    if (xx := sensor["data"][0].get("rain_storm_last_in", 0.0)) is None:
+                        xx = 0.0
+                    outdata[tx_id][DataKey.RAIN_STORM_LAST] = xx
                     outdata[tx_id][DataKey.RAIN_STORM_LAST_START] = sensor["data"][
                         0
                     ].get("rain_storm_last_start_at")
@@ -269,6 +269,76 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP_OUT] = sensor["data"][0]["temp_out"]
                     outdata[tx_id][DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]
+                    outdata[tx_id][DataKey.TEMP_EXTRA_1] = sensor["data"][0][
+                        "temp_extra_1"
+                    ]
+                    outdata[tx_id][DataKey.TEMP_EXTRA_2] = sensor["data"][0][
+                        "temp_extra_2"
+                    ]
+                    outdata[tx_id][DataKey.TEMP_EXTRA_3] = sensor["data"][0][
+                        "temp_extra_3"
+                    ]
+                    outdata[tx_id][DataKey.TEMP_EXTRA_4] = sensor["data"][0][
+                        "temp_extra_4"
+                    ]
+                    outdata[tx_id][DataKey.TEMP_EXTRA_5] = sensor["data"][0][
+                        "temp_extra_5"
+                    ]
+                    outdata[tx_id][DataKey.TEMP_EXTRA_6] = sensor["data"][0][
+                        "temp_extra_6"
+                    ]
+                    outdata[tx_id][DataKey.TEMP_EXTRA_7] = sensor["data"][0][
+                        "temp_extra_7"
+                    ]
+                    outdata[tx_id][DataKey.TEMP_SOIL_1] = sensor["data"][0][
+                        "temp_soil_1"
+                    ]
+                    outdata[tx_id][DataKey.TEMP_SOIL_2] = sensor["data"][0][
+                        "temp_soil_2"
+                    ]
+                    outdata[tx_id][DataKey.TEMP_SOIL_3] = sensor["data"][0][
+                        "temp_soil_3"
+                    ]
+                    outdata[tx_id][DataKey.TEMP_SOIL_4] = sensor["data"][0][
+                        "temp_soil_4"
+                    ]
+                    outdata[tx_id][DataKey.HUM_EXTRA_1] = sensor["data"][0][
+                        "hum_extra_1"
+                    ]
+                    outdata[tx_id][DataKey.HUM_EXTRA_2] = sensor["data"][0][
+                        "hum_extra_2"
+                    ]
+                    outdata[tx_id][DataKey.HUM_EXTRA_3] = sensor["data"][0][
+                        "hum_extra_3"
+                    ]
+                    outdata[tx_id][DataKey.HUM_EXTRA_4] = sensor["data"][0][
+                        "hum_extra_4"
+                    ]
+                    outdata[tx_id][DataKey.HUM_EXTRA_5] = sensor["data"][0][
+                        "hum_extra_5"
+                    ]
+                    outdata[tx_id][DataKey.HUM_EXTRA_6] = sensor["data"][0][
+                        "hum_extra_6"
+                    ]
+                    outdata[tx_id][DataKey.HUM_EXTRA_7] = sensor["data"][0][
+                        "hum_extra_7"
+                    ]
+                    outdata[tx_id][DataKey.MOIST_SOIL_1] = sensor["data"][0][
+                        "moist_soil_1"
+                    ]
+                    outdata[tx_id][DataKey.MOIST_SOIL_2] = sensor["data"][0][
+                        "moist_soil_2"
+                    ]
+                    outdata[tx_id][DataKey.MOIST_SOIL_3] = sensor["data"][0][
+                        "moist_soil_3"
+                    ]
+                    outdata[tx_id][DataKey.MOIST_SOIL_4] = sensor["data"][0][
+                        "moist_soil_4"
+                    ]
+                    outdata[tx_id][DataKey.WET_LEAF_1] = sensor["data"][0]["wet_leaf_1"]
+                    outdata[tx_id][DataKey.WET_LEAF_2] = sensor["data"][0]["wet_leaf_2"]
+                    outdata[tx_id][DataKey.WET_LEAF_3] = sensor["data"][0]["wet_leaf_3"]
+                    outdata[tx_id][DataKey.WET_LEAF_4] = sensor["data"][0]["wet_leaf_4"]
                     outdata[tx_id][DataKey.BAR_SEA_LEVEL] = sensor["data"][0]["bar"]
                     outdata[tx_id][DataKey.BAR_TREND] = (
                         float(sensor["data"][0].get("bar_trend", 0)) / 1000
@@ -286,9 +356,9 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.RAIN_DAY] = float(
                         sensor["data"][0].get("rain_day_in", 0)
                     )
-                    outdata[tx_id][DataKey.RAIN_STORM] = float(
-                        sensor["data"][0].get("rain_storm_in", 0)
-                    )
+                    if (xx := sensor["data"][0].get("rain_storm_in", 0.0)) is None:
+                        xx = 0.0
+                    outdata[tx_id][DataKey.RAIN_STORM] = xx
                     outdata[tx_id][DataKey.RAIN_STORM_START] = sensor["data"][0].get(
                         "rain_storm_start_date"
                     )
@@ -337,15 +407,17 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.RAIN_DAY] = sensor["data"][0].get(
                         "rainfall_day_in", 0.0
                     )
-                    outdata[tx_id][DataKey.RAIN_STORM] = sensor["data"][0].get(
-                        "rain_storm_current_in", 0.0
-                    )
+                    if (
+                        xx := sensor["data"][0].get("rain_storm_current_in", 0.0)
+                    ) is None:
+                        xx = 0.0
+                    outdata[tx_id][DataKey.RAIN_STORM] = xx
                     outdata[tx_id][DataKey.RAIN_STORM_START] = sensor["data"][0].get(
                         "rain_storm_current_start_at"
                     )
-                    outdata[tx_id][DataKey.RAIN_STORM_LAST] = sensor["data"][0].get(
-                        "rain_storm_last_in", 0.0
-                    )
+                    if (xx := sensor["data"][0].get("rain_storm_last_in", 0.0)) is None:
+                        xx = 0.0
+                    outdata[tx_id][DataKey.RAIN_STORM_LAST] = xx
                     outdata[tx_id][DataKey.RAIN_STORM_LAST_START] = sensor["data"][
                         0
                     ].get("rain_storm_last_start_at")

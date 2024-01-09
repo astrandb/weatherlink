@@ -71,6 +71,27 @@
       "heat_index": {
         "name": "Heat index"
       },
+      "hum_extra_1": {
+        "name": "Humidity extra 1"
+      },
+      "hum_extra_2": {
+        "name": "Humidity extra 2"
+      },
+      "hum_extra_3": {
+        "name": "Humidity extra 3"
+      },
+      "hum_extra_4": {
+        "name": "Humidity extra 4"
+      },
+      "hum_extra_5": {
+        "name": "Humidity extra 5"
+      },
+      "hum_extra_6": {
+        "name": "Humidity extra 6"
+      },
+      "hum_extra_7": {
+        "name": "Humidity extra 7"
+      },
       "inside_humidity": {
         "name": "Inside humidity"
       },
@@ -150,6 +171,39 @@
       "temp_4": {
         "name": "Temperature 4"
       },
+      "temp_extra_1": {
+        "name": "Temp extra 1"
+      },
+      "temp_extra_2": {
+        "name": "Temp extra 2"
+      },
+      "temp_extra_3": {
+        "name": "Temp extra 3"
+      },
+      "temp_extra_4": {
+        "name": "Temp extra 4"
+      },
+      "temp_extra_5": {
+        "name": "Temp extra 5"
+      },
+      "temp_extra_6": {
+        "name": "Temp extra 6"
+      },
+      "temp_extra_7": {
+        "name": "Temp extra 7"
+      },
+      "temp_soil_1": {
+        "name": "Temp soil 1"
+      },
+      "temp_soil_2": {
+        "name": "Temp soil 2"
+      },
+      "temp_soil_3": {
+        "name": "Temp soil 3"
+      },
+      "temp_soil_4": {
+        "name": "Temp soil 4"
+      },
       "thsw_index": {
         "name": "THSW index"
       },
@@ -170,6 +224,12 @@
       },
       "wet_leaf_2": {
         "name": "Leaf wetness 2"
+      },
+      "wet_leaf_3": {
+        "name": "Leaf wetness 3"
+      },
+      "wet_leaf_4": {
+        "name": "Leaf wetness 4"
       },
       "wind": {
         "name": "Wind"
