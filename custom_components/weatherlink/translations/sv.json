@@ -42,6 +42,18 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "timestamp": {
+        "state_attributes": {
+          "last_update": {
+            "name": "Senaste uppdatering"
+          }
+        }
+      },
+      "trans_battery": {
+        "name": "Sändarbatteri"
+      }
+    },
     "sensor": {
       "bar_trend": {
         "name": "Lufttryck trend",
