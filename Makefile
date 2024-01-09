@@ -13,7 +13,7 @@ bump_beta:
 	bumpver update --no-fetch --patch --tag=beta --tag-num
 
 bump_beta_next:
-	bumpver update --no-fetch --tag-num
+	bumpver update --no-fetch --tag-num --commit
 
 bump_remove_beta_tag:
 	bumpver update --no-fetch --tag=final
