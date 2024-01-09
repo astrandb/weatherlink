@@ -59,7 +59,7 @@ SENSOR_TYPES: Final[tuple[WLBinarySensorDescription, ...]] = (
         translation_key="timestamp",
         entity_category=EntityCategory.DIAGNOSTIC,
         # exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(2,),
+        # exclude_data_structure=(2,),
         aux_sensors=(55, 56),
     ),
 )
