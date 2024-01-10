@@ -127,6 +127,9 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return unload_ok
 
 
+DCO = "davis_current_observation"
+
+
 async def get_coordinator(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -141,43 +144,27 @@ async def get_coordinator(
         if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             tx_id = 1
             outdata.setdefault(tx_id, {})
-            outdata[tx_id]["DID"] = indata["davis_current_observation"].get("DID")
-            outdata[tx_id]["station_name"] = indata["davis_current_observation"].get(
-                "station_name"
-            )
+            outdata[tx_id]["DID"] = indata[DCO].get("DID")
+            outdata[tx_id]["station_name"] = indata[DCO].get("station_name")
             outdata[tx_id][DataKey.TEMP_OUT] = indata.get("temp_f")
             outdata[tx_id][DataKey.HEAT_INDEX] = indata.get("heat_index_f")
             outdata[tx_id][DataKey.WIND_CHILL] = indata.get("wind_chill_f")
-            outdata[tx_id][DataKey.TEMP_IN] = indata["davis_current_observation"].get(
-                "temp_in_f"
-            )
-            outdata[tx_id][DataKey.HUM_IN] = indata["davis_current_observation"].get(
-                "relative_humidity_in"
-            )
+            outdata[tx_id][DataKey.TEMP_IN] = indata[DCO].get("temp_in_f")
+            outdata[tx_id][DataKey.HUM_IN] = indata[DCO].get("relative_humidity_in")
             outdata[tx_id][DataKey.HUM_OUT] = indata.get("relative_humidity")
             outdata[tx_id][DataKey.BAR_SEA_LEVEL] = indata.get("pressure_in")
             outdata[tx_id][DataKey.WIND_MPH] = indata.get("wind_mph")
-            outdata[tx_id][DataKey.WIND_GUST_MPH] = indata[
-                "davis_current_observation"
-            ].get("wind_ten_min_gust_mph")
+            outdata[tx_id][DataKey.WIND_GUST_MPH] = indata[DCO].get(
+                "wind_ten_min_gust_mph"
+            )
             outdata[tx_id][DataKey.WIND_DIR] = indata.get("wind_degrees")
             outdata[tx_id][DataKey.DEWPOINT] = indata.get("dewpoint_f")
-            outdata[tx_id][DataKey.RAIN_DAY] = indata["davis_current_observation"].get(
-                "rain_day_in"
-            )
-            outdata[tx_id][DataKey.RAIN_STORM] = indata[
-                "davis_current_observation"
-            ].get("rain_storm_in", 0.0)
-            outdata[tx_id][DataKey.RAIN_RATE] = indata["davis_current_observation"].get(
-                "rain_rate_in_per_hr"
-            )
-            outdata[tx_id][DataKey.RAIN_MONTH] = indata[
-                "davis_current_observation"
-            ].get("rain_month_in")
-            outdata[tx_id][DataKey.RAIN_YEAR] = indata["davis_current_observation"].get(
-                "rain_year_in"
-            )
-            outdata[tx_id][DataKey.BAR_TREND] = indata["davis_current_observation"].get(
+            outdata[tx_id][DataKey.RAIN_DAY] = indata[DCO].get("rain_day_in")
+            outdata[tx_id][DataKey.RAIN_STORM] = indata[DCO].get("rain_storm_in", 0.0)
+            outdata[tx_id][DataKey.RAIN_RATE] = indata[DCO].get("rain_rate_in_per_hr")
+            outdata[tx_id][DataKey.RAIN_MONTH] = indata[DCO].get("rain_month_in")
+            outdata[tx_id][DataKey.RAIN_YEAR] = indata[DCO].get("rain_year_in")
+            outdata[tx_id][DataKey.BAR_TREND] = indata[DCO].get(
                 "pressure_tendency_string"
             )
 
