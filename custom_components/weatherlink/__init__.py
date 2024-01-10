@@ -167,6 +167,8 @@ async def get_coordinator(
             outdata[tx_id][DataKey.BAR_TREND] = indata[DCO].get(
                 "pressure_tendency_string"
             )
+            outdata[tx_id][DataKey.SOLAR_RADIATION] = indata.get("solar_radiation")
+            outdata[tx_id][DataKey.UV_INDEX] = indata.get("uv_index")
 
             outdata[tx_id][DataKey.TIMESTAMP] = mktime_tz(
                 parsedate_tz(indata["observation_time_rfc822"])
