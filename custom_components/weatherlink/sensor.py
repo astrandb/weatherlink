@@ -4,7 +4,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 import logging
-from typing import Final
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -46,17 +45,18 @@ _LOGGER = logging.getLogger(__name__)
 SUBTAG_1 = "davis_current_observation"
 
 
-@dataclass
+@dataclass(frozen=True)
 class WLSensorDescription(SensorEntityDescription):
     """Class describing Weatherlink sensor entities."""
 
     tag: DataKey | None = None
-    exclude_api_ver: set = ()
-    exclude_data_structure: set = ()
-    aux_sensors: set = ()
+    exclude_api_ver: tuple = ()
+    exclude_data_structure: tuple = ()
+    aux_sensors: tuple = ()
 
 
-SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
+# pylint: disable=E1123
+SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
     WLSensorDescription(
         key="OutsideTemp",
         tag=DataKey.TEMP_OUT,
@@ -286,7 +286,6 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         suggested_display_precision=0,
         native_unit_of_measurement=UnitOfIrradiance.WATTS_PER_SQUARE_METER,
         state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
         aux_sensors=(55,),
     ),
     WLSensorDescription(
@@ -296,7 +295,6 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
         icon="mdi:sun-wireless-outline",
         suggested_display_precision=1,
         state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
         aux_sensors=(55,),
     ),
     WLSensorDescription(
@@ -350,358 +348,125 @@ SENSOR_TYPES: Final[tuple[WLSensorDescription, ...]] = (
             25,
         ),
     ),
-    WLSensorDescription(
-        key="MoistSoil1",
-        tag=DataKey.MOIST_SOIL_1,
-        translation_key="moist_soil_1",
-        icon="mdi:watering-can-outline",
-        suggested_display_precision=0,
-        native_unit_of_measurement=UnitOfPressure.CBAR,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
+    *(
+        WLSensorDescription(
+            key=f"MoistSoil{numb}",
+            tag=f"{DataKey.MOIST_SOIL}_{numb}",
+            translation_key=f"moist_soil_{numb}",
+            icon="mdi:watering-can-outline",
+            suggested_display_precision=0,
+            native_unit_of_measurement=UnitOfPressure.CBAR,
+            state_class=SensorStateClass.MEASUREMENT,
+            exclude_api_ver=(ApiVersion.API_V1,),
+            exclude_data_structure=(
+                10,
+                23,
+            ),
+            aux_sensors=(56,),
+        )
+        for numb in range(1, 4 + 1)
     ),
-    WLSensorDescription(
-        key="MoistSoil2",
-        tag=DataKey.MOIST_SOIL_2,
-        translation_key="moist_soil_2",
-        icon="mdi:watering-can-outline",
-        suggested_display_precision=0,
-        native_unit_of_measurement=UnitOfPressure.CBAR,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
+    *(
+        WLSensorDescription(
+            key=f"WetLeaf{numb}",
+            tag=f"{DataKey.WET_LEAF}_{numb}",
+            translation_key=f"wet_leaf_{numb}",
+            icon="mdi:leaf",
+            suggested_display_precision=1,
+            state_class=SensorStateClass.MEASUREMENT,
+            exclude_api_ver=(ApiVersion.API_V1,),
+            exclude_data_structure=(
+                10,
+                23,
+            ),
+            aux_sensors=(56,),
+        )
+        for numb in range(1, 2 + 1)
     ),
-    WLSensorDescription(
-        key="MoistSoil3",
-        tag=DataKey.MOIST_SOIL_3,
-        translation_key="moist_soil_3",
-        icon="mdi:watering-can-outline",
-        suggested_display_precision=0,
-        native_unit_of_measurement=UnitOfPressure.CBAR,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
+    *(
+        WLSensorDescription(
+            key=f"WetLeaf{numb}",
+            tag=f"{DataKey.WET_LEAF}_{numb}",
+            translation_key=f"wet_leaf_{numb}",
+            icon="mdi:leaf",
+            suggested_display_precision=1,
+            state_class=SensorStateClass.MEASUREMENT,
+            exclude_api_ver=(ApiVersion.API_V1,),
+            exclude_data_structure=(
+                10,
+                23,
+            ),
+        )
+        for numb in range(3, 4 + 1)
     ),
-    WLSensorDescription(
-        key="MoistSoil4",
-        tag=DataKey.MOIST_SOIL_4,
-        translation_key="moist_soil_4",
-        icon="mdi:watering-can-outline",
-        suggested_display_precision=0,
-        native_unit_of_measurement=UnitOfPressure.CBAR,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
+    *(
+        WLSensorDescription(
+            key=f"Temp{numb}",
+            tag=f"{DataKey.TEMP}_{numb}",
+            translation_key=f"temp_{numb}",
+            suggested_display_precision=1,
+            device_class=SensorDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+            state_class=SensorStateClass.MEASUREMENT,
+            exclude_api_ver=(ApiVersion.API_V1,),
+            exclude_data_structure=(
+                2,
+                10,
+                23,
+            ),
+            aux_sensors=(56,),
+        )
+        for numb in range(1, 4 + 1)
     ),
-    WLSensorDescription(
-        key="WetLeaf1",
-        tag=DataKey.WET_LEAF_1,
-        translation_key="wet_leaf_1",
-        icon="mdi:leaf",
-        suggested_display_precision=1,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
+    *(
+        WLSensorDescription(
+            key=f"TempExtra{numb}",
+            tag=f"{DataKey.TEMP_EXTRA}_{numb}",
+            translation_key=f"temp_extra_{numb}",
+            suggested_display_precision=1,
+            device_class=SensorDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+            state_class=SensorStateClass.MEASUREMENT,
+            exclude_api_ver=(ApiVersion.API_V1,),
+            exclude_data_structure=(
+                10,
+                23,
+            ),
+        )
+        for numb in range(1, 7 + 1)
     ),
-    WLSensorDescription(
-        key="WetLeaf2",
-        tag=DataKey.WET_LEAF_2,
-        translation_key="wet_leaf_2",
-        icon="mdi:leaf",
-        suggested_display_precision=1,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
+    *(
+        WLSensorDescription(
+            key=f"TempSoil{numb}",
+            tag=f"{DataKey.TEMP_SOIL}_{numb}",
+            translation_key=f"temp_soil_{numb}",
+            suggested_display_precision=1,
+            device_class=SensorDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+            state_class=SensorStateClass.MEASUREMENT,
+            exclude_api_ver=(ApiVersion.API_V1,),
+            exclude_data_structure=(
+                10,
+                23,
+            ),
+        )
+        for numb in range(1, 4 + 1)
     ),
-    WLSensorDescription(
-        key="WetLeaf3",
-        tag=DataKey.WET_LEAF_3,
-        translation_key="wet_leaf_3",
-        icon="mdi:leaf",
-        suggested_display_precision=1,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="WetLeaf4",
-        tag=DataKey.WET_LEAF_4,
-        translation_key="wet_leaf_4",
-        icon="mdi:leaf",
-        suggested_display_precision=1,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="Temp1",
-        tag=DataKey.TEMP_1,
-        translation_key="temp_1",
-        suggested_display_precision=1,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
-    ),
-    WLSensorDescription(
-        key="Temp2",
-        tag=DataKey.TEMP_2,
-        translation_key="temp_2",
-        suggested_display_precision=1,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
-    ),
-    WLSensorDescription(
-        key="Temp3",
-        tag=DataKey.TEMP_3,
-        translation_key="temp_3",
-        suggested_display_precision=1,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
-    ),
-    WLSensorDescription(
-        key="Temp4",
-        tag=DataKey.TEMP_4,
-        translation_key="temp_4",
-        suggested_display_precision=1,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
-    ),
-    WLSensorDescription(
-        key="TempExtra1",
-        tag=DataKey.TEMP_EXTRA_1,
-        translation_key="temp_extra_1",
-        suggested_display_precision=1,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="TempExtra2",
-        tag=DataKey.TEMP_EXTRA_2,
-        translation_key="temp_extra_2",
-        suggested_display_precision=1,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="TempSoil1",
-        tag=DataKey.TEMP_SOIL_1,
-        translation_key="temp_soil_1",
-        suggested_display_precision=1,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="TempSoil2",
-        tag=DataKey.TEMP_SOIL_2,
-        translation_key="temp_soil_2",
-        suggested_display_precision=1,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="TempSoil3",
-        tag=DataKey.TEMP_SOIL_3,
-        translation_key="temp_soil_3",
-        suggested_display_precision=1,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="TempSoil4",
-        tag=DataKey.TEMP_SOIL_4,
-        translation_key="temp_soil_4",
-        suggested_display_precision=1,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="HumidityExtra1",
-        tag=DataKey.HUM_EXTRA_1,
-        device_class=SensorDeviceClass.HUMIDITY,
-        suggested_display_precision=0,
-        translation_key="hum_extra_1",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="HumidityExtra2",
-        tag=DataKey.HUM_EXTRA_2,
-        device_class=SensorDeviceClass.HUMIDITY,
-        suggested_display_precision=0,
-        translation_key="hum_extra_2",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="HumidityExtra3",
-        tag=DataKey.HUM_EXTRA_3,
-        device_class=SensorDeviceClass.HUMIDITY,
-        suggested_display_precision=0,
-        translation_key="hum_extra_3",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="HumidityExtra4",
-        tag=DataKey.HUM_EXTRA_4,
-        device_class=SensorDeviceClass.HUMIDITY,
-        suggested_display_precision=0,
-        translation_key="hum_extra_4",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="HumidityExtra5",
-        tag=DataKey.HUM_EXTRA_5,
-        device_class=SensorDeviceClass.HUMIDITY,
-        suggested_display_precision=0,
-        translation_key="hum_extra_5",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="HumidityExtra6",
-        tag=DataKey.HUM_EXTRA_6,
-        device_class=SensorDeviceClass.HUMIDITY,
-        suggested_display_precision=0,
-        translation_key="hum_extra_6",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="HumidityExtra7",
-        tag=DataKey.HUM_EXTRA_7,
-        device_class=SensorDeviceClass.HUMIDITY,
-        suggested_display_precision=0,
-        translation_key="hum_extra_7",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_data_structure=(
-            10,
-            23,
-        ),
+    *(
+        WLSensorDescription(
+            key=f"HumidityExtra{numb}",
+            tag=f"{DataKey.HUM_EXTRA}_{numb}",
+            device_class=SensorDeviceClass.HUMIDITY,
+            suggested_display_precision=0,
+            translation_key=f"hum_extra_{numb}",
+            native_unit_of_measurement=PERCENTAGE,
+            state_class=SensorStateClass.MEASUREMENT,
+            exclude_data_structure=(
+                10,
+                23,
+            ),
+        )
+        for numb in range(1, 7 + 1)
     ),
 )
 
