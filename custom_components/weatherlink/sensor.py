@@ -55,6 +55,7 @@ class WLSensorDescription(SensorEntityDescription):
     aux_sensors: tuple = ()
 
 
+# pylint: disable=E1123
 SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
     WLSensorDescription(
         key="OutsideTemp",
@@ -347,125 +348,61 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
             25,
         ),
     ),
-    WLSensorDescription(
-        key="MoistSoil1",
-        tag=DataKey.MOIST_SOIL_1,
-        translation_key="moist_soil_1",
-        icon="mdi:watering-can-outline",
-        suggested_display_precision=0,
-        native_unit_of_measurement=UnitOfPressure.CBAR,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
+    *(
+        WLSensorDescription(
+            key=f"MoistSoil{numb}",
+            tag=f"{DataKey.MOIST_SOIL}_{numb}",
+            translation_key=f"moist_soil_{numb}",
+            icon="mdi:watering-can-outline",
+            suggested_display_precision=0,
+            native_unit_of_measurement=UnitOfPressure.CBAR,
+            state_class=SensorStateClass.MEASUREMENT,
+            exclude_api_ver=(ApiVersion.API_V1,),
+            exclude_data_structure=(
+                10,
+                23,
+            ),
+            aux_sensors=(56,),
+        )
+        for numb in range(1, 4 + 1)
     ),
-    WLSensorDescription(
-        key="MoistSoil2",
-        tag=DataKey.MOIST_SOIL_2,
-        translation_key="moist_soil_2",
-        icon="mdi:watering-can-outline",
-        suggested_display_precision=0,
-        native_unit_of_measurement=UnitOfPressure.CBAR,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
+    *(
+        WLSensorDescription(
+            key=f"WetLeaf{numb}",
+            tag=f"{DataKey.WET_LEAF}_{numb}",
+            translation_key=f"wet_leaf_{numb}",
+            icon="mdi:leaf",
+            suggested_display_precision=1,
+            state_class=SensorStateClass.MEASUREMENT,
+            exclude_api_ver=(ApiVersion.API_V1,),
+            exclude_data_structure=(
+                10,
+                23,
+            ),
+            aux_sensors=(56,),
+        )
+        for numb in range(1, 2 + 1)
     ),
-    WLSensorDescription(
-        key="MoistSoil3",
-        tag=DataKey.MOIST_SOIL_3,
-        translation_key="moist_soil_3",
-        icon="mdi:watering-can-outline",
-        suggested_display_precision=0,
-        native_unit_of_measurement=UnitOfPressure.CBAR,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
-    ),
-    WLSensorDescription(
-        key="MoistSoil4",
-        tag=DataKey.MOIST_SOIL_4,
-        translation_key="moist_soil_4",
-        icon="mdi:watering-can-outline",
-        suggested_display_precision=0,
-        native_unit_of_measurement=UnitOfPressure.CBAR,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
-    ),
-    WLSensorDescription(
-        key="WetLeaf1",
-        tag=DataKey.WET_LEAF_1,
-        translation_key="wet_leaf_1",
-        icon="mdi:leaf",
-        suggested_display_precision=1,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
-    ),
-    WLSensorDescription(
-        key="WetLeaf2",
-        tag=DataKey.WET_LEAF_2,
-        translation_key="wet_leaf_2",
-        icon="mdi:leaf",
-        suggested_display_precision=1,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-        aux_sensors=(56,),
-    ),
-    WLSensorDescription(
-        key="WetLeaf3",
-        tag=DataKey.WET_LEAF_3,
-        translation_key="wet_leaf_3",
-        icon="mdi:leaf",
-        suggested_display_precision=1,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
-    ),
-    WLSensorDescription(
-        key="WetLeaf4",
-        tag=DataKey.WET_LEAF_4,
-        translation_key="wet_leaf_4",
-        icon="mdi:leaf",
-        suggested_display_precision=1,
-        state_class=SensorStateClass.MEASUREMENT,
-        exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            10,
-            23,
-        ),
+    *(
+        WLSensorDescription(
+            key=f"WetLeaf{numb}",
+            tag=f"{DataKey.WET_LEAF}_{numb}",
+            translation_key=f"wet_leaf_{numb}",
+            icon="mdi:leaf",
+            suggested_display_precision=1,
+            state_class=SensorStateClass.MEASUREMENT,
+            exclude_api_ver=(ApiVersion.API_V1,),
+            exclude_data_structure=(
+                10,
+                23,
+            ),
+        )
+        for numb in range(3, 4 + 1)
     ),
     *(
         WLSensorDescription(
             key=f"Temp{numb}",
-            # tag=DataKey.TEMP_1,
-            tag=f"temp_{numb}",
+            tag=f"{DataKey.TEMP}_{numb}",
             translation_key=f"temp_{numb}",
             suggested_display_precision=1,
             device_class=SensorDeviceClass.TEMPERATURE,
@@ -479,13 +416,12 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
             ),
             aux_sensors=(56,),
         )
-        for numb in range(4 + 1)
+        for numb in range(1, 4 + 1)
     ),
     *(
         WLSensorDescription(
             key=f"TempExtra{numb}",
-            # tag=DataKey.TEMP_EXTRA_1,
-            tag=f"temp_extra_{numb}",
+            tag=f"{DataKey.TEMP_EXTRA}_{numb}",
             translation_key=f"temp_extra_{numb}",
             suggested_display_precision=1,
             device_class=SensorDeviceClass.TEMPERATURE,
@@ -497,13 +433,12 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
                 23,
             ),
         )
-        for numb in range(7 + 1)
+        for numb in range(1, 7 + 1)
     ),
     *(
         WLSensorDescription(
             key=f"TempSoil{numb}",
-            # tag=DataKey.TEMP_SOIL_1,
-            tag=f"temp_soil_{numb}",
+            tag=f"{DataKey.TEMP_SOIL}_{numb}",
             translation_key=f"temp_soil_{numb}",
             suggested_display_precision=1,
             device_class=SensorDeviceClass.TEMPERATURE,
@@ -515,13 +450,12 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
                 23,
             ),
         )
-        for numb in range(4 + 1)
+        for numb in range(1, 4 + 1)
     ),
     *(
         WLSensorDescription(
             key=f"HumidityExtra{numb}",
-            # tag=DataKey.HUM_EXTRA_1,
-            tag=f"hum_extra_{numb}",
+            tag=f"{DataKey.HUM_EXTRA}_{numb}",
             device_class=SensorDeviceClass.HUMIDITY,
             suggested_display_precision=0,
             translation_key=f"hum_extra_{numb}",
@@ -532,7 +466,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
                 23,
             ),
         )
-        for numb in range(7 + 1)
+        for numb in range(1, 7 + 1)
     ),
 )
 

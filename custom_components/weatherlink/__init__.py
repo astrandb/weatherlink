@@ -130,7 +130,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 DCO = "davis_current_observation"
 
 
-async def get_coordinator(
+async def get_coordinator(  # noqa: C901
     hass: HomeAssistant,
     entry: ConfigEntry,
 ) -> DataUpdateCoordinator:
@@ -138,7 +138,7 @@ async def get_coordinator(
     if "coordinator" in hass.data[DOMAIN][entry.entry_id]:
         return hass.data[DOMAIN][entry.entry_id]["coordinator"]
 
-    def _preprocess(indata: str):
+    def _preprocess(indata: str):  # noqa: C901
         outdata = {}
         # _LOGGER.debug("Received data: %s", indata)
         if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
@@ -258,76 +258,26 @@ async def get_coordinator(
                     outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP_OUT] = sensor["data"][0]["temp_out"]
                     outdata[tx_id][DataKey.TEMP_IN] = sensor["data"][0]["temp_in"]
-                    outdata[tx_id][DataKey.TEMP_EXTRA_1] = sensor["data"][0][
-                        "temp_extra_1"
-                    ]
-                    outdata[tx_id][DataKey.TEMP_EXTRA_2] = sensor["data"][0][
-                        "temp_extra_2"
-                    ]
-                    outdata[tx_id][DataKey.TEMP_EXTRA_3] = sensor["data"][0][
-                        "temp_extra_3"
-                    ]
-                    outdata[tx_id][DataKey.TEMP_EXTRA_4] = sensor["data"][0][
-                        "temp_extra_4"
-                    ]
-                    outdata[tx_id][DataKey.TEMP_EXTRA_5] = sensor["data"][0][
-                        "temp_extra_5"
-                    ]
-                    outdata[tx_id][DataKey.TEMP_EXTRA_6] = sensor["data"][0][
-                        "temp_extra_6"
-                    ]
-                    outdata[tx_id][DataKey.TEMP_EXTRA_7] = sensor["data"][0][
-                        "temp_extra_7"
-                    ]
-                    outdata[tx_id][DataKey.TEMP_SOIL_1] = sensor["data"][0][
-                        "temp_soil_1"
-                    ]
-                    outdata[tx_id][DataKey.TEMP_SOIL_2] = sensor["data"][0][
-                        "temp_soil_2"
-                    ]
-                    outdata[tx_id][DataKey.TEMP_SOIL_3] = sensor["data"][0][
-                        "temp_soil_3"
-                    ]
-                    outdata[tx_id][DataKey.TEMP_SOIL_4] = sensor["data"][0][
-                        "temp_soil_4"
-                    ]
-                    outdata[tx_id][DataKey.HUM_EXTRA_1] = sensor["data"][0][
-                        "hum_extra_1"
-                    ]
-                    outdata[tx_id][DataKey.HUM_EXTRA_2] = sensor["data"][0][
-                        "hum_extra_2"
-                    ]
-                    outdata[tx_id][DataKey.HUM_EXTRA_3] = sensor["data"][0][
-                        "hum_extra_3"
-                    ]
-                    outdata[tx_id][DataKey.HUM_EXTRA_4] = sensor["data"][0][
-                        "hum_extra_4"
-                    ]
-                    outdata[tx_id][DataKey.HUM_EXTRA_5] = sensor["data"][0][
-                        "hum_extra_5"
-                    ]
-                    outdata[tx_id][DataKey.HUM_EXTRA_6] = sensor["data"][0][
-                        "hum_extra_6"
-                    ]
-                    outdata[tx_id][DataKey.HUM_EXTRA_7] = sensor["data"][0][
-                        "hum_extra_7"
-                    ]
-                    outdata[tx_id][DataKey.MOIST_SOIL_1] = sensor["data"][0][
-                        "moist_soil_1"
-                    ]
-                    outdata[tx_id][DataKey.MOIST_SOIL_2] = sensor["data"][0][
-                        "moist_soil_2"
-                    ]
-                    outdata[tx_id][DataKey.MOIST_SOIL_3] = sensor["data"][0][
-                        "moist_soil_3"
-                    ]
-                    outdata[tx_id][DataKey.MOIST_SOIL_4] = sensor["data"][0][
-                        "moist_soil_4"
-                    ]
-                    outdata[tx_id][DataKey.WET_LEAF_1] = sensor["data"][0]["wet_leaf_1"]
-                    outdata[tx_id][DataKey.WET_LEAF_2] = sensor["data"][0]["wet_leaf_2"]
-                    outdata[tx_id][DataKey.WET_LEAF_3] = sensor["data"][0]["wet_leaf_3"]
-                    outdata[tx_id][DataKey.WET_LEAF_4] = sensor["data"][0]["wet_leaf_4"]
+                    for numb in range(1, 7 + 1):
+                        outdata[tx_id][f"{DataKey.TEMP_EXTRA}_{numb}"] = sensor["data"][
+                            0
+                        ][f"temp_extra_{numb}"]
+                    for numb in range(1, 4 + 1):
+                        outdata[tx_id][f"{DataKey.TEMP_SOIL}_{numb}"] = sensor["data"][
+                            0
+                        ][f"temp_soil_{numb}"]
+                    for numb in range(1, 7 + 1):
+                        outdata[tx_id][f"{DataKey.HUM_EXTRA}_{numb}"] = sensor["data"][
+                            0
+                        ][f"hum_extra_{numb}"]
+                    for numb in range(1, 4 + 1):
+                        outdata[tx_id][f"{DataKey.MOIST_SOIL}_{numb}"] = sensor["data"][
+                            0
+                        ][f"moist_soil_{numb}"]
+                    for numb in range(1, 4 + 1):
+                        outdata[tx_id][f"{DataKey.WET_LEAF}_{numb}"] = sensor["data"][
+                            0
+                        ][f"wet_leaf_{numb}"]
                     outdata[tx_id][DataKey.BAR_SEA_LEVEL] = sensor["data"][0]["bar"]
                     outdata[tx_id][DataKey.BAR_TREND] = (
                         float(sensor["data"][0].get("bar_trend", 0)) / 1000
@@ -448,24 +398,19 @@ async def get_coordinator(
                         "data_structure_type"
                     ]
                     outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
-                    outdata[tx_id][DataKey.TEMP_1] = sensor["data"][0]["temp_1"]
-                    outdata[tx_id][DataKey.TEMP_2] = sensor["data"][0]["temp_2"]
-                    outdata[tx_id][DataKey.TEMP_3] = sensor["data"][0]["temp_3"]
-                    outdata[tx_id][DataKey.TEMP_4] = sensor["data"][0]["temp_4"]
-                    outdata[tx_id][DataKey.MOIST_SOIL_1] = sensor["data"][0][
-                        "moist_soil_1"
-                    ]
-                    outdata[tx_id][DataKey.MOIST_SOIL_2] = sensor["data"][0][
-                        "moist_soil_2"
-                    ]
-                    outdata[tx_id][DataKey.MOIST_SOIL_3] = sensor["data"][0][
-                        "moist_soil_3"
-                    ]
-                    outdata[tx_id][DataKey.MOIST_SOIL_4] = sensor["data"][0][
-                        "moist_soil_4"
-                    ]
-                    outdata[tx_id][DataKey.WET_LEAF_1] = sensor["data"][0]["wet_leaf_1"]
-                    outdata[tx_id][DataKey.WET_LEAF_2] = sensor["data"][0]["wet_leaf_2"]
+                    for numb in range(1, 4 + 1):
+                        outdata[tx_id][f"{DataKey.TEMP}_{numb}"] = sensor["data"][0][
+                            f"temp_{numb}"
+                        ]
+                    for numb in range(1, 4 + 1):
+                        outdata[tx_id][f"{DataKey.MOIST_SOIL}_{numb}"] = sensor["data"][
+                            0
+                        ][f"moist_soil_{numb}"]
+                    for numb in range(1, 2 + 1):
+                        outdata[tx_id][f"{DataKey.WET_LEAF}_{numb}"] = sensor["data"][
+                            0
+                        ][f"wet_leaf_{numb}"]
+
                 if sensor["sensor_type"] == 56 and sensor["data_structure_type"] == 25:
                     tx_id = sensor["data"][0]["tx_id"]
                     outdata.setdefault(tx_id, {})
@@ -474,24 +419,18 @@ async def get_coordinator(
                         "data_structure_type"
                     ]
                     outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
-                    outdata[tx_id][DataKey.TEMP_1] = sensor["data"][0]["temp_1"]
-                    outdata[tx_id][DataKey.TEMP_2] = sensor["data"][0]["temp_2"]
-                    outdata[tx_id][DataKey.TEMP_3] = sensor["data"][0]["temp_3"]
-                    outdata[tx_id][DataKey.TEMP_4] = sensor["data"][0]["temp_4"]
-                    outdata[tx_id][DataKey.MOIST_SOIL_1] = sensor["data"][0][
-                        "moist_soil_1"
-                    ]
-                    outdata[tx_id][DataKey.MOIST_SOIL_2] = sensor["data"][0][
-                        "moist_soil_2"
-                    ]
-                    outdata[tx_id][DataKey.MOIST_SOIL_3] = sensor["data"][0][
-                        "moist_soil_3"
-                    ]
-                    outdata[tx_id][DataKey.MOIST_SOIL_4] = sensor["data"][0][
-                        "moist_soil_4"
-                    ]
-                    outdata[tx_id][DataKey.WET_LEAF_1] = sensor["data"][0]["wet_leaf_1"]
-                    outdata[tx_id][DataKey.WET_LEAF_2] = sensor["data"][0]["wet_leaf_2"]
+                    for numb in range(1, 4 + 1):
+                        outdata[tx_id][f"{DataKey.TEMP}_{numb}"] = sensor["data"][0][
+                            f"temp_{numb}"
+                        ]
+                    for numb in range(1, 4 + 1):
+                        outdata[tx_id][f"{DataKey.MOIST_SOIL}_{numb}"] = sensor["data"][
+                            0
+                        ][f"moist_soil_{numb}"]
+                    for numb in range(1, 2 + 1):
+                        outdata[tx_id][f"{DataKey.WET_LEAF}_{numb}"] = sensor["data"][
+                            0
+                        ][f"wet_leaf_{numb}"]
                     outdata[tx_id][DataKey.TRANS_BATTERY_FLAG] = sensor["data"][0][
                         "trans_battery_flag"
                     ]
