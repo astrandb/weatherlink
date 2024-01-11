@@ -68,6 +68,15 @@
       "dewpoint": {
         "name": "Dewpoint"
       },
+      "et_day": {
+        "name": "Evapotranspiration day"
+      },
+      "et_month": {
+        "name": "Evapotranspiration month"
+      },
+      "et_year": {
+        "name": "Evapotranspiration year"
+      },
       "heat_index": {
         "name": "Heat index"
       },

@@ -167,8 +167,11 @@ async def get_coordinator(  # noqa: C901
             outdata[tx_id][DataKey.BAR_TREND] = indata[DCO].get(
                 "pressure_tendency_string"
             )
-            outdata[tx_id][DataKey.SOLAR_RADIATION] = indata.get("solar_radiation")
-            outdata[tx_id][DataKey.UV_INDEX] = indata.get("uv_index")
+            outdata[tx_id][DataKey.SOLAR_RADIATION] = indata[DCO].get("solar_radiation")
+            outdata[tx_id][DataKey.UV_INDEX] = indata[DCO].get("uv_index")
+            outdata[tx_id][DataKey.ET_DAY] = indata[DCO].get("et_day")
+            outdata[tx_id][DataKey.ET_MONTH] = indata[DCO].get("et_month")
+            outdata[tx_id][DataKey.ET_YEAR] = indata[DCO].get("et_year")
 
             outdata[tx_id][DataKey.TIMESTAMP] = mktime_tz(
                 parsedate_tz(indata["observation_time_rfc822"])
@@ -245,6 +248,11 @@ async def get_coordinator(  # noqa: C901
                     outdata[tx_id][DataKey.SOLAR_RADIATION] = sensor["data"][0][
                         "solar_rad"
                     ]
+                    outdata[tx_id][DataKey.ET_DAY] = sensor["data"][0].get("et_day")
+                    outdata[tx_id][DataKey.ET_MONTH] = sensor["data"][0].get("et_month")
+                    outdata[tx_id][DataKey.ET_YEAR] = sensor["data"][0].get("et_year")
+
+                # ----------- Data structure 2
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
                     and sensor["data_structure_type"] == 2
@@ -314,6 +322,9 @@ async def get_coordinator(  # noqa: C901
                         "solar_rad"
                     ]
                     outdata[tx_id][DataKey.UV_INDEX] = sensor["data"][0]["uv"]
+                    outdata[tx_id][DataKey.ET_DAY] = sensor["data"][0]["et_day"]
+                    outdata[tx_id][DataKey.ET_MONTH] = sensor["data"][0]["et_month"]
+                    outdata[tx_id][DataKey.ET_YEAR] = sensor["data"][0]["et_year"]
 
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
@@ -389,6 +400,9 @@ async def get_coordinator(  # noqa: C901
                         "solar_rad"
                     ]
                     outdata[tx_id][DataKey.UV_INDEX] = sensor["data"][0]["uv_index"]
+                    outdata[tx_id][DataKey.ET_DAY] = sensor["data"][0]["et_day"]
+                    outdata[tx_id][DataKey.ET_MONTH] = sensor["data"][0]["et_month"]
+                    outdata[tx_id][DataKey.ET_YEAR] = sensor["data"][0]["et_year"]
 
                 if sensor["sensor_type"] == 56 and sensor["data_structure_type"] == 12:
                     tx_id = sensor["data"][0]["tx_id"]
