@@ -68,6 +68,15 @@
       "dewpoint": {
         "name": "Daggpunkt"
       },
+      "et_day": {
+        "name": "Evapotranspiration idag"
+      },
+      "et_month": {
+        "name": "Evapotranspiration månad"
+      },
+      "et_year": {
+        "name": "Evapotranspiration år"
+      },
       "heat_index": {
         "name": "Upplevd temp (TH)"
       },
