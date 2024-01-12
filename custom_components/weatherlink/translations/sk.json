@@ -42,6 +42,18 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "timestamp": {
+        "state_attributes": {
+          "last_update": {
+            "name": "Posledná aktualizácia"
+          }
+        }
+      },
+      "trans_battery": {
+        "name": "Batéria vysielača"
+      }
+    },
     "sensor": {
       "bar_trend": {
         "name": "Trend tlaku",
@@ -59,11 +71,44 @@
       "heat_index": {
         "name": "Index tepla"
       },
+      "hum_extra_1": {
+        "name": "Extra vlhkosť 1"
+      },
+      "hum_extra_2": {
+        "name": "Extra vlhkosť 2"
+      },
+      "hum_extra_3": {
+        "name": "Extra vlhkosť 3"
+      },
+      "hum_extra_4": {
+        "name": "Extra vlhkosť 4"
+      },
+      "hum_extra_5": {
+        "name": "Extra vlhkosť 5"
+      },
+      "hum_extra_6": {
+        "name": "Extra vlhkosť 6"
+      },
+      "hum_extra_7": {
+        "name": "Extra vlhkosť 7"
+      },
       "inside_humidity": {
         "name": "Vnútorná vlhkosť"
       },
       "inside_temperature": {
         "name": "Vnútorná teplota"
+      },
+      "moist_soil_1": {
+        "name": "Pôdna vlhkosť 1"
+      },
+      "moist_soil_2": {
+        "name": "Pôdna vlhkosť 2"
+      },
+      "moist_soil_3": {
+        "name": "Pôdna vlhkosť 3"
+      },
+      "moist_soil_4": {
+        "name": "Pôdna vlhkosť 4"
       },
       "outside_humidity": {
         "name": "Vonkajšia vlhkosť"
@@ -75,7 +120,7 @@
         "name": "Tlak"
       },
       "rain_rate": {
-        "name": "Miera dažďa"
+        "name": "Intenzita dažďa"
       },
       "rain_storm": {
         "name": "Dažďová búrka",
@@ -105,11 +150,59 @@
       "rain_today": {
         "name": "Dážď dnes"
       },
+      "solar_irradiance": {
+        "name": "Slnečné žiarenie"
+      },
       "solar_panel_volt": {
         "name": "Solárny panel"
       },
       "supercap_volt": {
         "name": "Superkondenzátor"
+      },
+      "temp_1": {
+        "name": "Teplota 1"
+      },
+      "temp_2": {
+        "name": "Teplota 2"
+      },
+      "temp_3": {
+        "name": "Teplota 3"
+      },
+      "temp_4": {
+        "name": "Teplota 4"
+      },
+      "temp_extra_1": {
+        "name": "Teplota navyše 1"
+      },
+      "temp_extra_2": {
+        "name": "Teplota navyše 2"
+      },
+      "temp_extra_3": {
+        "name": "Teplota navyše 3"
+      },
+      "temp_extra_4": {
+        "name": "Teplota navyše 4"
+      },
+      "temp_extra_5": {
+        "name": "Teplota navyše 5"
+      },
+      "temp_extra_6": {
+        "name": "Teplota navyše 6"
+      },
+      "temp_extra_7": {
+        "name": "Teplota navyše 7"
+      },
+      "temp_soil_1": {
+        "name": "Teplota pôdy 1"
+      },
+      "temp_soil_2": {
+        "name": "Teplota pôdy 2"
+      },
+      "temp_soil_3": {
+        "name": "Teplota pôdy 3"
+      },
+      "temp_soil_4": {
+        "name": "Teplota pôdy 4"
       },
       "thsw_index": {
         "name": "THSW index"
@@ -120,8 +213,23 @@
       "trans_battery_volt": {
         "name": "Batéria vysielača"
       },
+      "uv_index": {
+        "name": "UV index"
+      },
       "wet_bulb": {
         "name": "Mokrá žiarovka"
+      },
+      "wet_leaf_1": {
+        "name": "Vlhkosť listov 1"
+      },
+      "wet_leaf_2": {
+        "name": "Vlhkosť listov 2"
+      },
+      "wet_leaf_3": {
+        "name": "Vlhkosť listov 3"
+      },
+      "wet_leaf_4": {
+        "name": "Vlhkosť listov 4"
       },
       "wind": {
         "name": "Vietor"
