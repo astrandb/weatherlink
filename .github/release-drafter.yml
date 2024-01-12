@@ -16,6 +16,7 @@ categories:
       - "bugfix"
       - "bug"
   - title: "Translation"
+    collapse-after: 2
     labels:
       - "translation"
   - title: "Dependencies"
