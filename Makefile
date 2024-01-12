@@ -16,4 +16,4 @@ bump_beta_next:
 	bumpver update --no-fetch --tag-num --commit
 
 bump_remove_beta_tag:
-	bumpver update --no-fetch --tag=final
+	bumpver update --no-fetch --tag=final --commit --commit-message="Final release from {old_version} to {new_version}"
