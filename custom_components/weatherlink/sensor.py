@@ -35,6 +35,7 @@ from .const import (
     CONFIG_URL,
     DOMAIN,
     MANUFACTURER,
+    UNAVAILABLE_AFTER_SECONDS,
     ApiVersion,
     DataKey,
 )
@@ -772,3 +773,17 @@ class WLSensor(CoordinatorEntity, SensorEntity):
                 "rain_storm_end": dt_object_end,
             }
         return None
+
+    @property
+    def available(self):
+        """Return the availability of the entity."""
+
+        if not self.coordinator.last_update_success:
+            return False
+
+        dt_update = dt_util.utc_from_timestamp(
+            self.coordinator.data[self.tx_id].get(DataKey.TIMESTAMP)
+        )
+        dt_now = dt_util.now()
+        diff = dt_now - dt_update
+        return (diff.total_seconds()) / 60 < UNAVAILABLE_AFTER_SECONDS

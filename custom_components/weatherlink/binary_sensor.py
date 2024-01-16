@@ -21,8 +21,10 @@ from . import SENSOR_TYPE_VUE_AND_VANTAGE_PRO, get_coordinator
 from .const import (
     CONF_API_VERSION,
     CONFIG_URL,
+    DISCONNECTED_AFTER_SECONDS,
     DOMAIN,
     MANUFACTURER,
+    UNAVAILABLE_AFTER_SECONDS,
     ApiVersion,
     DataKey,
 )
@@ -237,7 +239,7 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
             )
             dt_now = dt_util.now()
             diff = dt_now - dt_update
-            return (diff.total_seconds()) / 60 < 32
+            return (diff.total_seconds()) / 60 < DISCONNECTED_AFTER_SECONDS
         return None
 
     @property
@@ -255,3 +257,20 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
                 "last_update": dt_object,
             }
         return None
+
+    @property
+    def available(self):
+        """Return the availability of the entity."""
+
+        if not self.coordinator.last_update_success:
+            return False
+
+        if self.entity_description.key != "Timestamp":
+            dt_update = dt_util.utc_from_timestamp(
+                self.coordinator.data[self.tx_id].get(DataKey.TIMESTAMP)
+            )
+            dt_now = dt_util.now()
+            diff = dt_now - dt_update
+            return (diff.total_seconds()) / 60 < UNAVAILABLE_AFTER_SECONDS
+
+        return True
