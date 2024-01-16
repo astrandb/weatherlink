@@ -56,6 +56,11 @@ SENSOR_TYPE_VUE_AND_VANTAGE_PRO = (
     87,
 )
 
+SENSOR_TYPE_AIRLINK = (
+    323,
+    326,
+)
+
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -91,9 +96,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         tx_ids = []
         for sensor in all_sensors["sensors"]:
             if (
-                sensor["parent_device_id"]
+                sensor["station_id"]
                 == hass.data[DOMAIN][entry.entry_id]["station_data"]["stations"][0][
-                    "gateway_id"
+                    "station_id"
                 ]
             ):
                 sensors.append(sensor)
@@ -469,6 +474,36 @@ async def get_coordinator(  # noqa: C901
                         "bar_sea_level"
                     ]
                     outdata[tx_id][DataKey.BAR_TREND] = sensor["data"][0]["bar_trend"]
+
+                if (
+                    sensor["sensor_type"] in SENSOR_TYPE_AIRLINK
+                    and sensor["data_structure_type"] == 16
+                ):
+                    tx_id = primary_tx_id
+                    tx_id = sensor["lsid"]
+                    outdata.setdefault(tx_id, {})
+                    outdata[tx_id][DataKey.SENSOR_TYPE] = sensor["sensor_type"]
+                    outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
+                        "data_structure_type"
+                    ]
+                    outdata[tx_id][DataKey.TEMP] = sensor["data"][0]["temp"]
+                    outdata[tx_id][DataKey.HUM] = sensor["data"][0]["hum"]
+                    outdata[tx_id][DataKey.PM_1] = sensor["data"][0]["pm_1"]
+                    outdata[tx_id][DataKey.PM_2P5] = sensor["data"][0]["pm_2p5"]
+                    outdata[tx_id][DataKey.PM_10] = sensor["data"][0]["pm_10"]
+                    outdata[tx_id][DataKey.AQI_VAL] = sensor["data"][0]["aqi_val"]
+                    outdata[tx_id][DataKey.AQI_NOWCAST_VAL] = sensor["data"][0][
+                        "aqi_nowcast_val"
+                    ]
+
+            # Test data can be injected here
+
+            # tx_id = primary_tx_id
+            # outdata[tx_id][DataKey.PM_1] = 10
+            # outdata[tx_id][DataKey.PM_2P5] = 20
+            # outdata[tx_id][DataKey.PM_10] = 50
+            # outdata[tx_id][DataKey.AQI_VAL] = 101
+            # outdata[tx_id][DataKey.AQI_NOWCAST_VAL] = 102
 
         return outdata
 

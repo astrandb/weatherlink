@@ -13,6 +13,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
+    CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
     DEGREE,
     PERCENTAGE,
     UnitOfElectricPotential,
@@ -29,7 +30,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import dt as dt_util
 
-from . import SENSOR_TYPE_VUE_AND_VANTAGE_PRO, get_coordinator
+from . import SENSOR_TYPE_AIRLINK, SENSOR_TYPE_VUE_AND_VANTAGE_PRO, get_coordinator
 from .const import (
     CONF_API_VERSION,
     CONFIG_URL,
@@ -502,6 +503,120 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         )
         for numb in range(1, 7 + 1)
     ),
+    WLSensorDescription(
+        key="PM1",
+        tag=DataKey.PM_1,
+        # translation_key="pm_1",
+        device_class=SensorDeviceClass.PM1,
+        suggested_display_precision=1,
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(
+            2,
+            10,
+            12,
+            25,
+        ),
+        aux_sensors=(323, 326),
+    ),
+    WLSensorDescription(
+        key="PM2P5",
+        tag=DataKey.PM_2P5,
+        # translation_key="pm_2p5",
+        device_class=SensorDeviceClass.PM25,
+        suggested_display_precision=1,
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(
+            2,
+            10,
+            12,
+            25,
+        ),
+        aux_sensors=(323, 326),
+    ),
+    WLSensorDescription(
+        key="PM10",
+        tag=DataKey.PM_10,
+        # translation_key="pm_10",
+        device_class=SensorDeviceClass.PM10,
+        suggested_display_precision=1,
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(
+            2,
+            10,
+            12,
+            25,
+        ),
+        aux_sensors=(323, 326),
+    ),
+    WLSensorDescription(
+        key="AQI",
+        tag=DataKey.AQI_VAL,
+        # translation_key="aqi",
+        device_class=SensorDeviceClass.AQI,
+        suggested_display_precision=1,
+        state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(
+            2,
+            10,
+            12,
+            25,
+        ),
+        aux_sensors=(323, 326),
+    ),
+    WLSensorDescription(
+        key="AQI_NOWCAST",
+        tag=DataKey.AQI_NOWCAST_VAL,
+        translation_key="aqi_nowcast_val",
+        device_class=SensorDeviceClass.AQI,
+        suggested_display_precision=1,
+        state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(
+            2,
+            10,
+            12,
+            25,
+        ),
+        aux_sensors=(323, 326),
+    ),
+    WLSensorDescription(
+        key="Temp",
+        tag=DataKey.TEMP,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        suggested_display_precision=1,
+        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+        state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(
+            2,
+            10,
+            12,
+            25,
+        ),
+        aux_sensors=(323, 326),
+    ),
+    WLSensorDescription(
+        key="Hum",
+        tag=DataKey.HUM,
+        device_class=SensorDeviceClass.HUMIDITY,
+        suggested_display_precision=1,
+        state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(
+            2,
+            10,
+            12,
+            25,
+        ),
+        aux_sensors=(323, 326),
+    ),
 )
 
 
@@ -540,6 +655,21 @@ async def async_setup_entry(
                                 config_entry,
                                 description,
                                 sensor["tx_id"],
+                            )
+                        )
+            if sensor["tx_id"] is None:
+                for description in SENSOR_TYPES:
+                    if sensor["sensor_type"] in description.aux_sensors and (
+                        coordinator.data[sensor["lsid"]].get(description.tag)
+                        is not None
+                    ):
+                        aux_entities.append(
+                            WLSensor(
+                                coordinator,
+                                hass,
+                                config_entry,
+                                description,
+                                sensor["lsid"],
                             )
                         )
 
@@ -625,26 +755,45 @@ class WLSensor(CoordinatorEntity, SensorEntity):
                 if sensor["sensor_type"] in (55, 56) and sensor["tx_id"] == self.tx_id:
                     return f"{sensor['product_name']} ID{sensor['tx_id']}"
 
+                if (
+                    sensor["sensor_type"] in SENSOR_TYPE_AIRLINK
+                    and sensor["lsid"] == self.tx_id
+                ):
+                    return f"{sensor['product_name']} {sensor['parent_device_name']}"
+
         return "Unknown devicename"
 
     def generate_model(self):
         """Generate model string."""
+        product_name = "Dummy"
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             return "WeatherLink - API V1"
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             model: str = self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                 "stations"
             ][0].get("product_number")
+            break_out = False
             for sensor in self.hass.data[DOMAIN][self.entry.entry_id][
                 "sensors_metadata"
             ]:
+                if break_out:
+                    break
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
                     and sensor["tx_id"] is None
                     or sensor["tx_id"] == self.tx_id
                 ):
                     product_name = sensor.get("product_name")
-                    break
+                    break_out = True
+                    continue
+                if (
+                    sensor["sensor_type"] in SENSOR_TYPE_AIRLINK
+                    and sensor["lsid"] == self.tx_id
+                ):
+                    product_name = sensor.get("product_name")
+                    break_out = True
+                    continue
+
             gateway_type = "WeatherLink"
             if model == "6555":
                 gateway_type = f"WLIP {model}"

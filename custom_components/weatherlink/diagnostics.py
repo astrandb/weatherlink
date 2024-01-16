@@ -35,6 +35,7 @@ async def async_get_config_entry_diagnostics(
     ]
     station_data = hass.data[DOMAIN][config_entry.entry_id].get("station_data", {})
     current = hass.data[DOMAIN][config_entry.entry_id]["current"]
+    sensor_metadata = hass.data[DOMAIN][config_entry.entry_id]["sensors_metadata"]
 
     sensor_data = {}
     if config_entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
@@ -45,7 +46,8 @@ async def async_get_config_entry_diagnostics(
     diagnostics_data = {
         "info": async_redact_data(config_entry.data, TO_REDACT),
         "station_data": async_redact_data(station_data, TO_REDACT),
-        "sensor_data": async_redact_data(sensor_data, TO_REDACT),
+        "all_sensor_data": async_redact_data(sensor_data, TO_REDACT),
+        "sensor_metadata": async_redact_data(sensor_metadata, TO_REDACT),
         "current_data": async_redact_data(current, TO_REDACT),
         "data": async_redact_data(coordinator.data, TO_REDACT),
     }

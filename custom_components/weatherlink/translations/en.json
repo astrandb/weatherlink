@@ -55,6 +55,9 @@
       }
     },
     "sensor": {
+      "aqi_nowcast_val": {
+        "name": "AQI Nowcast"
+      },
       "bar_trend": {
         "name": "Pressure trend",
         "state": {
