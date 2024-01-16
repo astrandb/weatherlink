@@ -34,6 +34,7 @@ class DataKey(StrEnum):
     ET_MONTH = "et_month"
     ET_YEAR = "et_year"
     HEAT_INDEX = "heat_index"
+    HUM = "hum"
     HUM_EXTRA = "hum_extra"
     HUM_IN = "hum_in"
     HUM_OUT = "hum_out"

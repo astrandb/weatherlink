@@ -17,7 +17,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import dt as dt_util
 
-from . import SENSOR_TYPE_VUE_AND_VANTAGE_PRO, get_coordinator
+from . import SENSOR_TYPE_AIRLINK, SENSOR_TYPE_VUE_AND_VANTAGE_PRO, get_coordinator
 from .const import (
     CONF_API_VERSION,
     CONFIG_URL,
@@ -190,6 +190,12 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
                 if sensor["sensor_type"] in (55, 56) and sensor["tx_id"] == self.tx_id:
                     return f"{sensor['product_name']} ID{sensor['tx_id']}"
 
+                if (
+                    sensor["sensor_type"] in SENSOR_TYPE_AIRLINK
+                    and sensor["lsid"] == self.tx_id
+                ):
+                    return f"{sensor['product_name']} {sensor['parent_device_name']}"
+
         return "Unknown devicename"
 
     def generate_model(self):
@@ -200,16 +206,28 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
             model: str = self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
                 "stations"
             ][0].get("product_number")
+            break_out = False
             for sensor in self.hass.data[DOMAIN][self.entry.entry_id][
                 "sensors_metadata"
             ]:
+                if break_out:
+                    break
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
                     and sensor["tx_id"] is None
                     or sensor["tx_id"] == self.tx_id
                 ):
                     product_name = sensor.get("product_name")
-                    break
+                    break_out = True
+                    continue
+                if (
+                    sensor["sensor_type"] in SENSOR_TYPE_AIRLINK
+                    and sensor["lsid"] == self.tx_id
+                ):
+                    product_name = sensor.get("product_name")
+                    break_out = True
+                    continue
+
             gateway_type = "WeatherLink"
             if model == "6555":
                 gateway_type = f"WLIP {model}"
