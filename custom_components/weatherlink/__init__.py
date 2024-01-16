@@ -56,6 +56,11 @@ SENSOR_TYPE_VUE_AND_VANTAGE_PRO = (
     87,
 )
 
+SENSOR_TYPE_AIRLINK = (
+    323,
+    326,
+)
+
 _LOGGER = logging.getLogger(__name__)
 
 

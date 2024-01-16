@@ -24,6 +24,8 @@ class ApiVersion(StrEnum):
 class DataKey(StrEnum):
     """Keys for normalized observation data."""
 
+    AQI_VAL = "aqi_val"
+    AQI_NOWCAST_VAL = "aqi_nowcast_val"
     BAR_SEA_LEVEL = "bar_sea_level"
     BAR_TREND = "bar_trend"
     DATA_STRUCTURE = "data_structure"
@@ -36,6 +38,9 @@ class DataKey(StrEnum):
     HUM_IN = "hum_in"
     HUM_OUT = "hum_out"
     MOIST_SOIL = "moist_soil"
+    PM_1 = "pm_1"
+    PM_2P5 = "pm_2p5"
+    PM_10 = "pm_10"
     RAIN_DAY = "rain_day"
     RAIN_MONTH = "rain_month"
     RAIN_RATE = "rain_rate"
