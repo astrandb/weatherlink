@@ -606,6 +606,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         key="Hum",
         tag=DataKey.HUM,
         device_class=SensorDeviceClass.HUMIDITY,
+        native_unit_of_measurement=PERCENTAGE,
         suggested_display_precision=1,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
