@@ -486,6 +486,7 @@ async def get_coordinator(  # noqa: C901
                     outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
                         "data_structure_type"
                     ]
+                    outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
                     outdata[tx_id][DataKey.TEMP] = sensor["data"][0]["temp"]
                     outdata[tx_id][DataKey.HUM] = sensor["data"][0]["hum"]
                     outdata[tx_id][DataKey.PM_1] = sensor["data"][0]["pm_1"]
