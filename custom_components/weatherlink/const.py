@@ -13,6 +13,9 @@ CONF_API_SECRET = "api_secret"
 CONF_API_TOKEN = "apitoken"
 CONF_STATION_ID = "station_id"
 
+DISCONNECTED_AFTER_SECONDS = 1830
+UNAVAILABLE_AFTER_SECONDS = 3630
+
 
 class ApiVersion(StrEnum):
     """Supported API versions."""
