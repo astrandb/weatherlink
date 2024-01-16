@@ -287,9 +287,9 @@ async def get_coordinator(  # noqa: C901
                             0
                         ][f"wet_leaf_{numb}"]
                     outdata[tx_id][DataKey.BAR_SEA_LEVEL] = sensor["data"][0]["bar"]
-                    outdata[tx_id][DataKey.BAR_TREND] = (
-                        float(sensor["data"][0].get("bar_trend", 0)) / 1000
-                    )
+                    if (xx := sensor["data"][0].get("bar_trend", 0)) is not None:
+                        xx = xx / 1000
+                    outdata[tx_id][DataKey.BAR_TREND] = xx
                     outdata[tx_id][DataKey.HUM_OUT] = sensor["data"][0]["hum_out"]
                     outdata[tx_id][DataKey.HUM_IN] = sensor["data"][0]["hum_in"]
                     outdata[tx_id][DataKey.WIND_MPH] = sensor["data"][0]["wind_speed"]
@@ -300,8 +300,8 @@ async def get_coordinator(  # noqa: C901
                     outdata[tx_id][DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
                     outdata[tx_id][DataKey.HEAT_INDEX] = sensor["data"][0]["heat_index"]
                     outdata[tx_id][DataKey.WIND_CHILL] = sensor["data"][0]["wind_chill"]
-                    outdata[tx_id][DataKey.RAIN_DAY] = float(
-                        sensor["data"][0].get("rain_day_in", 0)
+                    outdata[tx_id][DataKey.RAIN_DAY] = sensor["data"][0].get(
+                        "rain_day_in"
                     )
                     if (xx := sensor["data"][0].get("rain_storm_in", 0.0)) is None:
                         xx = 0.0
