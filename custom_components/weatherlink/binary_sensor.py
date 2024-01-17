@@ -64,7 +64,7 @@ SENSOR_TYPES: Final[tuple[WLBinarySensorDescription, ...]] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         # exclude_api_ver=(ApiVersion.API_V1,),
         # exclude_data_structure=(2,),
-        aux_sensors=(55, 56),
+        aux_sensors=(55, 56, 323, 326),
     ),
 )
 
@@ -107,6 +107,21 @@ async def async_setup_entry(
                                 config_entry,
                                 description,
                                 sensor["tx_id"],
+                            )
+                        )
+            if sensor["tx_id"] is None:
+                for description in SENSOR_TYPES:
+                    if sensor["sensor_type"] in description.aux_sensors and (
+                        coordinator.data[sensor["lsid"]].get(description.tag)
+                        is not None
+                    ):
+                        aux_entities.append(
+                            WLSensor(
+                                coordinator,
+                                hass,
+                                config_entry,
+                                description,
+                                sensor["lsid"],
                             )
                         )
 
