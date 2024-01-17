@@ -55,6 +55,9 @@
       }
     },
     "sensor": {
+      "aqi_nowcast_val": {
+        "name": "Luftkvalitetsindex Nowcast"
+      },
       "bar_trend": {
         "name": "Lufttryck trend",
         "state": {
