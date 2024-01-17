@@ -250,7 +250,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         suggested_display_precision=1,
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
-        aux_sensors=(55,),
+        aux_sensors=(55, 323, 326),
     ),
     WLSensorDescription(
         key="WindChill",
@@ -272,7 +272,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
         entity_registry_enabled_default=False,
-        aux_sensors=(55,),
+        aux_sensors=(55, 323, 326),
     ),
     WLSensorDescription(
         key="WetBulb",
@@ -285,7 +285,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         entity_registry_enabled_default=False,
         exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2,),
-        aux_sensors=(55,),
+        aux_sensors=(55, 323, 326),
     ),
     WLSensorDescription(
         key="ThwIndex",
@@ -342,12 +342,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
         exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            12,
-            25,
-        ),
+        exclude_data_structure=(2, 10, 12, 25),
     ),
     WLSensorDescription(
         key="SolarPanelVolt",
@@ -359,12 +354,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
         exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            12,
-            25,
-        ),
+        exclude_data_structure=(2, 10, 12, 25),
     ),
     WLSensorDescription(
         key="SupercapVolt",
@@ -376,12 +366,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
         exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            12,
-            25,
-        ),
+        exclude_data_structure=(2, 10, 12, 25),
     ),
     *(
         WLSensorDescription(
@@ -393,10 +378,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
             native_unit_of_measurement=UnitOfPressure.CBAR,
             state_class=SensorStateClass.MEASUREMENT,
             exclude_api_ver=(ApiVersion.API_V1,),
-            exclude_data_structure=(
-                10,
-                23,
-            ),
+            exclude_data_structure=(10, 23),
             aux_sensors=(56,),
         )
         for numb in range(1, 4 + 1)
@@ -410,10 +392,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
             suggested_display_precision=1,
             state_class=SensorStateClass.MEASUREMENT,
             exclude_api_ver=(ApiVersion.API_V1,),
-            exclude_data_structure=(
-                10,
-                23,
-            ),
+            exclude_data_structure=(10, 23),
             aux_sensors=(56,),
         )
         for numb in range(1, 2 + 1)
@@ -427,10 +406,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
             suggested_display_precision=1,
             state_class=SensorStateClass.MEASUREMENT,
             exclude_api_ver=(ApiVersion.API_V1,),
-            exclude_data_structure=(
-                10,
-                23,
-            ),
+            exclude_data_structure=(10, 23),
         )
         for numb in range(3, 4 + 1)
     ),
@@ -444,11 +420,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
             native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
             state_class=SensorStateClass.MEASUREMENT,
             exclude_api_ver=(ApiVersion.API_V1,),
-            exclude_data_structure=(
-                2,
-                10,
-                23,
-            ),
+            exclude_data_structure=(2, 10, 23),
             aux_sensors=(56,),
         )
         for numb in range(1, 4 + 1)
@@ -463,10 +435,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
             native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
             state_class=SensorStateClass.MEASUREMENT,
             exclude_api_ver=(ApiVersion.API_V1,),
-            exclude_data_structure=(
-                10,
-                23,
-            ),
+            exclude_data_structure=(10, 23),
         )
         for numb in range(1, 7 + 1)
     ),
@@ -480,10 +449,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
             native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
             state_class=SensorStateClass.MEASUREMENT,
             exclude_api_ver=(ApiVersion.API_V1,),
-            exclude_data_structure=(
-                10,
-                23,
-            ),
+            exclude_data_structure=(10, 23),
         )
         for numb in range(1, 4 + 1)
     ),
@@ -496,10 +462,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
             translation_key=f"hum_extra_{numb}",
             native_unit_of_measurement=PERCENTAGE,
             state_class=SensorStateClass.MEASUREMENT,
-            exclude_data_structure=(
-                10,
-                23,
-            ),
+            exclude_data_structure=(10, 23),
         )
         for numb in range(1, 7 + 1)
     ),
@@ -512,12 +475,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            12,
-            25,
-        ),
+        exclude_data_structure=(2, 10, 12, 25),
         aux_sensors=(323, 326),
     ),
     WLSensorDescription(
@@ -529,12 +487,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            12,
-            25,
-        ),
+        exclude_data_structure=(2, 10, 12, 25),
         aux_sensors=(323, 326),
     ),
     WLSensorDescription(
@@ -546,12 +499,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            12,
-            25,
-        ),
+        exclude_data_structure=(2, 10, 12, 25),
         aux_sensors=(323, 326),
     ),
     WLSensorDescription(
@@ -562,12 +510,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         suggested_display_precision=1,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            12,
-            25,
-        ),
+        exclude_data_structure=(2, 10, 12, 25),
         aux_sensors=(323, 326),
     ),
     WLSensorDescription(
@@ -578,12 +521,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         suggested_display_precision=1,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            12,
-            25,
-        ),
+        exclude_data_structure=(2, 10, 12, 25),
         aux_sensors=(323, 326),
     ),
     WLSensorDescription(
@@ -594,12 +532,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            12,
-            25,
-        ),
+        exclude_data_structure=(2, 10, 12, 25),
         aux_sensors=(323, 326),
     ),
     WLSensorDescription(
@@ -610,12 +543,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         suggested_display_precision=1,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(
-            2,
-            10,
-            12,
-            25,
-        ),
+        exclude_data_structure=(2, 10, 12, 25),
         aux_sensors=(323, 326),
     ),
 )
