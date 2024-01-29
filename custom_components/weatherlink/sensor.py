@@ -57,7 +57,6 @@ class WLSensorDescription(SensorEntityDescription):
     aux_sensors: tuple = ()
 
 
-# pylint: disable=E1123
 SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
     WLSensorDescription(
         key="OutsideTemp",

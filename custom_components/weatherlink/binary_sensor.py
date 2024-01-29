@@ -43,8 +43,6 @@ class WLBinarySensorDescription(BinarySensorEntityDescription):
     aux_sensors: set = ()
 
 
-# pylint: disable=E1123
-
 SENSOR_TYPES: Final[tuple[WLBinarySensorDescription, ...]] = (
     WLBinarySensorDescription(
         key="TransmitterBattery",
