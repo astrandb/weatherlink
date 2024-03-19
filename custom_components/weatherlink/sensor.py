@@ -572,7 +572,7 @@ async def async_setup_entry(
     if config_entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
         for sensor in hass.data[DOMAIN][config_entry.entry_id]["sensors_metadata"]:
             if sensor["tx_id"] is not None and sensor["tx_id"] != primary_tx_id:
-                aux_entities = [
+                aux_entities += [
                     WLSensor(
                         coordinator,
                         hass,
