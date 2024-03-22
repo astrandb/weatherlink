@@ -1,4 +1,5 @@
 """Constants for the Weatherlink integration."""
+
 from enum import StrEnum
 
 DOMAIN = "weatherlink"
@@ -60,7 +61,7 @@ class DataKey(StrEnum):
     SUPERCAP_VOLT = "supercap_volt"
     TEMP = "temp"
     TEMP_EXTRA = "temp_extra"
-    TEMP_SOIL = "tmp_soil"
+    TEMP_SOIL = "temp_soil"
     TEMP_IN = "temp_in"
     TEMP_OUT = "temp_out"
     TIMESTAMP = "timestamp"
