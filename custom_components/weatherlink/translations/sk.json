@@ -55,6 +55,9 @@
       }
     },
     "sensor": {
+      "aqi_nowcast_val": {
+        "name": "Index kvality ovzdušia Nowcast"
+      },
       "bar_trend": {
         "name": "Trend tlaku",
         "state": {
@@ -67,6 +70,15 @@
       },
       "dewpoint": {
         "name": "Rosný bod"
+      },
+      "et_day": {
+        "name": "Vyparovanie deň"
+      },
+      "et_month": {
+        "name": "Vyparovanie mesiac"
+      },
+      "et_year": {
+        "name": "Vyparovanie rok"
       },
       "heat_index": {
         "name": "Index tepla"
