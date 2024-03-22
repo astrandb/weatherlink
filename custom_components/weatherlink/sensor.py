@@ -1,4 +1,5 @@
 """Platform for sensor integration."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -571,35 +572,33 @@ async def async_setup_entry(
     if config_entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
         for sensor in hass.data[DOMAIN][config_entry.entry_id]["sensors_metadata"]:
             if sensor["tx_id"] is not None and sensor["tx_id"] != primary_tx_id:
-                for description in SENSOR_TYPES:
-                    if sensor["sensor_type"] in description.aux_sensors and (
-                        coordinator.data[sensor["tx_id"]].get(description.tag)
-                        is not None
-                    ):
-                        aux_entities.append(
-                            WLSensor(
-                                coordinator,
-                                hass,
-                                config_entry,
-                                description,
-                                sensor["tx_id"],
-                            )
-                        )
+                aux_entities += [
+                    WLSensor(
+                        coordinator,
+                        hass,
+                        config_entry,
+                        description,
+                        sensor["tx_id"],
+                    )
+                    for description in SENSOR_TYPES
+                    if sensor["sensor_type"] in description.aux_sensors
+                    and coordinator.data[sensor["tx_id"]].get(description.tag)
+                    is not None
+                ]
             if sensor["tx_id"] is None:
-                for description in SENSOR_TYPES:
-                    if sensor["sensor_type"] in description.aux_sensors and (
-                        coordinator.data[sensor["lsid"]].get(description.tag)
-                        is not None
-                    ):
-                        aux_entities.append(
-                            WLSensor(
-                                coordinator,
-                                hass,
-                                config_entry,
-                                description,
-                                sensor["lsid"],
-                            )
-                        )
+                aux_entities += [
+                    WLSensor(
+                        coordinator,
+                        hass,
+                        config_entry,
+                        description,
+                        sensor["lsid"],
+                    )
+                    for description in SENSOR_TYPES
+                    if sensor["sensor_type"] in description.aux_sensors
+                    and coordinator.data[sensor["lsid"]].get(description.tag)
+                    is not None
+                ]
 
     async_add_entities(entities + aux_entities)
 
