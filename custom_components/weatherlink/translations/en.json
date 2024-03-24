@@ -38,6 +38,12 @@
       },
       "user_3": {
         "description": "Select weather station"
+      },
+      "user_local": {
+        "data": {
+          "api_local_host": "Host"
+        },
+        "description": "Enter IP-address for host."
       }
     }
   },
@@ -282,7 +288,8 @@
     "set_api_ver": {
       "options": {
         "api_v1": "API V1",
-        "api_v2": "API V2"
+        "api_v2": "API V2",
+        "api_local": "API Local"
       }
     }
   }

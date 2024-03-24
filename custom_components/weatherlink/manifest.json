@@ -14,5 +14,7 @@
   "requirements": [],
   "ssdp": [],
   "version": "2024.1.1",
-  "zeroconf": []
+  "zeroconf": [
+    "_weatherlinklive._tcp.local."
+  ]
 }

@@ -1,4 +1,5 @@
 """Config flow for Weatherlink integration."""
+
 from __future__ import annotations
 
 import logging
@@ -7,7 +8,8 @@ from typing import Any
 import voluptuous as vol
 
 from homeassistant import config_entries
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
+from homeassistant.components import zeroconf
+from homeassistant.const import CONF_HOST, CONF_NAME, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
@@ -28,11 +30,11 @@ from .const import (
     DOMAIN,
     ApiVersion,
 )
-from .pyweatherlink import WLHub, WLHubV2
+from .pyweatherlink import WLHub, WLHubLocal, WLHubV2
 
 _LOGGER = logging.getLogger(__name__)
 
-API_VERSIONS = [ApiVersion.API_V2, ApiVersion.API_V1]
+API_VERSIONS = [ApiVersion.API_V2, ApiVersion.API_V1, ApiVersion.API_LOCAL]
 
 STEP_USER_APIVER_SCHEMA = vol.Schema(
     {
@@ -60,6 +62,12 @@ STEP_USER_DATA_SCHEMA_V2_A = vol.Schema(
 STEP_USER_DATA_SCHEMA_V2_B = vol.Schema(
     {
         vol.Required(CONF_STATION_ID): TextSelector(),
+    }
+)
+
+STEP_USER_DATA_SCHEMA_LOCAL = vol.Schema(
+    {
+        vol.Required(CONF_HOST): TextSelector(),
     }
 )
 
@@ -122,12 +130,37 @@ async def validate_input_v2(
     return {"title": station_name}
 
 
+async def validate_input_local(
+    hass: HomeAssistant, data: dict[str, Any]
+) -> dict[str, Any]:
+    """Validate the user input allows us to connect.
+
+    Data has the keys from STEP_USER_DATA_SCHEMA_LOCAL with values provided by the user.
+    """
+    websession = async_get_clientsession(hass)
+    hub = WLHubLocal(
+        api_host=data[CONF_HOST],
+        websession=websession,
+    )
+
+    if not await hub.authenticate():
+        raise InvalidAuth
+
+    # Return info that you want to store in the config entry.
+    data = await hub.get_data()
+    did = data["data"]["did"]
+
+    return {"title": did, "did": did}
+
+
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Weatherlink."""
 
     VERSION = 2
 
     user_data_2 = {}
+    user_data_local = {}
+    name: str = ""
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
@@ -143,6 +176,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return await self.async_step_user_1()
         if user_input[CONF_API_VERSION] == ApiVersion.API_V2:
             return await self.async_step_user_2()
+        if user_input[CONF_API_VERSION] == ApiVersion.API_LOCAL:
+            return await self.async_step_user_local()
 
     async def async_step_user_1(
         self, user_input: dict[str, Any] | None = None
@@ -256,6 +291,66 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=data_schema,
             errors=errors,
             last_step=True,
+        )
+
+    async def async_step_user_local(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Handle the step for API_LOCAL."""
+        data_schema = STEP_USER_DATA_SCHEMA_LOCAL
+
+        if user_input is None:
+            return self.async_show_form(step_id="user_local", data_schema=data_schema)
+
+        errors = {}
+
+        user_input[CONF_API_VERSION] = ApiVersion.API_LOCAL
+
+        try:
+            info = await validate_input_local(self.hass, user_input)
+        except CannotConnect:
+            errors["base"] = "cannot_connect"
+        except InvalidAuth:
+            errors["base"] = "invalid_auth"
+        except Exception:  # pylint: disable=broad-except
+            _LOGGER.exception("Unexpected exception")
+            errors["base"] = "unknown"
+        else:
+            await self.async_set_unique_id("1234")
+            self._abort_if_unique_id_configured()
+            return self.async_create_entry(title=info["title"], data=user_input)
+
+        return self.async_show_form(
+            step_id="user_local",
+            data_schema=data_schema,
+            errors=errors,
+            last_step=True,
+        )
+
+    async def async_step_zeroconf(
+        self, discovery_info: zeroconf.ZeroconfServiceInfo
+    ) -> FlowResult:
+        """Prepare configuration for a Zeroconf discovered Weatherlink device."""
+        self.name = discovery_info.name.split(".", 1)[0]
+        return await self.async_step_zeroconf_confirm()
+
+    async def async_step_zeroconf_confirm(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Handle a flow initiated by zeroconf."""
+
+        await self.async_set_unique_id("1234")
+        self._abort_if_unique_id_configured()
+        if user_input is not None:
+            try:
+                return await self.async_step_user_local()
+            except Exception:  # pylint: disable=broad-exception-caught]
+                # Device became network unreachable after discovery.
+                # Abort and let discovery find it again later.
+                return self.async_abort(reason="cannot_connect")
+        return self.async_show_form(
+            step_id="zeroconf_confirm",
+            description_placeholders={CONF_NAME: self.name},
         )
 
 

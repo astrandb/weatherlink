@@ -2,6 +2,7 @@
 
 Move to pypi.org when stable
 """
+
 from dataclasses import dataclass
 import logging
 import urllib.parse
@@ -14,6 +15,7 @@ from .const import VERSION
 
 API_V1_URL = "https://api.weatherlink.com/v1/NoaaExt.json"
 API_V2_URL = "https://api.weatherlink.com/v2/"
+API_LOCAL_URL = "http://{ip_addr}/v1/current_conditions"
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -173,6 +175,56 @@ class WLHubV2:
         except ClientResponseError as exc:
             _LOGGER.error(
                 "API get_all_sensors failed. Status: %s, - %s", exc.code, exc.message
+            )
+
+
+class WLHubLocal:
+    """Class to get data from Wetherlink Live local API."""
+
+    def __init__(
+        self,
+        api_host: str,
+        websession: ClientSession,
+    ) -> None:
+        """Initialize."""
+        self.api_host = api_host
+        self.websession = websession
+
+    async def authenticate(self) -> bool:
+        """Test if we can authenticate with the host."""
+        try:
+            await self.get_data()
+        except ConfigEntryAuthFailed:
+            return False
+        return True
+
+    async def request(self, method, endpoint="", **kwargs) -> ClientResponse:
+        """Make a request."""
+        headers = kwargs.get("headers")
+
+        if headers is None:
+            headers = {}
+        else:
+            headers = dict(headers)
+            kwargs.pop("headers")
+        # print(f"http://{self.api_host}/current_conditions")
+        res = await self.websession.request(
+            method,
+            f"http://{self.api_host}/v1/current_conditions",
+            **kwargs,
+            headers=headers,
+        )
+        res.raise_for_status()
+        return res
+
+    async def get_data(self):
+        """Get data from api."""
+        try:
+            res = await self.request("GET")
+            return await res.json()
+        except ClientResponseError as exc:
+            _LOGGER.error(
+                "API get_data failed. Status: %s, - %s", exc.code, exc.message
             )
 
 

@@ -23,6 +23,7 @@ class ApiVersion(StrEnum):
 
     API_V1 = "api_v1"
     API_V2 = "api_v2"
+    API_LOCAL = "api_local"
 
 
 class DataKey(StrEnum):

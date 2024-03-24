@@ -1,4 +1,5 @@
 """The Weatherlink integration."""
+
 from __future__ import annotations
 
 from datetime import timedelta
@@ -9,7 +10,7 @@ from aiohttp import ClientResponseError
 import async_timeout
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
+from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
@@ -24,7 +25,7 @@ from .const import (
     ApiVersion,
     DataKey,
 )
-from .pyweatherlink import WLHub, WLHubV2
+from .pyweatherlink import WLHub, WLHubLocal, WLHubV2
 
 PLATFORMS = [Platform.BINARY_SENSOR, Platform.SENSOR]
 SENSOR_TYPE_VUE_AND_VANTAGE_PRO = (
@@ -113,6 +114,40 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         if len(tx_ids) == 0:
             tx_ids = [1]
         hass.data[DOMAIN][entry.entry_id]["primary_tx_id"] = min(tx_ids)
+
+    if entry.data[CONF_API_VERSION] == ApiVersion.API_LOCAL:
+        hass.data[DOMAIN][entry.entry_id]["api"] = WLHubLocal(
+            websession=async_get_clientsession(hass),
+            api_host=entry.data[CONF_HOST],
+        )
+        # hass.data[DOMAIN][entry.entry_id]["station_data"] = await hass.data[DOMAIN][
+        #     entry.entry_id
+        # ]["api"].get_station()
+
+        all_sensors = await hass.data[DOMAIN][entry.entry_id]["api"].get_data()
+
+        sensors = []
+        tx_ids = []
+        for sensor in all_sensors["sensors"]:
+            if (
+                sensor["station_id"]
+                == hass.data[DOMAIN][entry.entry_id]["station_data"]["stations"][0][
+                    "station_id"
+                ]
+            ):
+                sensors.append(sensor)
+                if (
+                    sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
+                    and sensor["tx_id"] is not None
+                    and sensor["tx_id"] not in tx_ids
+                ):
+                    tx_ids.append(sensor["tx_id"])
+        hass.data[DOMAIN][entry.entry_id]["sensors_metadata"] = sensors
+        # todo Make primary_tx_id configurable by user - perhaps in config flow.
+        if len(tx_ids) == 0:
+            tx_ids = [1]
+        hass.data[DOMAIN][entry.entry_id]["primary_tx_id"] = min(tx_ids)
+
     _LOGGER.debug("Primary tx_ids: %s", tx_ids)
     coordinator = await get_coordinator(hass, entry)
     if not coordinator.last_update_success:
