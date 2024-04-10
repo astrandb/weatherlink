@@ -204,6 +204,18 @@
       "temp_extra_7": {
         "name": "Temp extra 7"
       },
+      "temp_leaf_1": {
+        "name": "Temp leaf 1"
+      },
+      "temp_leaf_2": {
+        "name": "Temp leaf 2"
+      },
+      "temp_leaf_3": {
+        "name": "Temp leaf 3"
+      },
+      "temp_leaf_4": {
+        "name": "Temp leaf 4"
+      },
       "temp_soil_1": {
         "name": "Temp soil 1"
       },

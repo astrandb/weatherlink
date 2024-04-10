@@ -1,4 +1,5 @@
 """The Weatherlink integration."""
+
 from __future__ import annotations
 
 from datetime import timedelta
@@ -275,6 +276,10 @@ async def get_coordinator(  # noqa: C901
                         outdata[tx_id][f"{DataKey.TEMP_EXTRA}_{numb}"] = sensor["data"][
                             0
                         ][f"temp_extra_{numb}"]
+                    for numb in range(1, 4 + 1):
+                        outdata[tx_id][f"{DataKey.TEMP_LEAF}_{numb}"] = sensor["data"][
+                            0
+                        ][f"temp_leaf_{numb}"]
                     for numb in range(1, 4 + 1):
                         outdata[tx_id][f"{DataKey.TEMP_SOIL}_{numb}"] = sensor["data"][
                             0
