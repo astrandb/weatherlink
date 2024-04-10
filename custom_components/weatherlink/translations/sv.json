@@ -204,6 +204,18 @@
       "temp_extra_7": {
         "name": "Temp extra 7"
       },
+      "temp_leaf_1": {
+        "name": "Bladtemperatur 1"
+      },
+      "temp_leaf_2": {
+        "name": "Bladtemperatur 2"
+      },
+      "temp_leaf_3": {
+        "name": "Bladtemperatur 3"
+      },
+      "temp_leaf_4": {
+        "name": "Bladtemperatur 4"
+      },
       "temp_soil_1": {
         "name": "Temp jord 1"
       },
