@@ -455,6 +455,20 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
     ),
     *(
         WLSensorDescription(
+            key=f"TempLeaf{numb}",
+            tag=f"{DataKey.TEMP_LEAF}_{numb}",
+            translation_key=f"temp_leaf_{numb}",
+            suggested_display_precision=1,
+            device_class=SensorDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+            state_class=SensorStateClass.MEASUREMENT,
+            exclude_api_ver=(ApiVersion.API_V1,),
+            exclude_data_structure=(10, 23),
+        )
+        for numb in range(1, 4 + 1)
+    ),
+    *(
+        WLSensorDescription(
             key=f"HumidityExtra{numb}",
             tag=f"{DataKey.HUM_EXTRA}_{numb}",
             device_class=SensorDeviceClass.HUMIDITY,
