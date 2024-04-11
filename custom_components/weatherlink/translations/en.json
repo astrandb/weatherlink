@@ -128,6 +128,12 @@
       "outside_temperature": {
         "name": "Outside temperature"
       },
+      "pm_10_24_hour": {
+        "name": "PM10 24h"
+      },
+      "pm_2p5_24_hour": {
+        "name": "PM2.5 24h"
+      },
       "pressure": {
         "name": "Pressure"
       },
@@ -161,12 +167,6 @@
       },
       "rain_today": {
         "name": "Rain today"
-      },
-      "pm_10_24_hour": {
-        "name": "PM10 24h"
-      },
-      "pm_2p5_24_hour": {
-        "name": "PM2.5 24h"
       },
       "solar_irradiance": {
         "name": "Solar irradiance"
