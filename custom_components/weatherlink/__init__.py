@@ -499,7 +499,13 @@ async def get_coordinator(  # noqa: C901
                     outdata[tx_id][DataKey.WET_BULB] = sensor["data"][0]["wet_bulb"]
                     outdata[tx_id][DataKey.PM_1] = sensor["data"][0]["pm_1"]
                     outdata[tx_id][DataKey.PM_2P5] = sensor["data"][0]["pm_2p5"]
+                    outdata[tx_id][DataKey.PM_2P5_24H] = sensor["data"][0][
+                        "pm_2p5_24_hour"
+                    ]
                     outdata[tx_id][DataKey.PM_10] = sensor["data"][0]["pm_10"]
+                    outdata[tx_id][DataKey.PM_10_24H] = sensor["data"][0][
+                        "pm_10_24_hour"
+                    ]
                     outdata[tx_id][DataKey.AQI_VAL] = sensor["data"][0]["aqi_val"]
                     outdata[tx_id][DataKey.AQI_NOWCAST_VAL] = sensor["data"][0][
                         "aqi_nowcast_val"
