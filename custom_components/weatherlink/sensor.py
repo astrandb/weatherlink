@@ -505,9 +505,33 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         aux_sensors=(323, 326),
     ),
     WLSensorDescription(
+        key="PM2P5_24H",
+        tag=DataKey.PM_2P5_24H,
+        translation_key="pm_2p5_24_hour",
+        device_class=SensorDeviceClass.PM25,
+        suggested_display_precision=1,
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(2, 10, 12, 25),
+        aux_sensors=(323, 326),
+    ),
+    WLSensorDescription(
         key="PM10",
         tag=DataKey.PM_10,
         # translation_key="pm_10",
+        device_class=SensorDeviceClass.PM10,
+        suggested_display_precision=1,
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        state_class=SensorStateClass.MEASUREMENT,
+        exclude_api_ver=(ApiVersion.API_V1,),
+        exclude_data_structure=(2, 10, 12, 25),
+        aux_sensors=(323, 326),
+    ),
+    WLSensorDescription(
+        key="PM10_24H",
+        tag=DataKey.PM_10_24H,
+        translation_key="pm_10_24_hour",
         device_class=SensorDeviceClass.PM10,
         suggested_display_precision=1,
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
@@ -736,14 +760,19 @@ class WLSensor(CoordinatorEntity, SensorEntity):
                     continue
 
             gateway_type = "WeatherLink"
-            if model == "6555":
-                gateway_type = f"WLIP {model}"
-            if model.startswith("6100"):
-                gateway_type = f"WLL {model}"
-            if model.startswith("6313"):
-                gateway_type = f"WLC {model}"
-            if model.endswith("6558"):
-                gateway_type = f"WL {model}"
+            try:
+                if model == "6555":
+                    gateway_type = f"WLIP {model}"
+                if model.startswith("6100"):
+                    gateway_type = f"WLL {model}"
+                if model.startswith("6313"):
+                    gateway_type = f"WLC {model}"
+                if model.startswith("7210"):
+                    gateway_type = f"AirLink {model}"
+                if model.endswith("6558"):
+                    gateway_type = f"WL {model}"
+            except AttributeError:
+                pass
 
         return (
             f"{gateway_type} / {product_name}"

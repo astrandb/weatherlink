@@ -52,7 +52,7 @@ SENSOR_TYPES: Final[tuple[WLBinarySensorDescription, ...]] = (
         translation_key="trans_battery",
         entity_category=EntityCategory.DIAGNOSTIC,
         exclude_api_ver=(ApiVersion.API_V1,),
-        exclude_data_structure=(2, 12),
+        exclude_data_structure=(2, 12, 16, 18),
         aux_sensors=(55, 56),
     ),
     WLBinarySensorDescription(
@@ -85,6 +85,7 @@ async def async_setup_entry(
             coordinator.data[primary_tx_id].get(DataKey.DATA_STRUCTURE)
             not in description.exclude_data_structure
         )
+        and (coordinator.data[primary_tx_id].get(description.tag) is not None)
     ]
 
     aux_entities = []
@@ -219,6 +220,7 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
                 "stations"
             ][0].get("product_number")
             break_out = False
+            product_name = ""
             for sensor in self.hass.data[DOMAIN][self.entry.entry_id][
                 "sensors_metadata"
             ]:
@@ -241,14 +243,19 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
                     continue
 
             gateway_type = "WeatherLink"
-            if model == "6555":
-                gateway_type = f"WLIP {model}"
-            if model.startswith("6100"):
-                gateway_type = f"WLL {model}"
-            if model.startswith("6313"):
-                gateway_type = f"WLC {model}"
-            if model.endswith("6558"):
-                gateway_type = f"WL {model}"
+            try:
+                if model == "6555":
+                    gateway_type = f"WLIP {model}"
+                if model.startswith("6100"):
+                    gateway_type = f"WLL {model}"
+                if model.startswith("6313"):
+                    gateway_type = f"WLC {model}"
+                if model.startswith("7210"):
+                    gateway_type = f"AirLink {model}"
+                if model.endswith("6558"):
+                    gateway_type = f"WL {model}"
+            except AttributeError:
+                pass
 
         return (
             f"{gateway_type} / {product_name}"
