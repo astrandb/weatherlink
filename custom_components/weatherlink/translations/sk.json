@@ -128,6 +128,12 @@
       "outside_temperature": {
         "name": "Vonkajšia teplota"
       },
+      "pm_10_24_hour": {
+        "name": "PM10 24h"
+      },
+      "pm_2p5_24_hour": {
+        "name": "PM2.5 24h"
+      },
       "pressure": {
         "name": "Tlak"
       },
@@ -203,6 +209,18 @@
       },
       "temp_extra_7": {
         "name": "Teplota navyše 7"
+      },
+      "temp_leaf_1": {
+        "name": "Temp leaf 1"
+      },
+      "temp_leaf_2": {
+        "name": "Temp leaf 2"
+      },
+      "temp_leaf_3": {
+        "name": "Temp leaf 3"
+      },
+      "temp_leaf_4": {
+        "name": "Temp leaf 4"
       },
       "temp_soil_1": {
         "name": "Teplota pôdy 1"
