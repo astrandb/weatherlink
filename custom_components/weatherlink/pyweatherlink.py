@@ -2,6 +2,7 @@
 
 Move to pypi.org when stable
 """
+
 from dataclasses import dataclass
 import logging
 import urllib.parse

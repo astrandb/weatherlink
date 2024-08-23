@@ -1,4 +1,5 @@
 """Diagnostics support for Weatherlink."""
+
 from __future__ import annotations
 
 from homeassistant.components.diagnostics import async_redact_data
