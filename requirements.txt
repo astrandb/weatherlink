@@ -4,4 +4,4 @@ pip>=21.0,<24.3
 ruff==0.6.8
 pre-commit==3.8.0
 bumpver
-urllib3>=1.26.5,<2
+urllib3>=1.26.5,<3
