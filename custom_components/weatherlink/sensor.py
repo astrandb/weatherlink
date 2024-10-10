@@ -784,7 +784,22 @@ class WLSensor(CoordinatorEntity, SensorEntity):
     def native_value(self):
         """Return the state of the sensor."""
         # _LOGGER.debug("Key: %s", self.entity_description.key)
-        if self.entity_description.key not in ["WindDir", "BarTrend"]:
+        if self.entity_description.key not in ["WindDir", "BarTrend", "WindGust"]:
+            return self.coordinator.data[self.tx_id].get(self.entity_description.tag)
+
+        if self.entity_description.tag in [DataKey.WIND_GUST_MPH]:
+            if (
+                self.coordinator.data[self.tx_id].get(self.entity_description.tag)
+                is None
+            ):
+                return None
+            if (
+                float(
+                    self.coordinator.data[self.tx_id].get(self.entity_description.tag)
+                )
+                < 0
+            ):
+                return 0.0
             return self.coordinator.data[self.tx_id].get(self.entity_description.tag)
 
         if self.entity_description.tag in [DataKey.WIND_DIR]:
