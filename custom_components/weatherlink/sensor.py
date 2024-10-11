@@ -791,6 +791,10 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             if (
                 self.coordinator.data[self.tx_id].get(self.entity_description.tag)
                 is None
+                or float(
+                    self.coordinator.data[self.tx_id].get(self.entity_description.tag)
+                )
+                < 0
             ):
                 return None
             if (
