@@ -2,6 +2,6 @@ colorlog==6.8.2
 homeassistant
 pip>=21.0,<24.3
 ruff==0.6.9
-pre-commit==4.0.0
+pre-commit==4.0.1
 bumpver
 urllib3>=1.26.5,<2
