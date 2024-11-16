@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+import asyncio
 from datetime import timedelta
 from email.utils import mktime_tz, parsedate_tz
 import logging
 
 from aiohttp import ClientResponseError
-import async_timeout
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
@@ -525,7 +525,7 @@ async def get_coordinator(  # noqa: C901
     async def async_fetch():
         api = hass.data[DOMAIN][entry.entry_id]["api"]
         try:
-            async with async_timeout.timeout(10):
+            async with asyncio.timeout(10):
                 res = await api.request("GET")
                 json_data = await res.json()
                 hass.data[DOMAIN][entry.entry_id]["current"] = json_data
