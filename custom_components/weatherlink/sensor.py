@@ -584,6 +584,14 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         exclude_data_structure=(2, 10, 12, 25),
         aux_sensors=(323, 326),
     ),
+    WLSensorDescription(
+        key="LastUpdate",
+        translation_key="last_update",
+        tag=DataKey.TIMESTAMP,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        device_class=SensorDeviceClass.TIMESTAMP,
+        aux_sensors=(323, 326),
+    ),
 )
 
 
@@ -784,7 +792,12 @@ class WLSensor(CoordinatorEntity, SensorEntity):
     def native_value(self):
         """Return the state of the sensor."""
         # _LOGGER.debug("Key: %s", self.entity_description.key)
-        if self.entity_description.key not in ["WindDir", "BarTrend", "WindGust"]:
+        if self.entity_description.key not in [
+            "LastUpdate",
+            "WindDir",
+            "BarTrend",
+            "WindGust",
+        ]:
             return self.coordinator.data[self.tx_id].get(self.entity_description.tag)
 
         if self.entity_description.tag in [DataKey.WIND_GUST_MPH]:
@@ -863,6 +876,12 @@ class WLSensor(CoordinatorEntity, SensorEntity):
                     return "falling_slowly"
                 return "falling_rapidly"
             return str(bar_trend).lower().replace(" ", "_")
+
+        if self.entity_description.key == "LastUpdate":
+            return dt_util.utc_from_timestamp(
+                self.coordinator.data[self.tx_id].get(DataKey.TIMESTAMP)
+            )
+
         return None
 
     def is_float(self, in_string):
@@ -924,4 +943,4 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         )
         dt_now = dt_util.now()
         diff = dt_now - dt_update
-        return (diff.total_seconds()) / 60 < UNAVAILABLE_AFTER_SECONDS
+        return diff.total_seconds() < UNAVAILABLE_AFTER_SECONDS

@@ -110,6 +110,9 @@
       "inside_temperature": {
         "name": "Inside temperature"
       },
+      "last_update": {
+        "name": "Last updated"
+      },
       "moist_soil_1": {
         "name": "Soil moisture 1"
       },
