@@ -41,11 +41,10 @@ template: |
 
   <!--
   ### Checklist for release
-  - Download translations PR from Lokalize
+  - Download translations PR from Lokalise
   - Run ruff linter
-  - Run make bump - select proper variank in Makefile
-  - Review the draft below
-  - Remove this checklist
+  - Run make bump - select proper variant in Makefile
+  - Review the draft below and update if needed
   -->
 
   ## Notable Changes
