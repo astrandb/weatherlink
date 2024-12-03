@@ -274,7 +274,7 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
             )
             dt_now = dt_util.now()
             diff = dt_now - dt_update
-            return (diff.total_seconds()) / 60 < DISCONNECTED_AFTER_SECONDS
+            return diff.total_seconds() < DISCONNECTED_AFTER_SECONDS
         return None
 
     @property
@@ -306,6 +306,6 @@ class WLSensor(CoordinatorEntity, BinarySensorEntity):
             )
             dt_now = dt_util.now()
             diff = dt_now - dt_update
-            return (diff.total_seconds()) / 60 < UNAVAILABLE_AFTER_SECONDS
+            return diff.total_seconds() < UNAVAILABLE_AFTER_SECONDS
 
         return True
