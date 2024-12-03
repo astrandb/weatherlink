@@ -110,6 +110,9 @@
       "inside_temperature": {
         "name": "Temperatur inne"
       },
+      "last_update": {
+        "name": "Senast uppdaterad"
+      },
       "moist_soil_1": {
         "name": "Jordfuktighet 1"
       },
