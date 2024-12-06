@@ -12,7 +12,6 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorStateClass,
 )
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
     DEGREE,
@@ -31,7 +30,12 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import dt as dt_util
 
-from . import SENSOR_TYPE_AIRLINK, SENSOR_TYPE_VUE_AND_VANTAGE_PRO, get_coordinator
+from . import (
+    SENSOR_TYPE_AIRLINK,
+    SENSOR_TYPE_VUE_AND_VANTAGE_PRO,
+    WLConfigEntry,
+    get_coordinator,
+)
 from .const import (
     CONF_API_VERSION,
     CONFIG_URL,
@@ -597,16 +601,16 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    config_entry: ConfigEntry,
+    entry: WLConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the sensor platform."""
-    coordinator = await get_coordinator(hass, config_entry)
-    primary_tx_id = hass.data[DOMAIN][config_entry.entry_id]["primary_tx_id"]
+    coordinator = await get_coordinator(hass, entry)
+    primary_tx_id = entry.runtime_data.primary_tx_id
     entities = [
-        WLSensor(coordinator, hass, config_entry, description, primary_tx_id)
+        WLSensor(coordinator, hass, entry, description, primary_tx_id)
         for description in SENSOR_TYPES
-        if (config_entry.data[CONF_API_VERSION] not in description.exclude_api_ver)
+        if (entry.data[CONF_API_VERSION] not in description.exclude_api_ver)
         and (
             coordinator.data[primary_tx_id].get(DataKey.DATA_STRUCTURE)
             not in description.exclude_data_structure
@@ -615,14 +619,14 @@ async def async_setup_entry(
     ]
 
     aux_entities = []
-    if config_entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
-        for sensor in hass.data[DOMAIN][config_entry.entry_id]["sensors_metadata"]:
+    if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
+        for sensor in entry.runtime_data.sensors_metadata:
             if sensor["tx_id"] is not None and sensor["tx_id"] != primary_tx_id:
                 aux_entities += [
                     WLSensor(
                         coordinator,
                         hass,
-                        config_entry,
+                        entry,
                         description,
                         sensor["tx_id"],
                     )
@@ -636,7 +640,7 @@ async def async_setup_entry(
                     WLSensor(
                         coordinator,
                         hass,
-                        config_entry,
+                        entry,
                         description,
                         sensor["lsid"],
                     )
@@ -659,17 +663,17 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         self,
         coordinator,
         hass: HomeAssistant,
-        entry: ConfigEntry,
+        entry: WLConfigEntry,
         description: WLSensorDescription,
         tx_id: int,
     ):
         """Initialize the sensor."""
         super().__init__(coordinator)
         self.hass = hass
-        self.entry: ConfigEntry = entry
+        self.entry = entry
         self.entity_description = description
         self.tx_id = tx_id
-        self.primary_tx_id = self.hass.data[DOMAIN][entry.entry_id]["primary_tx_id"]
+        self.primary_tx_id = self.entry.runtime_data.primary_tx_id
         self._attr_has_entity_name = True
         tx_id_part = f"-{self.tx_id}" if self.tx_id != self.primary_tx_id else ""
         self._attr_unique_id = (
@@ -700,17 +704,17 @@ class WLSensor(CoordinatorEntity, SensorEntity):
     def get_firmware(self) -> str | None:
         """Get firmware version."""
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
-            return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
-                "stations"
-            ][0].get("firmware_version")
+            return self.entry.runtime_data.station_data["stations"][0].get(
+                "firmware_version"
+            )
         return None
 
     def get_serial(self) -> str | None:
         """Get serial number."""
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
-            return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
-                "stations"
-            ][0].get("gateway_id_hex")
+            return self.entry.runtime_data.station_data["stations"][0].get(
+                "gateway_id_hex"
+            )
         return None
 
     def generate_name(self):
@@ -719,12 +723,10 @@ class WLSensor(CoordinatorEntity, SensorEntity):
             return self.coordinator.data[1]["station_name"]
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
             if self.tx_id == self.primary_tx_id:
-                return self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
-                    "stations"
-                ][0]["station_name"]
-            for sensor in self.hass.data[DOMAIN][self.entry.entry_id][
-                "sensors_metadata"
-            ]:
+                return self.entry.runtime_data.station_data["stations"][0][
+                    "station_name"
+                ]
+            for sensor in self.entry.runtime_data.sensors_metadata:
                 if sensor["sensor_type"] in (55, 56) and sensor["tx_id"] == self.tx_id:
                     return f"{sensor['product_name']} ID{sensor['tx_id']}"
 
@@ -742,13 +744,11 @@ class WLSensor(CoordinatorEntity, SensorEntity):
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             return "WeatherLink - API V1"
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
-            model: str = self.hass.data[DOMAIN][self.entry.entry_id]["station_data"][
-                "stations"
-            ][0].get("product_number")
+            model: str = self.entry.runtime_data.station_data["stations"][0].get(
+                "product_number"
+            )
             break_out = False
-            for sensor in self.hass.data[DOMAIN][self.entry.entry_id][
-                "sensors_metadata"
-            ]:
+            for sensor in self.entry.runtime_data.sensors_metadata:
                 if break_out:
                     break
                 if (
