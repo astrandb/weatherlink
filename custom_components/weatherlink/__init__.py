@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+from dataclasses import dataclass
 from datetime import timedelta
 from email.utils import mktime_tz, parsedate_tz
 import logging
@@ -26,6 +27,19 @@ from .const import (
     DataKey,
 )
 from .pyweatherlink import WLHub, WLHubV2
+
+type WLConfigEntry = ConfigEntry[WLData]
+
+
+@dataclass
+class WLData:
+    api: WLHub | WLHubV2
+    primary_tx_id: int
+    station_data: dict
+    sensors_metadata: dict
+    coordinator: DataUpdateCoordinator
+    current: dict
+
 
 PLATFORMS = [Platform.BINARY_SENSOR, Platform.SENSOR]
 SENSOR_TYPE_VUE_AND_VANTAGE_PRO = (
@@ -65,42 +79,45 @@ SENSOR_TYPE_AIRLINK = (
 _LOGGER = logging.getLogger(__name__)
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+async def async_setup_entry(hass: HomeAssistant, entry: WLConfigEntry) -> bool:
     """Set up Weatherlink from a config entry."""
 
-    hass.data.setdefault(DOMAIN, {})
-    hass.data[DOMAIN][entry.entry_id] = {}
+    entry.runtime_data = WLData(
+        api=None,
+        primary_tx_id=1,
+        station_data={},
+        sensors_metadata={},
+        coordinator=None,
+        current={},
+    )
+
     if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
-        hass.data[DOMAIN][entry.entry_id]["api"] = WLHub(
+        entry.runtime_data.api = WLHub(
             websession=async_get_clientsession(hass),
             username=entry.data[CONF_USERNAME],
             password=entry.data[CONF_PASSWORD],
             apitoken=entry.data[CONF_API_TOKEN],
         )
-        hass.data[DOMAIN][entry.entry_id]["primary_tx_id"] = 1
+        entry.runtime_data.primary_tx_id = 1
         tx_ids = [1]
 
     if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
-        hass.data[DOMAIN][entry.entry_id]["api"] = WLHubV2(
+        entry.runtime_data.api = WLHubV2(
             websession=async_get_clientsession(hass),
             station_id=entry.data[CONF_STATION_ID],
             api_key_v2=entry.data[CONF_API_KEY_V2],
             api_secret=entry.data[CONF_API_SECRET],
         )
-        hass.data[DOMAIN][entry.entry_id]["station_data"] = await hass.data[DOMAIN][
-            entry.entry_id
-        ]["api"].get_station()
+        entry.runtime_data.station_data = await entry.runtime_data.api.get_station()
 
-        all_sensors = await hass.data[DOMAIN][entry.entry_id]["api"].get_all_sensors()
+        all_sensors = await entry.runtime_data.api.get_all_sensors()
 
         sensors = []
         tx_ids = []
         for sensor in all_sensors["sensors"]:
             if (
                 sensor["station_id"]
-                == hass.data[DOMAIN][entry.entry_id]["station_data"]["stations"][0][
-                    "station_id"
-                ]
+                == entry.runtime_data.station_data["stations"][0]["station_id"]
             ):
                 sensors.append(sensor)
                 if (
@@ -109,11 +126,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                     and sensor["tx_id"] not in tx_ids
                 ):
                     tx_ids.append(sensor["tx_id"])
-        hass.data[DOMAIN][entry.entry_id]["sensors_metadata"] = sensors
+        entry.runtime_data.sensors_metadata = sensors
         # todo Make primary_tx_id configurable by user - perhaps in config flow.
         if len(tx_ids) == 0:
             tx_ids = [1]
-        hass.data[DOMAIN][entry.entry_id]["primary_tx_id"] = min(tx_ids)
+        entry.runtime_data.primary_tx_id = min(tx_ids)
     _LOGGER.debug("Primary tx_ids: %s", tx_ids)
     coordinator = await get_coordinator(hass, entry)
     if not coordinator.last_update_success:
@@ -125,10 +142,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+async def async_unload_entry(hass: HomeAssistant, entry: WLConfigEntry) -> bool:
     """Unload a config entry."""
-    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        hass.data[DOMAIN].pop(entry.entry_id)
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
     return unload_ok
 
@@ -138,11 +154,12 @@ DCO = "davis_current_observation"
 
 async def get_coordinator(  # noqa: C901
     hass: HomeAssistant,
-    entry: ConfigEntry,
+    entry: WLConfigEntry,
 ) -> DataUpdateCoordinator:
     """Get the data update coordinator."""
-    if "coordinator" in hass.data[DOMAIN][entry.entry_id]:
-        return hass.data[DOMAIN][entry.entry_id]["coordinator"]
+
+    if entry.runtime_data.coordinator is not None:
+        return entry.runtime_data.coordinator
 
     def _preprocess(indata: str):  # noqa: C901
         outdata = {}
@@ -184,7 +201,7 @@ async def get_coordinator(  # noqa: C901
             )
 
         if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
-            primary_tx_id = tx_id = hass.data[DOMAIN][entry.entry_id]["primary_tx_id"]
+            primary_tx_id = tx_id = entry.runtime_data.primary_tx_id
             outdata.setdefault(tx_id, {})
             outdata[DataKey.UUID] = indata["station_id_uuid"]
             for sensor in indata["sensors"]:
@@ -523,26 +540,26 @@ async def get_coordinator(  # noqa: C901
         return outdata
 
     async def async_fetch():
-        api = hass.data[DOMAIN][entry.entry_id]["api"]
+        api = entry.runtime_data.api
         try:
             async with asyncio.timeout(10):
                 res = await api.request("GET")
                 json_data = await res.json()
-                hass.data[DOMAIN][entry.entry_id]["current"] = json_data
+                entry.runtime_data.current = json_data
                 return _preprocess(json_data)
         except ClientResponseError as exc:
             _LOGGER.warning("API fetch failed. Status: %s, - %s", exc.code, exc.message)
             raise UpdateFailed(exc) from exc
 
-    hass.data[DOMAIN][entry.entry_id]["coordinator"] = DataUpdateCoordinator(
+    entry.runtime_data.coordinator = DataUpdateCoordinator(
         hass,
         logging.getLogger(__name__),
         name=DOMAIN,
         update_method=async_fetch,
         update_interval=timedelta(minutes=5),
     )
-    await hass.data[DOMAIN][entry.entry_id]["coordinator"].async_refresh()
-    return hass.data[DOMAIN][entry.entry_id]["coordinator"]
+    await entry.runtime_data.coordinator.async_refresh()
+    return entry.runtime_data.coordinator
 
 
 async def async_migrate_entry(hass, config_entry: ConfigEntry):
