@@ -1,0 +1,31 @@
+{
+    "stations": [
+        {
+            "station_id": 167531,
+            "station_id_uuid": "03e7585a-4f29-4e7c-b6cb-d9e17313b07c",
+            "station_name": "Strp81",
+            "gateway_id": 12586491,
+            "gateway_id_hex": "001d0ac00dfb",
+            "product_number": "6313",
+            "username": "astrandb",
+            "user_email": "ake@strandberg.eu",
+            "company_name": "",
+            "active": true,
+            "private": false,
+            "recording_interval": 5,
+            "firmware_version": "1.4.59",
+            "registered_date": 1693934167,
+            "time_zone": "Europe/Stockholm",
+            "city": "Saltsjö-duvnäs",
+            "region": "Stockholms län",
+            "country": "Sweden",
+            "latitude": 59.30568,
+            "longitude": 18.21594,
+            "elevation": 37.216557,
+            "gateway_type": "WeatherLink Console",
+            "relationship_type": "Owned",
+            "subscription_type": "Pro"
+        }
+    ],
+    "generated_at": 1735386408
+}

@@ -543,8 +543,7 @@ async def get_coordinator(  # noqa: C901
         api = entry.runtime_data.api
         try:
             async with asyncio.timeout(10):
-                res = await api.request("GET")
-                json_data = await res.json()
+                json_data = await api.get_data()
                 entry.runtime_data.current = json_data
                 return _preprocess(json_data)
         except ClientResponseError as exc:

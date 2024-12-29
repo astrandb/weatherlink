@@ -1,35 +1,80 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-      {
-        "label": "Run Home Assistant on port 9126",
-        "type": "shell",
-        "command": "scripts/develop",
-        "problemMatcher": []
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Home Assistant on port 9126",
+      "type": "shell",
+      "command": "scripts/develop",
+      "problemMatcher": []
+    },
+    {
+      "label": "Upgrade Home Assistant to latest (beta)",
+      "type": "shell",
+      "command": "scripts/upgrade",
+      "problemMatcher": []
+    },
+    {
+      "label": "Load Home Assistant from github - dev branch",
+      "type": "shell",
+      "command": "scripts/dev-branch",
+      "problemMatcher": []
+    },
+    {
+      "label": "Load specific version of Home Assistant",
+      "type": "shell",
+      "command": "scripts/specific-version",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint with ruff",
+      "type": "shell",
+      "command": "scripts/lint",
+      "problemMatcher": []
+    },
+    {
+      "label": "Pre-commit",
+      "type": "shell",
+      "command": "pre-commit run --show-diff-on-failure",
+      "group": {
+        "kind": "test",
+        "isDefault": true
       },
-      {
-        "label": "Upgrade Home Assistant to latest (beta)",
-        "type": "shell",
-        "command": "scripts/upgrade",
-        "problemMatcher": []
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
       },
-      {
-        "label": "Load Home Assistant from github - dev branch",
-        "type": "shell",
-        "command": "scripts/dev-branch",
-        "problemMatcher": []
+      "problemMatcher": []
+    },
+    {
+      "label": "Update syrupy snapshots",
+      "detail": "Update syrupy snapshots for a given integration.",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} -m pytest ./tests/ --snapshot-update",
+      "dependsOn": [
+        "Compile English translations"
+      ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
       },
-      {
-        "label": "Load specific version of Home Assistant",
-        "type": "shell",
-        "command": "scripts/specific-version",
-        "problemMatcher": []
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
       },
-      {
-        "label": "Lint with ruff",
-        "type": "shell",
-        "command": "scripts/lint",
-        "problemMatcher": []
-      }
-    ]
-  }
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint with ruff",
+      "type": "shell",
+      "command": "scripts/lint",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "integrationName",
+      "type": "promptString",
+      "description": "For which integration should the task run?"
+    }
+  ]
+}
