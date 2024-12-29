@@ -220,7 +220,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             SelectOptionDict(value=str(stn[CONF_STATION_ID]), label=stn["station_name"])
             for stn in (station_list_raw["stations"])
         ]
-
+        # print(station_list)
         if user_input is None:
             return self.async_show_form(
                 step_id="user_3",

@@ -1,0 +1,96 @@
+# serializer version: 1
+# name: test_sensor[binary_sensor.strp81_connectivity-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'binary_sensor.strp81_connectivity',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.CONNECTIVITY: 'connectivity'>,
+    'original_icon': None,
+    'original_name': 'Connectivity',
+    'platform': 'weatherlink',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'timestamp',
+    'unique_id': '03e7585a-4f29-4e7c-b6cb-d9e17313b07c-Timestamp',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_sensor[binary_sensor.strp81_connectivity-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'connectivity',
+      'friendly_name': 'Strp81 Connectivity',
+      'last_update': datetime.datetime(2024, 12, 28, 11, 55, tzinfo=datetime.timezone.utc),
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.strp81_connectivity',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_sensor[binary_sensor.strp81_transmitter_battery-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'binary_sensor.strp81_transmitter_battery',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.BATTERY: 'battery'>,
+    'original_icon': None,
+    'original_name': 'Transmitter battery',
+    'platform': 'weatherlink',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'trans_battery',
+    'unique_id': '03e7585a-4f29-4e7c-b6cb-d9e17313b07c-TransmitterBattery',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_sensor[binary_sensor.strp81_transmitter_battery-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'battery',
+      'friendly_name': 'Strp81 Transmitter battery',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.strp81_transmitter_battery',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unavailable',
+  })
+# ---
