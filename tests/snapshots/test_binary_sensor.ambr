@@ -1,5 +1,5 @@
 # serializer version: 1
-# name: test_sensor[binary_sensor.strp81_connectivity-entry]
+# name: test_binary_sensor[binary_sensor.strp81_connectivity-entry]
   EntityRegistryEntrySnapshot({
     'aliases': set({
     }),
@@ -32,7 +32,7 @@
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor[binary_sensor.strp81_connectivity-state]
+# name: test_binary_sensor[binary_sensor.strp81_connectivity-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'connectivity',
@@ -47,7 +47,7 @@
     'state': 'off',
   })
 # ---
-# name: test_sensor[binary_sensor.strp81_transmitter_battery-entry]
+# name: test_binary_sensor[binary_sensor.strp81_transmitter_battery-entry]
   EntityRegistryEntrySnapshot({
     'aliases': set({
     }),
@@ -80,7 +80,7 @@
     'unit_of_measurement': None,
   })
 # ---
-# name: test_sensor[binary_sensor.strp81_transmitter_battery-state]
+# name: test_binary_sensor[binary_sensor.strp81_transmitter_battery-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'battery',

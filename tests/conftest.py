@@ -75,6 +75,18 @@ def bypass_get_data_fixture(
         yield
 
 
+@pytest.fixture(name="bypass_get_data_api_1")
+def bypass_get_data_api_1_fixture(
+    hass: HomeAssistant,
+):
+    """Skip calls to get data from API."""
+    with patch(
+        "custom_components.weatherlink.pyweatherlink.WLHub.get_data",
+        return_value=json_loads(load_fixture("fryksasm_api1.json")),
+    ):
+        yield
+
+
 @pytest.fixture(name="bypass_get_station")
 def bypass_get_station_fixture(
     hass: HomeAssistant,
