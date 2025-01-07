@@ -14,6 +14,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers.device_registry import DeviceEntry
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
@@ -596,3 +597,15 @@ async def async_migrate_entry(hass, config_entry: ConfigEntry):
     _LOGGER.info("Migration to version %s successful", config_entry.version)
 
     return True
+
+
+async def async_remove_config_entry_device(
+    hass: HomeAssistant, config_entry: ConfigEntry, device_entry: DeviceEntry
+) -> bool:
+    """Remove config entry from a device."""
+    api_data = config_entry.runtime_data.coordinator.data
+    return not any(
+        identifier
+        for _, identifier in device_entry.identifiers
+        if identifier in api_data
+    )
