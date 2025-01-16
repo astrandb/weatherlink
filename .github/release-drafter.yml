@@ -1,6 +1,7 @@
 name-template: "Example title - v$NEXT_PRERELEASE_VERSION"
 tag-template: "v$NEXT_PRERELEASE_VERSION"
 prerelease: true
+version-template: "$MAJOR.$MINOR.$PATCH$PRERELEASE"
 
 exclude-labels:
   - "skip-changelog"
