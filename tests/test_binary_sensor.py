@@ -19,7 +19,7 @@ from .const import ENTRY_ID, MOCK_CONFIG_V2
 
 
 @pytest.mark.usefixtures("entity_registry_enabled_by_default")
-async def test_sensor(
+async def test_binary_sensor(
     hass: HomeAssistant,
     bypass_get_data,
     bypass_get_station,

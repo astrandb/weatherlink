@@ -113,6 +113,27 @@ async def validate_input_v2(
     if not await hub.authenticate():
         raise InvalidAuth
 
+    return {}
+
+
+async def validate_input_v2b(
+    hass: HomeAssistant, data: dict[str, Any]
+) -> dict[str, Any]:
+    """Validate the user input allows us to connect.
+
+    Data has the keys from STEP_USER_DATA_SCHEMA_V2 with values provided by the user.
+    """
+    websession = async_get_clientsession(hass)
+    hub = WLHubV2(
+        station_id=data.get(CONF_STATION_ID),
+        api_key_v2=data[CONF_API_KEY_V2],
+        api_secret=data[CONF_API_SECRET],
+        websession=websession,
+    )
+
+    # if not await hub.authenticate():
+    #     raise InvalidAuth
+
     # Return info that you want to store in the config entry.
     data = await hub.get_station()
     _LOGGER.debug("Station data: %s", data)
@@ -237,7 +258,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         user_input[CONF_API_SECRET] = self.user_data_2[CONF_API_SECRET]
 
         try:
-            info = await validate_input_v2(self.hass, user_input)
+            info = await validate_input_v2b(self.hass, user_input)
         except CannotConnect:
             errors["base"] = "cannot_connect"
         except InvalidAuth:
