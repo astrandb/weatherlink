@@ -13,6 +13,8 @@ from aiohttp import ClientResponseError
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers.device_registry import DeviceEntry
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
@@ -139,9 +141,28 @@ async def async_setup_entry(hass: HomeAssistant, entry: WLConfigEntry) -> bool:
         await coordinator.async_config_entry_first_refresh()
     _LOGGER.debug("First data: %s", coordinator.data)
 
+    device_registry = dr.async_get(hass)
+    device_registry.async_get_or_create(
+        config_entry_id=entry.entry_id,
+        identifiers={(DOMAIN, get_unique_id_base(entry))},
+        name=entry.title,
+    )
+
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
+
+
+def get_unique_id_base(entry: WLConfigEntry):
+    """Generate base for unique_id."""
+    unique_base = None
+    if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
+        unique_base = entry.runtime_data.coordinator.data[
+            entry.runtime_data.primary_tx_id
+        ]["DID"]
+    if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
+        unique_base = entry.runtime_data.coordinator.data[DataKey.UUID]
+    return unique_base
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: WLConfigEntry) -> bool:
@@ -576,3 +597,15 @@ async def async_migrate_entry(hass, config_entry: ConfigEntry):
     _LOGGER.info("Migration to version %s successful", config_entry.version)
 
     return True
+
+
+async def async_remove_config_entry_device(
+    hass: HomeAssistant, config_entry: ConfigEntry, device_entry: DeviceEntry
+) -> bool:
+    """Remove config entry from a device."""
+    api_data = config_entry.runtime_data.coordinator.data
+    return not any(
+        identifier
+        for _, identifier in device_entry.identifiers
+        if identifier in api_data
+    )
