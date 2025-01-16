@@ -1,5 +1,5 @@
 name-template: "Example title - v$NEXT_PATCH_VERSION"
-tag-template: "v$NEXT_PATCH_VERSION"
+tag-template: "v2025.1.0dev1"
 
 exclude-labels:
   - "skip-changelog"
