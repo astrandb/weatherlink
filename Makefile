@@ -1,5 +1,3 @@
-src_dir := custom_components/weatherlink
-
 bump:
 	bumpver update --patch --no-fetch
 
@@ -18,5 +16,5 @@ bump_pre_next:
 bump_dev:
 	bumpver update --no-fetch --patch --tag=dev --tag-num
 
-bump_remove_pre_tag:
+bump_final:
 	bumpver update --no-fetch --tag=final --commit --commit-message="Final release from {old_version} to {new_version}"
