@@ -14,6 +14,7 @@ commit = false
 ".github/release-drafter.yml" = [
     'tag-template: "v{version}"',
     'name-template: "v{version}"',
+    '/"v{version}"',
 ]
 
 [tool.pylint."MESSAGES CONTROL"]

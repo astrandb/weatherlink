@@ -38,7 +38,7 @@ change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 
 template: |
-  [![Downloads for this release](https://img.shields.io/github/downloads-pre/$OWNER/$REPOSITORY/v$COMPLETE/total.svg)](https://github.com/$OWNER/$REPOSITORY/releases/v$RESOLVED_VERSION)
+  [![Downloads for this release](https://img.shields.io/github/downloads-pre/$OWNER/$REPOSITORY/v2025.1.0dev1/total.svg)](https://github.com/$OWNER/$REPOSITORY/releases/v2025.1.0dev1)
 
   <!--
   ### Checklist for release
