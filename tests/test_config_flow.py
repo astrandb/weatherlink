@@ -6,10 +6,10 @@ import pytest
 
 from custom_components.weatherlink.config_flow import CannotConnect, InvalidAuth
 from custom_components.weatherlink.const import (
-    DOMAIN,
     CONF_API_KEY_V2,
     CONF_API_SECRET,
     CONF_STATION_ID,
+    DOMAIN,
 )
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant

@@ -142,8 +142,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input[CONF_API_VERSION] == ApiVersion.API_V1:
             return await self.async_step_user_1()
-        if user_input[CONF_API_VERSION] == ApiVersion.API_V2:
-            return await self.async_step_user_2()
+        return await self.async_step_user_2()
 
     async def async_step_user_1(
         self, user_input: dict[str, Any] | None = None

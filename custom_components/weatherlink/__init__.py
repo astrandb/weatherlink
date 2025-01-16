@@ -33,6 +33,8 @@ type WLConfigEntry = ConfigEntry[WLData]
 
 @dataclass
 class WLData:
+    """WIP."""
+
     api: WLHub | WLHubV2
     primary_tx_id: int
     station_data: dict
@@ -144,9 +146,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: WLConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: WLConfigEntry) -> bool:
     """Unload a config entry."""
-    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-
-    return unload_ok
+    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
 
 DCO = "davis_current_observation"

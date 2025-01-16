@@ -884,13 +884,13 @@ class WLSensor(CoordinatorEntity, SensorEntity):
 
         return None
 
-    def is_float(self, in_string):
+    def is_float(self, in_string) -> bool:
         """Check if string is float."""
         try:
             float(in_string)
-            return True
         except ValueError:
             return False
+        return True
 
     @property
     def extra_state_attributes(self) -> dict[str, str] | None:

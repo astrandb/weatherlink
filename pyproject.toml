@@ -1,10 +1,10 @@
-[bumpver]
+[tool.bumpver]
 current_version = "2024.12.0"
 version_pattern = "YYYY.MM.PATCH[PYTAGNUM]"
 commit_message = "Bump version from {old_version} to {new_version}"
 commit = false
 
-[bumpver.file_patterns]
+[tool.bumpver.file_patterns]
 "pyproject.toml" = ['current_version = "{version}"']
 
 "**/const.py" = ['VERSION = "{version}"']
@@ -267,10 +267,10 @@ enable = [
     "use-symbolic-message-instead",
 ]
 
-[tools.ruff]
+[tool.ruff]
 required-version = ">=0.8.0"
 
-[tools.ruff.lint]
+[tool.ruff.lint]
 select = [
     "A001",     # Variable {name} is shadowing a Python builtin
     "ASYNC210", # Async functions should not call blocking HTTP methods
@@ -412,7 +412,7 @@ ignore = [
     "PLE0605",
 ]
 
-[tools.ruff.lint.flake8-import-conventions.extend-aliases]
+[tool.ruff.lint.flake8-import-conventions.extend-aliases]
 voluptuous = "vol"
 "homeassistant.helpers.area_registry" = "ar"
 "homeassistant.helpers.category_registry" = "cr"
@@ -427,22 +427,20 @@ voluptuous = "vol"
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
 "async_timeout".msg = "use asyncio.timeout instead"
 
-[tools.ruff.lint.isort]
+[tool.ruff.lint.isort]
 force-sort-within-sections = true
 known-first-party = ["homeassistant"]
 combine-as-imports = true
 split-on-trailing-comma = false
 
-[tools.ruff.lint.flake8-pytest-style]
+[tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
 
-[tools.ruff.lint.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 25
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 
 [tool.coverage.run]
-omit = [
-    "*/tests/*"
-    ]
+omit = ["*/tests/*"]

@@ -7,6 +7,7 @@ from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
+from . import WLConfigEntry
 from .const import (
     CONF_API_KEY_V2,
     CONF_API_SECRET,
@@ -14,8 +15,6 @@ from .const import (
     CONF_API_VERSION,
     ApiVersion,
 )
-
-from . import WLConfigEntry
 
 TO_REDACT = {
     CONF_PASSWORD,
@@ -40,7 +39,7 @@ async def async_get_config_entry_diagnostics(
     if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
         sensor_data = await entry.runtime_data.api.get_all_sensors()
 
-    diagnostics_data = {
+    return {
         "info": async_redact_data(entry.data, TO_REDACT),
         "station_data": async_redact_data(station_data, TO_REDACT),
         "all_sensor_data": async_redact_data(sensor_data, TO_REDACT),
@@ -48,5 +47,3 @@ async def async_get_config_entry_diagnostics(
         "current_data": async_redact_data(current, TO_REDACT),
         "data": async_redact_data(coordinator.data, TO_REDACT),
     }
-
-    return diagnostics_data
