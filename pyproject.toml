@@ -12,9 +12,9 @@ commit = false
 "custom_components/*/const.py" = ['^VERSION = "{version}"']
 
 ".github/release-drafter.yml" = [
-    'name-template: "Example title - "v{version}"',
-    'tag-template: "v{version}"',
-    '/"v{version}"/total',
+    # 'name-template: "Example title - "v{version}"',
+    # 'tag-template: "v{version}"',
+    'v{version}',
 ]
 
 [tool.pylint."MESSAGES CONTROL"]
