@@ -3,6 +3,6 @@ homeassistant
 pip>=21.0,<24.4
 ruff==0.12.7
 pre-commit==4.2.0
-bumpver==2024.1130
+bumpver==2025.1131
 urllib3>=1.26.5,<2
 pytest-homeassistant-custom-component
