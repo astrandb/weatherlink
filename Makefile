@@ -16,5 +16,8 @@ bump_pre_next:
 bump_dev:
 	bumpver update --no-fetch --patch --tag=dev --tag-num
 
+bump_dev_next:
+	bumpver update --no-fetch --tag=dev --tag-num
+
 bump_final:
 	bumpver update --no-fetch --tag=final --commit --commit-message="Final release from {old_version} to {new_version}"
