@@ -14,8 +14,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
-from homeassistant.helpers.device_registry import DeviceEntry
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.device_registry import DeviceEntry
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import (
@@ -574,6 +574,7 @@ async def get_coordinator(  # noqa: C901
     entry.runtime_data.coordinator = DataUpdateCoordinator(
         hass,
         logging.getLogger(__name__),
+        config_entry=entry,
         name=DOMAIN,
         update_method=async_fetch,
         update_interval=timedelta(minutes=5),
