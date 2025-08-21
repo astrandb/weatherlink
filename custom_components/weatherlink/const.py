@@ -3,7 +3,7 @@
 from enum import StrEnum
 
 DOMAIN = "weatherlink"
-VERSION = "2025.8.0dev0"
+VERSION = "2025.8.1b0"
 
 MANUFACTURER = "Davis Instruments"
 CONFIG_URL = "https://www.weatherlink.com/"
