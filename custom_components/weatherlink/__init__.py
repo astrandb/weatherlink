@@ -14,8 +14,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
-from homeassistant.helpers.device_registry import DeviceEntry
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.device_registry import DeviceEntry
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import (
@@ -373,6 +373,52 @@ async def get_coordinator(  # noqa: C901
                     outdata[tx_id][DataKey.ET_DAY] = sensor["data"][0]["et_day"]
                     outdata[tx_id][DataKey.ET_MONTH] = sensor["data"][0]["et_month"]
                     outdata[tx_id][DataKey.ET_YEAR] = sensor["data"][0]["et_year"]
+
+                # ----------- Data structure 6 - EnviroMonitor
+                if (
+                    sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
+                    and sensor["data_structure_type"] == 6
+                ):
+                    tx_id = sensor["data"][0].get("tx_id", 1)
+                    outdata.setdefault(tx_id, {})
+                    outdata[tx_id][DataKey.SENSOR_TYPE] = sensor["sensor_type"]
+                    outdata[tx_id][DataKey.DATA_STRUCTURE] = sensor[
+                        "data_structure_type"
+                    ]
+                    outdata[tx_id][DataKey.TIMESTAMP] = sensor["data"][0]["ts"]
+                    outdata[tx_id][DataKey.TEMP_OUT] = sensor["data"][0]["temp_out"]
+                    outdata[tx_id][DataKey.BAR_SEA_LEVEL] = sensor["data"][0]["bar"]
+                    if (xx := sensor["data"][0].get("bar_trend", 0)) is not None:
+                        xx = xx / 1000
+                    outdata[tx_id][DataKey.BAR_TREND] = xx
+                    outdata[tx_id][DataKey.HUM_OUT] = sensor["data"][0]["hum_out"]
+                    outdata[tx_id][DataKey.WIND_MPH] = sensor["data"][0]["wind_speed"]
+                    outdata[tx_id][DataKey.WIND_GUST_MPH] = sensor["data"][0][
+                        "wind_gust_10_min"
+                    ]
+                    outdata[tx_id][DataKey.WIND_DIR] = sensor["data"][0]["wind_dir"]
+                    outdata[tx_id][DataKey.DEWPOINT] = sensor["data"][0]["dew_point"]
+                    outdata[tx_id][DataKey.HEAT_INDEX] = sensor["data"][0]["heat_index"]
+                    outdata[tx_id][DataKey.WIND_CHILL] = sensor["data"][0]["wind_chill"]
+                    outdata[tx_id][DataKey.RAIN_DAY] = sensor["data"][0].get(
+                        "rain_day_in"
+                    )
+                    if (xx := sensor["data"][0].get("rain_storm_in", 0.0)) is None:
+                        xx = 0.0
+                    outdata[tx_id][DataKey.RAIN_STORM] = xx
+                    outdata[tx_id][DataKey.RAIN_STORM_START] = sensor["data"][0].get(
+                        "rain_storm_start_date"
+                    )
+                    outdata[tx_id][DataKey.RAIN_RATE] = sensor["data"][0][
+                        "rain_rate_in"
+                    ]
+                    outdata[tx_id][DataKey.SOLAR_RADIATION] = sensor["data"][0][
+                        "solar_rad"
+                    ]
+                    outdata[tx_id][DataKey.UV_INDEX] = sensor["data"][0]["uv"]
+                    outdata[tx_id][DataKey.ET_DAY] = sensor["data"][0]["et_day"]
+                    outdata[tx_id][DataKey.THSW_INDEX] = sensor["data"][0]["thsw_index"]
+                    outdata[tx_id][DataKey.WET_BULB] = sensor["data"][0]["wet_bulb"]
 
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
