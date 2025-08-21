@@ -110,6 +110,9 @@
       "inside_temperature": {
         "name": "Vnútorná teplota"
       },
+      "last_update": {
+        "name": "Posledná aktualizácia"
+      },
       "moist_soil_1": {
         "name": "Pôdna vlhkosť 1"
       },
