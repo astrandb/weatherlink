@@ -1,9 +1,7 @@
 {
   "domain": "weatherlink",
   "name": "WeatherLink",
-  "codeowners": [
-    "@astrandb"
-  ],
+  "codeowners": ["@astrandb"],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/astrandb/weatherlink",

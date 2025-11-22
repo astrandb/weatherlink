@@ -5,4 +5,4 @@ ruff==0.14.4
 pre-commit==4.3.0
 bumpver==2025.1131
 urllib3>=1.26.5,<2
-pytest-homeassistant-custom-component
+pytest-homeassistant-custom-component==0.13.297
