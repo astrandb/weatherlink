@@ -8,11 +8,12 @@ from datetime import timedelta
 from email.utils import mktime_tz, parsedate_tz
 import logging
 
-from aiohttp import ClientResponseError
+from aiohttp import ClientError, ClientResponseError
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import DeviceEntry
@@ -112,9 +113,25 @@ async def async_setup_entry(hass: HomeAssistant, entry: WLConfigEntry) -> bool:
             api_key_v2=entry.data[CONF_API_KEY_V2],
             api_secret=entry.data[CONF_API_SECRET],
         )
-        entry.runtime_data.station_data = await entry.runtime_data.api.get_station()
+        try:
+            entry.runtime_data.station_data = await entry.runtime_data.api.get_station()
 
-        all_sensors = await entry.runtime_data.api.get_all_sensors()
+            all_sensors = await entry.runtime_data.api.get_all_sensors()
+        except ClientResponseError as err:
+            if 400 <= err.status < 500:
+                raise ConfigEntryAuthFailed(
+                    translation_domain=DOMAIN,
+                    translation_key="config_entry_auth_failed",
+                ) from err
+            raise ConfigEntryNotReady(
+                translation_domain=DOMAIN,
+                translation_key="config_entry_not_ready",
+            ) from err
+        except ClientError as err:
+            raise ConfigEntryNotReady(
+                translation_domain=DOMAIN,
+                translation_key="config_entry_not_ready",
+            ) from err
 
         sensors = []
         tx_ids = []
@@ -135,6 +152,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: WLConfigEntry) -> bool:
         if len(tx_ids) == 0:
             tx_ids = [1]
         entry.runtime_data.primary_tx_id = min(tx_ids)
+
     _LOGGER.debug("Primary tx_ids: %s", tx_ids)
     coordinator = await get_coordinator(hass, entry)
     if not coordinator.last_update_success:

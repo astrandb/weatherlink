@@ -1,7 +1,7 @@
 """pytest fixtures."""
 
 from collections.abc import Generator
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 from pytest_homeassistant_custom_component.common import load_fixture
@@ -143,7 +143,7 @@ def snapshot(snapshot: SnapshotAssertion) -> SnapshotAssertion:
 
 
 @pytest.fixture
-def mock_api():
+def mock_api() -> Generator[MagicMock]:
     """Mock api."""
     with (
         patch(

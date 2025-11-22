@@ -82,11 +82,6 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     if not await hub.authenticate():
         raise InvalidAuth
 
-    # If you cannot connect:
-    # throw CannotConnect
-    # If the authentication is wrong:
-    # InvalidAuth
-
     # Return info that you want to store in the config entry.
     data = await hub.get_data()
     station_name = data["davis_current_observation"]["station_name"]
@@ -131,16 +126,11 @@ async def validate_input_v2b(
         websession=websession,
     )
 
-    # if not await hub.authenticate():
-    #     raise InvalidAuth
-
     # Return info that you want to store in the config entry.
     data = await hub.get_station()
     _LOGGER.debug("Station data: %s", data)
     station_name = data["stations"][0]["station_name"]
-    # did = data["davis_current_observation"]["DID"]
 
-    # return {"title": station_name, "did": did}
     return {"title": station_name}
 
 
