@@ -1,5 +1,9 @@
 """Test initial setup."""
 
+from unittest.mock import MagicMock
+
+from aiohttp import ClientResponseError
+import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.weatherlink import async_unload_entry
@@ -45,15 +49,21 @@ async def test_devices_created_count(
     assert len(device_registry.devices) == 1
 
 
-# @pytest.mark.parametrize("exception", [ClientResponseError, TimeoutError])
-# async def test_api_error(hass: HomeAssistant, exception, mock_api) -> None:
-#     """Test for exceptions during data fetch."""
-#     entry = MockConfigEntry(
-#         domain=DOMAIN, version=2, data=MOCK_CONFIG_V2, entry_id=ENTRY_ID
-#     )
-#     entry.add_to_hass(hass)
-#     mock_api.side_effect = exception
-#     await hass.config_entries.async_setup(entry.entry_id)
-#     await hass.async_block_till_done()
+@pytest.mark.parametrize("exception", [ClientResponseError, TimeoutError])
+async def test_api_error(
+    hass: HomeAssistant,
+    bypass_get_station,
+    bypass_get_all_sensors,
+    exception: Exception,
+    mock_api: MagicMock,
+) -> None:
+    """Test for exceptions during data fetch."""
+    entry = MockConfigEntry(
+        domain=DOMAIN, version=2, data=MOCK_CONFIG_V2, entry_id=ENTRY_ID
+    )
+    entry.add_to_hass(hass)
+    mock_api.side_effect = exception
+    await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
 
-#     assert entry.state is ConfigEntryState.SETUP_RETRY
+    assert entry.state is ConfigEntryState.SETUP_RETRY

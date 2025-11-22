@@ -5,6 +5,7 @@ Move to pypi.org when stable
 
 from dataclasses import dataclass
 import logging
+from typing import Any
 import urllib.parse
 
 from aiohttp import ClientResponse, ClientResponseError, ClientSession
@@ -72,11 +73,12 @@ class WLHub:
             res = await self.request("GET")
             return await res.json()
         except ClientResponseError as exc:
-            _LOGGER.error(
+            _LOGGER.debug(
                 "API get_data failed. Status: %s, - %s", exc.code, exc.message
             )
             if exc.code == 401:
                 raise ConfigEntryAuthFailed from exc
+            raise
 
 
 class WLHubV2:
@@ -105,19 +107,13 @@ class WLHubV2:
 
     async def request(self, method, endpoint="current/", **kwargs) -> ClientResponse:
         """Make a request."""
-        headers = kwargs.get("headers")
-
-        if headers is None:
-            headers = {}
-        else:
+        if headers := kwargs.pop("headers", {}):
             headers = dict(headers)
-            kwargs.pop("headers")
 
         headers["x-api-secret"] = self.api_secret
         headers["User-Agent"] = f"Weatherlink for Home Assistant/{VERSION}"
-        params = {
-            "api-key": self.api_key_v2,
-        }
+
+        params = {"api-key": self.api_key_v2}
         params_enc = urllib.parse.urlencode(params, quote_via=urllib.parse.quote)
 
         station = (
@@ -134,15 +130,16 @@ class WLHubV2:
         res.raise_for_status()
         return res
 
-    async def get_data(self):
+    async def get_data(self) -> dict[str, Any]:
         """Get data from api."""
         try:
             res = await self.request("GET")
             return await res.json()
         except ClientResponseError as exc:
-            _LOGGER.error(
+            _LOGGER.debug(
                 "API get_data failed. Status: %s, - %s", exc.code, exc.message
             )
+            raise
 
     async def get_station(self):
         """Get data from api."""
@@ -150,9 +147,10 @@ class WLHubV2:
             res = await self.request("GET", endpoint="stations/")
             return await res.json()
         except ClientResponseError as exc:
-            _LOGGER.error(
+            _LOGGER.debug(
                 "API get_station failed. Status: %s, - %s", exc.code, exc.message
             )
+            raise
 
     async def get_all_stations(self):
         """Get all stations from api."""
@@ -160,11 +158,12 @@ class WLHubV2:
             res = await self.request("GET", endpoint="stations")
             return await res.json()
         except ClientResponseError as exc:
-            _LOGGER.error(
+            _LOGGER.debug(
                 "API get_all_stations failed. Status: %s, - %s", exc.code, exc.message
             )
             if exc.code == 401:
                 raise ConfigEntryAuthFailed from exc
+            raise
 
     async def get_all_sensors(self):
         """Get all sensors from api."""
@@ -172,9 +171,10 @@ class WLHubV2:
             res = await self.request("GET", endpoint="sensors")
             return await res.json()
         except ClientResponseError as exc:
-            _LOGGER.error(
+            _LOGGER.debug(
                 "API get_all_sensors failed. Status: %s, - %s", exc.code, exc.message
             )
+            raise
 
 
 @dataclass
