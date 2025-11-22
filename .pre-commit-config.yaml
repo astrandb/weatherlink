@@ -14,16 +14,24 @@ repos:
       - id: end-of-file-fixer
       - id: check-json
         exclude: (.vscode|.devcontainer)
-      - id: pretty-format-json
-        args: ['--autofix', '--no-ensure-ascii', '--top-keys=domain,name']
-        files: manifest.json
-      - id: pretty-format-json
-        args: ['--autofix', '--no-ensure-ascii', '--top-keys=name']
-        files: hacs.json
-      - id: pretty-format-json
-        args: ['--autofix', '--no-ensure-ascii', '--no-sort-keys']
-        files: (/strings\.json$|translations/.+\.json$)
+      # - id: pretty-format-json
+      #   args: ['--autofix', '--no-ensure-ascii', '--top-keys=domain,name']
+      #   files: manifest.json
+      # - id: pretty-format-json
+      #   args: ['--autofix', '--no-ensure-ascii', '--top-keys=name']
+      #   files: hacs.json
+      # - id: pretty-format-json
+      #   args: ['--autofix', '--no-ensure-ascii', '--no-sort-keys']
+      #   files: (/strings\.json$|translations/.+\.json$)
       - id: check-yaml
-        args: ['--unsafe']
+        args: ["--unsafe"]
       - id: check-added-large-files
       - id: check-shebang-scripts-are-executable
+
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.6.2
+    hooks:
+      - id: prettier
+        additional_dependencies:
+          - prettier@3.6.2
+          # - prettier-plugin-sort-json@4.1.1
