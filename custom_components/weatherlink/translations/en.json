@@ -41,6 +41,32 @@
       }
     }
   },
+  "config_subentries": {
+    "station": {
+      "entry_type": "Weather station",
+      "initiate_flow": {
+        "user": "Add weather station"
+      },
+      "title": "Weather station",
+      "step": {
+        "user": {
+          "title": "Add station",
+          "description": "Select the weather station",
+          "data": { "station_id": "Station" }
+        },
+        "reconfigure": {
+          "title": "Update station",
+          "description": "..."
+        }
+      },
+      "error": {},
+      "abort": {
+        "entry_not_loaded": "Entry not loaded",
+        "reconfigure_successful": "Reconfigure successful",
+        "already_configured": "Station is already configured"
+      }
+    }
+  },
   "entity": {
     "binary_sensor": {
       "timestamp": {

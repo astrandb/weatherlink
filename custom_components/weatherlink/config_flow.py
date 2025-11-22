@@ -7,9 +7,13 @@ from typing import Any
 
 import voluptuous as vol
 
-from homeassistant import config_entries
+from homeassistant.config_entries import (
+    ConfigFlow,
+    ConfigSubentryFlow,
+    SubentryFlowResult,
+)
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -20,6 +24,7 @@ from homeassistant.helpers.selector import (
     TextSelector,
 )
 
+from . import WLConfigEntry
 from .const import (
     CONF_API_KEY_V2,
     CONF_API_SECRET,
@@ -134,7 +139,7 @@ async def validate_input_v2b(
     return {"title": station_name}
 
 
-class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+class ConfigFlow(ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Weatherlink."""
 
     VERSION = 2
@@ -214,6 +219,14 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user_2", data_schema=data_schema, errors=errors, last_step=False
         )
 
+    @classmethod
+    @callback
+    def async_get_supported_subentry_types(
+        cls, config_entry: WLConfigEntry
+    ) -> dict[str, type[ConfigSubentryFlow]]:
+        """Return subentries supported by this integration."""
+        return {"station": StationSubentryFlowHandler}
+
     async def async_step_user_3(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
@@ -266,6 +279,74 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=data_schema,
             errors=errors,
             last_step=True,
+        )
+
+
+sub_data_schema = vol.Schema(
+    {
+        vol.Required(CONF_STATION_ID): TextSelector(),
+    }
+)
+
+
+class StationSubentryFlowHandler(ConfigSubentryFlow):
+    """Handle subentry flow for adding and modifying a location."""
+
+    async def async_step_user(
+        self, user_input: dict[str, Any] | None = None
+    ) -> SubentryFlowResult:
+        """User flow to add a new location."""
+        entry: WLConfigEntry = self._get_entry()
+
+        websession = async_get_clientsession(self.hass)
+        _api = WLHubV2(
+            api_key_v2=entry.data[CONF_API_KEY_V2],
+            api_secret=entry.data[CONF_API_SECRET],
+            websession=websession,
+        )
+        station_list_raw = await _api.get_all_stations()
+        station_list = [
+            SelectOptionDict(value=str(stn[CONF_STATION_ID]), label=stn["station_name"])
+            for stn in (station_list_raw["stations"])
+        ]
+        if user_input is None:
+            return self.async_show_form(
+                step_id="user",
+                data_schema=vol.Schema(
+                    {
+                        vol.Required(CONF_STATION_ID): SelectSelector(
+                            SelectSelectorConfig(options=station_list)
+                        ),
+                    }
+                ),
+            )
+        errors = {}
+
+        # user_input[CONF_API_VERSION] = ApiVersion.API_V2
+        # user_input[CONF_API_KEY_V2] = self.user_data_2[CONF_API_KEY_V2]
+        # user_input[CONF_API_SECRET] = self.user_data_2[CONF_API_SECRET]
+
+        try:
+            # info = await validate_input_v2b(self.hass, user_input)
+            info = {"title": "New dummy station"}
+        except CannotConnect:
+            errors["base"] = "cannot_connect"
+        except InvalidAuth:
+            errors["base"] = "invalid_auth"
+        except Exception:  # pylint: disable=broad-except
+            _LOGGER.exception("Unexpected exception")
+            errors["base"] = "unknown"
+        else:
+            return self.async_create_entry(
+                title=info["title"],
+                data=user_input,
+                unique_id=user_input[CONF_STATION_ID],
+            )
+
+        return self.async_show_form(
+            step_id="user",
+            data_schema=sub_data_schema,
+            errors=errors,
         )
 
 
