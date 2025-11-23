@@ -1,0 +1,348 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Device is already configured"
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "invalid_auth": "Invalid authentication",
+      "unknown": "Unexpected error"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "api_version": "API version"
+        },
+        "data_description": {
+          "api_version": "V1 can be used for legacy devices, V2 can be used for all devices."
+        },
+        "description": "Select the API version"
+      },
+      "user_1": {
+        "data": {
+          "apitoken": "API token v1",
+          "password": "Password",
+          "username": "Username or DID"
+        },
+        "data_description": {
+          "username": "Use DID here if you have access to it - i.e. if it is your own station"
+        },
+        "description": "Enter credentials to access your Weatherlink account"
+      },
+      "user_2": {
+        "data": {
+          "api_key_v2": "API key v2",
+          "api_secret": "API secret"
+        },
+        "description": "Enter credentials to access your Weatherlink stations"
+      },
+      "user_3": {
+        "description": "Select weather station"
+      }
+    }
+  },
+  "config_subentries": {
+    "station": {
+      "entry_type": "Weather station",
+      "initiate_flow": {
+        "user": "Add weather station"
+      },
+      "title": "Weather station",
+      "step": {
+        "user": {
+          "title": "Add station",
+          "description": "Select the weather station",
+          "data": { "station_id": "Station" }
+        },
+        "reconfigure": {
+          "title": "Update station",
+          "description": "..."
+        }
+      },
+      "error": {
+        "cannot_connect": "[%key:config::error::cannot_connect%]",
+        "invalid_auth": "[%key:config::error::invalid_auth%]",
+        "unknown": "[%key:config::error::unknown%]"
+      },
+      "abort": {
+        "entry_not_loaded": "Entry not loaded",
+        "reconfigure_successful": "Reconfigure successful",
+        "already_configured": "Station is already configured"
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "timestamp": {
+        "state_attributes": {
+          "last_update": {
+            "name": "Last update"
+          }
+        }
+      },
+      "trans_battery": {
+        "name": "Transmitter battery"
+      }
+    },
+    "sensor": {
+      "aqi_nowcast_val": {
+        "name": "Air quality index Nowcast"
+      },
+      "bar_trend": {
+        "name": "Pressure trend",
+        "state": {
+          "falling_rapidly": "Falling rapidly",
+          "falling_slowly": "Falling slowly",
+          "rising_rapidly": "Rising rapidly",
+          "rising_slowly": "Rising slowly",
+          "steady": "Steady"
+        }
+      },
+      "dewpoint": {
+        "name": "Dewpoint"
+      },
+      "et_day": {
+        "name": "Evapotranspiration day"
+      },
+      "et_month": {
+        "name": "Evapotranspiration month"
+      },
+      "et_year": {
+        "name": "Evapotranspiration year"
+      },
+      "heat_index": {
+        "name": "Heat index"
+      },
+      "hum_extra_1": {
+        "name": "Humidity extra 1"
+      },
+      "hum_extra_2": {
+        "name": "Humidity extra 2"
+      },
+      "hum_extra_3": {
+        "name": "Humidity extra 3"
+      },
+      "hum_extra_4": {
+        "name": "Humidity extra 4"
+      },
+      "hum_extra_5": {
+        "name": "Humidity extra 5"
+      },
+      "hum_extra_6": {
+        "name": "Humidity extra 6"
+      },
+      "hum_extra_7": {
+        "name": "Humidity extra 7"
+      },
+      "inside_humidity": {
+        "name": "Inside humidity"
+      },
+      "inside_temperature": {
+        "name": "Inside temperature"
+      },
+      "last_update": {
+        "name": "Last updated"
+      },
+      "moist_soil_1": {
+        "name": "Soil moisture 1"
+      },
+      "moist_soil_2": {
+        "name": "Soil moisture 2"
+      },
+      "moist_soil_3": {
+        "name": "Soil moisture 3"
+      },
+      "moist_soil_4": {
+        "name": "Soil moisture 4"
+      },
+      "outside_humidity": {
+        "name": "Outside humidity"
+      },
+      "outside_temperature": {
+        "name": "Outside temperature"
+      },
+      "pm_10_24_hour": {
+        "name": "PM10 24h"
+      },
+      "pm_2p5_24_hour": {
+        "name": "PM2.5 24h"
+      },
+      "pressure": {
+        "name": "Pressure"
+      },
+      "rain_rate": {
+        "name": "Rain intensity"
+      },
+      "rain_storm": {
+        "name": "Rain storm",
+        "state_attributes": {
+          "rain_storm_start": {
+            "name": "Rain storm start"
+          }
+        }
+      },
+      "rain_storm_last": {
+        "name": "Last rain storm",
+        "state_attributes": {
+          "rain_storm_end": {
+            "name": "Rain storm end"
+          },
+          "rain_storm_start": {
+            "name": "Rain storm start"
+          }
+        }
+      },
+      "rain_this_month": {
+        "name": "Rain this month"
+      },
+      "rain_this_year": {
+        "name": "Rain this year"
+      },
+      "rain_today": {
+        "name": "Rain today"
+      },
+      "solar_irradiance": {
+        "name": "Solar irradiance"
+      },
+      "solar_panel_volt": {
+        "name": "Solar panel"
+      },
+      "supercap_volt": {
+        "name": "Supercapacitor"
+      },
+      "temp_1": {
+        "name": "Temperature 1"
+      },
+      "temp_2": {
+        "name": "Temperature 2"
+      },
+      "temp_3": {
+        "name": "Temperature 3"
+      },
+      "temp_4": {
+        "name": "Temperature 4"
+      },
+      "temp_extra_1": {
+        "name": "Temp extra 1"
+      },
+      "temp_extra_2": {
+        "name": "Temp extra 2"
+      },
+      "temp_extra_3": {
+        "name": "Temp extra 3"
+      },
+      "temp_extra_4": {
+        "name": "Temp extra 4"
+      },
+      "temp_extra_5": {
+        "name": "Temp extra 5"
+      },
+      "temp_extra_6": {
+        "name": "Temp extra 6"
+      },
+      "temp_extra_7": {
+        "name": "Temp extra 7"
+      },
+      "temp_leaf_1": {
+        "name": "Temp leaf 1"
+      },
+      "temp_leaf_2": {
+        "name": "Temp leaf 2"
+      },
+      "temp_leaf_3": {
+        "name": "Temp leaf 3"
+      },
+      "temp_leaf_4": {
+        "name": "Temp leaf 4"
+      },
+      "temp_soil_1": {
+        "name": "Temp soil 1"
+      },
+      "temp_soil_2": {
+        "name": "Temp soil 2"
+      },
+      "temp_soil_3": {
+        "name": "Temp soil 3"
+      },
+      "temp_soil_4": {
+        "name": "Temp soil 4"
+      },
+      "thsw_index": {
+        "name": "THSW index"
+      },
+      "thw_index": {
+        "name": "THW index"
+      },
+      "trans_battery_volt": {
+        "name": "Transmitter battery"
+      },
+      "uv_index": {
+        "name": "UV index"
+      },
+      "wet_bulb": {
+        "name": "Wet bulb"
+      },
+      "wet_leaf_1": {
+        "name": "Leaf wetness 1"
+      },
+      "wet_leaf_2": {
+        "name": "Leaf wetness 2"
+      },
+      "wet_leaf_3": {
+        "name": "Leaf wetness 3"
+      },
+      "wet_leaf_4": {
+        "name": "Leaf wetness 4"
+      },
+      "wind": {
+        "name": "Wind"
+      },
+      "wind_chill": {
+        "name": "Wind chill"
+      },
+      "wind_direction": {
+        "name": "Wind direction",
+        "state": {
+          "e": "E",
+          "ene": "ENE",
+          "ese": "ESE",
+          "n": "N",
+          "ne": "NE",
+          "nne": "NNE",
+          "nnw": "NNW",
+          "nw": "NW",
+          "s": "S",
+          "se": "SE",
+          "sse": "SSE",
+          "ssw": "SSW",
+          "sw": "SW",
+          "w": "W",
+          "wnw": "WNW",
+          "wsw": "WSW"
+        }
+      },
+      "wind_direction_deg": {
+        "name": "Wind direction deg"
+      },
+      "wind_gust": {
+        "name": "Wind gust"
+      }
+    }
+  },
+  "exceptions": {
+    "config_entry_auth_failed": {
+      "message": "Authentication failed. Please log in again."
+    },
+    "config_entry_not_ready": {
+      "message": "Error while loading the integration."
+    }
+  },
+  "selector": {
+    "set_api_ver": {
+      "options": {
+        "api_v1": "API V1",
+        "api_v2": "API V2"
+      }
+    }
+  }
+}
