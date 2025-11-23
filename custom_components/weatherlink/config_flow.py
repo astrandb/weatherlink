@@ -322,13 +322,12 @@ class StationSubentryFlowHandler(ConfigSubentryFlow):
             )
         errors = {}
 
-        # user_input[CONF_API_VERSION] = ApiVersion.API_V2
-        # user_input[CONF_API_KEY_V2] = self.user_data_2[CONF_API_KEY_V2]
-        # user_input[CONF_API_SECRET] = self.user_data_2[CONF_API_SECRET]
-
         try:
-            # info = await validate_input_v2b(self.hass, user_input)
-            info = {"title": "New dummy station"}
+            stations = {
+                str(station["station_id"]): station
+                for station in station_list_raw["stations"]
+            }
+            station_name = stations[user_input[CONF_STATION_ID]]["station_name"]
         except CannotConnect:
             errors["base"] = "cannot_connect"
         except InvalidAuth:
@@ -338,7 +337,7 @@ class StationSubentryFlowHandler(ConfigSubentryFlow):
             errors["base"] = "unknown"
         else:
             return self.async_create_entry(
-                title=info["title"],
+                title=station_name,
                 data=user_input,
                 unique_id=user_input[CONF_STATION_ID],
             )

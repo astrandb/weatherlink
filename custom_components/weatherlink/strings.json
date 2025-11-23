@@ -60,9 +60,9 @@
         }
       },
       "error": {
-        "cannot_connect": "Failed to connect",
-        "invalid_auth": "Invalid authentication",
-        "unknown": "Unexpected error"
+        "cannot_connect": "[%key:config::error::cannot_connect%]",
+        "invalid_auth": "[%key:config::error::invalid_auth%]",
+        "unknown": "[%key:config::error::unknown%]"
       },
       "abort": {
         "entry_not_loaded": "Entry not loaded",
@@ -81,7 +81,7 @@
         }
       },
       "trans_battery": {
-        "name": "Transmitter battery"
+        "name": "[%key:entity::sensor::trans_battery_volt::name%]"
       }
     },
     "sensor": {
@@ -99,7 +99,7 @@
         }
       },
       "dewpoint": {
-        "name": "Dewpoint"
+        "name": "Dew point"
       },
       "et_day": {
         "name": "Evapotranspiration day"
@@ -188,7 +188,7 @@
             "name": "Rain storm end"
           },
           "rain_storm_start": {
-            "name": "Rain storm start"
+            "name": "[%key:entity::sensor::rain_storm::state_attributes::rain_storm_start::name%]"
           }
         }
       },
