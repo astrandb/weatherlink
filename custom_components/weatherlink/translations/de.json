@@ -41,6 +41,15 @@
       }
     }
   },
+  "config_subentries": {
+    "station": {
+      "error": {
+        "cannot_connect": "Verbindung nicht möglich",
+        "invalid_auth": "Ungültige Authentifizierung",
+        "unknown": "Unerwarteter Fehler"
+      }
+    }
+  },
   "entity": {
     "binary_sensor": {
       "timestamp": {

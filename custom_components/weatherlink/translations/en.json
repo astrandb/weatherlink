@@ -101,7 +101,7 @@
         }
       },
       "dewpoint": {
-        "name": "Dewpoint"
+        "name": "Dew point"
       },
       "et_day": {
         "name": "Evapotranspiration day"
