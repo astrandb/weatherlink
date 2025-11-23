@@ -41,6 +41,15 @@
       }
     }
   },
+  "config_subentries": {
+    "station": {
+      "error": {
+        "cannot_connect": "Nepodarilo sa pripojiť",
+        "invalid_auth": "Neplatné overenie",
+        "unknown": "Neočakávaná chyba"
+      }
+    }
+  },
   "entity": {
     "binary_sensor": {
       "timestamp": {
