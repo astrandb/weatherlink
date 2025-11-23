@@ -41,6 +41,15 @@
       }
     }
   },
+  "config_subentries": {
+    "station": {
+      "error": {
+        "cannot_connect": "Lyckades inte ansluta",
+        "invalid_auth": "Felaktiga autentiseringsuppgifter",
+        "unknown": "Oväntat fel"
+      }
+    }
+  },
   "entity": {
     "binary_sensor": {
       "timestamp": {

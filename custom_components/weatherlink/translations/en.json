@@ -41,6 +41,38 @@
       }
     }
   },
+  "config_subentries": {
+    "station": {
+      "abort": {
+        "already_configured": "Station is already configured",
+        "entry_not_loaded": "Entry not loaded",
+        "reconfigure_successful": "Reconfigure successful"
+      },
+      "entry_type": "Weather station",
+      "error": {
+        "cannot_connect": "Failed to connect",
+        "invalid_auth": "Invalid authentication",
+        "unknown": "Unexpected error"
+      },
+      "initiate_flow": {
+        "user": "Add weather station"
+      },
+      "step": {
+        "reconfigure": {
+          "description": "...",
+          "title": "Update station"
+        },
+        "user": {
+          "data": {
+            "station_id": "Station"
+          },
+          "description": "Select the weather station",
+          "title": "Add station"
+        }
+      },
+      "title": "Weather station"
+    }
+  },
   "entity": {
     "binary_sensor": {
       "timestamp": {
