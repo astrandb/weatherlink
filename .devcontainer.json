@@ -21,6 +21,8 @@
         "github.vscode-pull-request-github",
         "ryanluker.vscode-coverage-gutters",
         "ms-python.vscode-pylance",
+        "github.copilot",
+        "github.copilot-chat",
         "ms-python.pylint",
         "charliermarsh.ruff"
       ],
