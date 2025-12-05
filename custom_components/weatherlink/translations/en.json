@@ -43,32 +43,34 @@
   },
   "config_subentries": {
     "station": {
+      "abort": {
+        "already_configured": "Station is already configured",
+        "entry_not_loaded": "Entry not loaded",
+        "reconfigure_successful": "Reconfigure successful"
+      },
       "entry_type": "Weather station",
-      "initiate_flow": {
-        "user": "Add weather station"
-      },
-      "title": "Weather station",
-      "step": {
-        "user": {
-          "title": "Add station",
-          "description": "Select the weather station",
-          "data": { "station_id": "Station" }
-        },
-        "reconfigure": {
-          "title": "Update station",
-          "description": "..."
-        }
-      },
       "error": {
         "cannot_connect": "Failed to connect",
         "invalid_auth": "Invalid authentication",
         "unknown": "Unexpected error"
       },
-      "abort": {
-        "entry_not_loaded": "Entry not loaded",
-        "reconfigure_successful": "Reconfigure successful",
-        "already_configured": "Station is already configured"
-      }
+      "initiate_flow": {
+        "user": "Add weather station"
+      },
+      "step": {
+        "reconfigure": {
+          "description": "Dummy description...",
+          "title": "Update station"
+        },
+        "user": {
+          "data": {
+            "station_id": "Station"
+          },
+          "description": "Select the service (account) where the weather station is located",
+          "title": "Add station"
+        }
+      },
+      "title": "Weather station"
     }
   },
   "entity": {
@@ -99,7 +101,7 @@
         }
       },
       "dewpoint": {
-        "name": "Dewpoint"
+        "name": "Dew point"
       },
       "et_day": {
         "name": "Evapotranspiration day"

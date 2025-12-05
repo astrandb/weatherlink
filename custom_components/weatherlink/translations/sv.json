@@ -41,6 +41,38 @@
       }
     }
   },
+  "config_subentries": {
+    "station": {
+      "abort": {
+        "already_configured": "Stationen är redan konfigurerad",
+        "entry_not_loaded": "Entryt är inte laddat",
+        "reconfigure_successful": "Omkonfigureringen lyckades"
+      },
+      "entry_type": "Väderstation",
+      "error": {
+        "cannot_connect": "Lyckades inte ansluta",
+        "invalid_auth": "Felaktiga autentiseringsuppgifter",
+        "unknown": "Oväntat fel"
+      },
+      "initiate_flow": {
+        "user": "Lägg till väderstation"
+      },
+      "step": {
+        "reconfigure": {
+          "description": "Dummy description...",
+          "title": "Uppdatera stationen"
+        },
+        "user": {
+          "data": {
+            "station_id": "Station"
+          },
+          "description": "Välj väderstation",
+          "title": "Lägg till station"
+        }
+      },
+      "title": "Väderstation"
+    }
+  },
   "entity": {
     "binary_sensor": {
       "timestamp": {
