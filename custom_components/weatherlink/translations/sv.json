@@ -59,7 +59,7 @@
       },
       "step": {
         "reconfigure": {
-          "description": "...",
+          "description": "Dummy description...",
           "title": "Uppdatera stationen"
         },
         "user": {

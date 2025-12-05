@@ -59,14 +59,14 @@
       },
       "step": {
         "reconfigure": {
-          "description": "...",
+          "description": "Dummy description...",
           "title": "Update station"
         },
         "user": {
           "data": {
             "station_id": "Station"
           },
-          "description": "Select the weather station",
+          "description": "Select the service (account) where the weather station is located",
           "title": "Add station"
         }
       },
