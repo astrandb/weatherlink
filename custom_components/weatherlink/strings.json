@@ -51,12 +51,12 @@
       "step": {
         "user": {
           "title": "Add station",
-          "description": "Select the weather station",
+          "description": "Select the service (account) where the weather station is located",
           "data": { "station_id": "Station" }
         },
         "reconfigure": {
           "title": "Update station",
-          "description": "..."
+          "description": "Dummy description..."
         }
       },
       "error": {
