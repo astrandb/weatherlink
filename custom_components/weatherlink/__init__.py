@@ -118,7 +118,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: WLConfigEntry) -> bool:
 
             all_sensors = await entry.runtime_data.api.get_all_sensors()
         except ClientResponseError as err:
-            if 400 <= err.status < 500:
+            if err.status == 401:
                 raise ConfigEntryAuthFailed(
                     translation_domain=DOMAIN,
                     translation_key="config_entry_auth_failed",
