@@ -49,7 +49,7 @@ class WLEntity(CoordinatorEntity):
         tx_id_part = f"-{self.tx_id}" if self.tx_id != self.primary_tx_id else ""
         if (
             self.generate_model().startswith("AirLink")
-            and coordinator.data.get("1") == {}
+            and coordinator.data.get(1) == {}
         ):
             tx_id_part = ""
         self._attr_unique_id = (
