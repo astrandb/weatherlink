@@ -32,6 +32,7 @@ from .const import (
     CONF_API_VERSION,
     CONF_STATION_ID,
     DOMAIN,
+    SUBENTRY_TYPE_STATION,
     ApiVersion,
 )
 from .pyweatherlink import WLHub, WLHubV2
@@ -225,7 +226,7 @@ class ConfigFlow(ConfigFlow, domain=DOMAIN):
         cls, config_entry: WLConfigEntry
     ) -> dict[str, type[ConfigSubentryFlow]]:
         """Return subentries supported by this integration."""
-        return {"station": StationSubentryFlowHandler}
+        return {SUBENTRY_TYPE_STATION: StationSubentryFlowHandler}
 
     async def async_step_user_3(
         self, user_input: dict[str, Any] | None = None

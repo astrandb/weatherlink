@@ -26,6 +26,7 @@ from .const import (
     CONF_API_VERSION,
     CONF_STATION_ID,
     DOMAIN,
+    SUBENTRY_TYPE_STATION,
     ApiVersion,
     DataKey,
 )
@@ -96,75 +97,82 @@ async def async_setup_entry(hass: HomeAssistant, entry: WLConfigEntry) -> bool:
         current={},
     )
 
-    if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
-        entry.runtime_data.api = WLHub(
-            websession=async_get_clientsession(hass),
-            username=entry.data[CONF_USERNAME],
-            password=entry.data[CONF_PASSWORD],
-            apitoken=entry.data[CONF_API_TOKEN],
-        )
-        entry.runtime_data.primary_tx_id = 1
-        tx_ids = [1]
+    for subentry in entry.sub_entries.values():
+        if subentry.entry_type != SUBENTRY_TYPE_STATION:
+            continue
 
-    if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
-        entry.runtime_data.api = WLHubV2(
-            websession=async_get_clientsession(hass),
-            station_id=entry.data[CONF_STATION_ID],
-            api_key_v2=entry.data[CONF_API_KEY_V2],
-            api_secret=entry.data[CONF_API_SECRET],
-        )
-        try:
-            entry.runtime_data.station_data = await entry.runtime_data.api.get_station()
-
-            all_sensors = await entry.runtime_data.api.get_all_sensors()
-        except ClientResponseError as err:
-            if err.status == 401:
-                raise ConfigEntryAuthFailed(
-                    translation_domain=DOMAIN,
-                    translation_key="config_entry_auth_failed",
-                ) from err
-            raise ConfigEntryNotReady(
-                translation_domain=DOMAIN,
-                translation_key="config_entry_not_ready",
-            ) from err
-        except ClientError as err:
-            raise ConfigEntryNotReady(
-                translation_domain=DOMAIN,
-                translation_key="config_entry_not_ready",
-            ) from err
-
-        sensors = []
-        tx_ids = []
-        for sensor in all_sensors["sensors"]:
-            if (
-                sensor["station_id"]
-                == entry.runtime_data.station_data["stations"][0]["station_id"]
-            ):
-                sensors.append(sensor)
-                if (
-                    sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
-                    and sensor["tx_id"] is not None
-                    and sensor["tx_id"] not in tx_ids
-                ):
-                    tx_ids.append(sensor["tx_id"])
-        entry.runtime_data.sensors_metadata = sensors
-        # todo Make primary_tx_id configurable by user - perhaps in config flow.
-        if len(tx_ids) == 0:
+        if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
+            entry.runtime_data.api = WLHub(
+                websession=async_get_clientsession(hass),
+                username=entry.data[CONF_USERNAME],
+                password=entry.data[CONF_PASSWORD],
+                apitoken=entry.data[CONF_API_TOKEN],
+            )
+            entry.runtime_data.primary_tx_id = 1
             tx_ids = [1]
-        entry.runtime_data.primary_tx_id = min(tx_ids)
 
-    _LOGGER.debug("Primary tx_ids: %s", tx_ids)
-    coordinator = await get_coordinator(hass, entry)
-    if not coordinator.last_update_success:
-        await coordinator.async_config_entry_first_refresh()
-    _LOGGER.debug("First data: %s", coordinator.data)
+        if entry.data[CONF_API_VERSION] == ApiVersion.API_V2:
+            entry.runtime_data.api = WLHubV2(
+                websession=async_get_clientsession(hass),
+                station_id=entry.data[CONF_STATION_ID],
+                api_key_v2=entry.data[CONF_API_KEY_V2],
+                api_secret=entry.data[CONF_API_SECRET],
+            )
+            try:
+                entry.runtime_data.station_data = (
+                    await entry.runtime_data.api.get_station()
+                )
 
-    device_registry = dr.async_get(hass)
-    device_registry.async_get_or_create(
-        config_entry_id=entry.entry_id,
-        identifiers={(DOMAIN, get_unique_id_base(entry))},
-        name=entry.title,
-    )
+                all_sensors = await entry.runtime_data.api.get_all_sensors()
+            except ClientResponseError as err:
+                if err.status == 401:
+                    raise ConfigEntryAuthFailed(
+                        translation_domain=DOMAIN,
+                        translation_key="config_entry_auth_failed",
+                    ) from err
+                raise ConfigEntryNotReady(
+                    translation_domain=DOMAIN,
+                    translation_key="config_entry_not_ready",
+                ) from err
+            except ClientError as err:
+                raise ConfigEntryNotReady(
+                    translation_domain=DOMAIN,
+                    translation_key="config_entry_not_ready",
+                ) from err
+
+            sensors = []
+            tx_ids = []
+            for sensor in all_sensors["sensors"]:
+                if (
+                    sensor["station_id"]
+                    == entry.runtime_data.station_data["stations"][0]["station_id"]
+                ):
+                    sensors.append(sensor)
+                    if (
+                        sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
+                        and sensor["tx_id"] is not None
+                        and sensor["tx_id"] not in tx_ids
+                    ):
+                        tx_ids.append(sensor["tx_id"])
+            entry.runtime_data.sensors_metadata = sensors
+            # todo Make primary_tx_id configurable by user - perhaps in config flow.
+            if len(tx_ids) == 0:
+                tx_ids = [1]
+            entry.runtime_data.primary_tx_id = min(tx_ids)
+
+        _LOGGER.debug("Primary tx_ids: %s", tx_ids)
+
+        coordinator = await get_coordinator(hass, entry)
+        if not coordinator.last_update_success:
+            await coordinator.async_config_entry_first_refresh()
+        _LOGGER.debug("First data: %s", coordinator.data)
+
+        device_registry = dr.async_get(hass)
+        device_registry.async_get_or_create(
+            config_entry_id=entry.entry_id,
+            identifiers={(DOMAIN, get_unique_id_base(entry))},
+            name=entry.title,
+        )
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
