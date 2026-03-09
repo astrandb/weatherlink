@@ -247,7 +247,7 @@ async def get_coordinator(  # noqa: C901
                 # Vue
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
-                    or sensor["sensor_type"] in [55]
+                    or sensor["sensor_type"] == 55
                 ) and sensor["data_structure_type"] == 10:
                     # _LOGGER.debug("Sensor: %s | %s", sensor["sensor_type"], sensor)
                     tx_id = sensor["data"][0]["tx_id"]
@@ -440,7 +440,7 @@ async def get_coordinator(  # noqa: C901
 
                 if (
                     sensor["sensor_type"] in SENSOR_TYPE_VUE_AND_VANTAGE_PRO
-                    or sensor["sensor_type"] in [55]
+                    or sensor["sensor_type"] == 55
                 ) and sensor["data_structure_type"] == 23:
                     tx_id = sensor["data"][0]["tx_id"]
                     outdata.setdefault(tx_id, {})
