@@ -1,5 +1,5 @@
-name-template: "Example title - v2026.3.0"
-tag-template: "v2026.3.0"
+name-template: "Example title - v2026.3.1"
+tag-template: "v2026.3.1"
 
 exclude-labels:
   - "skip-changelog"
@@ -38,8 +38,8 @@ change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 
 template: |
-  [![Downloads for this release](https://img.shields.io/github/downloads-pre/$OWNER/$REPOSITORY/v2026.3.0/total.svg)]
-  (https://github.com/$OWNER/$REPOSITORY/releases/v2026.3.0)
+  [![Downloads for this release](https://img.shields.io/github/downloads-pre/$OWNER/$REPOSITORY/v2026.3.1/total.svg)]
+  (https://github.com/$OWNER/$REPOSITORY/releases/v2026.3.1)
 
   <!--
   ### Checklist for release
