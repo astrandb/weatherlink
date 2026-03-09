@@ -655,8 +655,7 @@ async def async_migrate_entry(hass, config_entry: ConfigEntry):
 
         new_data[CONF_API_VERSION] = ApiVersion.API_V1
 
-        config_entry.version = 2
-        hass.config_entries.async_update_entry(config_entry, data=new_data)
+        hass.config_entries.async_update_entry(config_entry, data=new_data, version=2)
 
     _LOGGER.info("Migration to version %s successful", config_entry.version)
 
