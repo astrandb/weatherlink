@@ -1,6 +1,6 @@
 {
   "name": "dev-weatherlink",
-  "image": "mcr.microsoft.com/devcontainers/python:1-3.13",
+  "image": "mcr.microsoft.com/devcontainers/python:3.14",
   "postCreateCommand": "scripts/setup",
   "appPort": ["9126:8123"],
   "portsAttributes": {
@@ -35,7 +35,13 @@
         "[python]": {
           "editor.defaultFormatter": "charliermarsh.ruff"
         },
-        "[json][jsonc][yaml]": {
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[jsonc]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[yaml]": {
           "editor.defaultFormatter": "esbenp.prettier-vscode"
         },
         "editor.formatOnPaste": false,
