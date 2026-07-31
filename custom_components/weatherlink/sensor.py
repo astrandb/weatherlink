@@ -658,7 +658,7 @@ class WLSensor(WLEntity, SensorEntity):
         ]:
             return self.coordinator.data[self.tx_id].get(self.entity_description.tag)
 
-        if self.entity_description.tag in [DataKey.WIND_GUST_MPH]:
+        if self.entity_description.tag == DataKey.WIND_GUST_MPH:
             if (
                 self.coordinator.data[self.tx_id].get(self.entity_description.tag)
                 is None
@@ -677,7 +677,7 @@ class WLSensor(WLEntity, SensorEntity):
                 return 0.0
             return self.coordinator.data[self.tx_id].get(self.entity_description.tag)
 
-        if self.entity_description.tag in [DataKey.WIND_DIR]:
+        if self.entity_description.tag == DataKey.WIND_DIR:
             if self.coordinator.data[self.tx_id][self.entity_description.tag] is None:
                 return None
 
@@ -753,9 +753,7 @@ class WLSensor(WLEntity, SensorEntity):
     @property
     def extra_state_attributes(self) -> dict[str, str] | None:
         """Return the state attributes, if any."""
-        if self.entity_description.key in [
-            "RainStorm",
-        ]:
+        if self.entity_description.key == "RainStorm":
             if self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_START) is None:
                 return None
             dt_object = datetime.fromtimestamp(
@@ -764,9 +762,7 @@ class WLSensor(WLEntity, SensorEntity):
             return {
                 "rain_storm_start": dt_object,
             }
-        if self.entity_description.key in [
-            "RainStormLast",
-        ]:
+        if self.entity_description.key == "RainStormLast":
             if (
                 self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_LAST_START)
                 is None
