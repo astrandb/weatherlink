@@ -13,9 +13,9 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import (
-    CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
     DEGREE,
     PERCENTAGE,
+    UnitOfDensity,
     UnitOfElectricPotential,
     UnitOfIrradiance,
     UnitOfPrecipitationDepth,
@@ -477,7 +477,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         # translation_key="pm_1",
         device_class=SensorDeviceClass.PM1,
         suggested_display_precision=1,
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UnitOfDensity.MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2, 10, 12, 25),
@@ -489,7 +489,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         # translation_key="pm_2p5",
         device_class=SensorDeviceClass.PM25,
         suggested_display_precision=1,
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UnitOfDensity.MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2, 10, 12, 25),
@@ -501,7 +501,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         translation_key="pm_2p5_24_hour",
         device_class=SensorDeviceClass.PM25,
         suggested_display_precision=1,
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UnitOfDensity.MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2, 10, 12, 25),
@@ -513,7 +513,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         # translation_key="pm_10",
         device_class=SensorDeviceClass.PM10,
         suggested_display_precision=1,
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UnitOfDensity.MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2, 10, 12, 25),
@@ -525,7 +525,7 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
         translation_key="pm_10_24_hour",
         device_class=SensorDeviceClass.PM10,
         suggested_display_precision=1,
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UnitOfDensity.MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
         exclude_api_ver=(ApiVersion.API_V1,),
         exclude_data_structure=(2, 10, 12, 25),
@@ -658,7 +658,7 @@ class WLSensor(WLEntity, SensorEntity):
         ]:
             return self.coordinator.data[self.tx_id].get(self.entity_description.tag)
 
-        if self.entity_description.tag in [DataKey.WIND_GUST_MPH]:
+        if self.entity_description.tag == DataKey.WIND_GUST_MPH:
             if (
                 self.coordinator.data[self.tx_id].get(self.entity_description.tag)
                 is None
@@ -677,7 +677,7 @@ class WLSensor(WLEntity, SensorEntity):
                 return 0.0
             return self.coordinator.data[self.tx_id].get(self.entity_description.tag)
 
-        if self.entity_description.tag in [DataKey.WIND_DIR]:
+        if self.entity_description.tag == DataKey.WIND_DIR:
             if self.coordinator.data[self.tx_id][self.entity_description.tag] is None:
                 return None
 
@@ -753,9 +753,7 @@ class WLSensor(WLEntity, SensorEntity):
     @property
     def extra_state_attributes(self) -> dict[str, str] | None:
         """Return the state attributes, if any."""
-        if self.entity_description.key in [
-            "RainStorm",
-        ]:
+        if self.entity_description.key == "RainStorm":
             if self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_START) is None:
                 return None
             dt_object = datetime.fromtimestamp(
@@ -764,9 +762,7 @@ class WLSensor(WLEntity, SensorEntity):
             return {
                 "rain_storm_start": dt_object,
             }
-        if self.entity_description.key in [
-            "RainStormLast",
-        ]:
+        if self.entity_description.key == "RainStormLast":
             if (
                 self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_LAST_START)
                 is None
