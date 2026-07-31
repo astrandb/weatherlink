@@ -1,7 +1,8 @@
 {
   "config": {
     "abort": {
-      "already_configured": "Zariadenie je už nakonfigurované"
+      "already_configured": "Zariadenie je už nakonfigurované",
+      "no_stations": "Pre účet sa nenašli žiadne dostupné stanice"
     },
     "error": {
       "cannot_connect": "Nepodarilo sa pripojiť",
@@ -43,11 +44,34 @@
   },
   "config_subentries": {
     "station": {
+      "abort": {
+        "already_configured": "Stanica je už nakonfigurovaná",
+        "entry_not_loaded": "Položka nie je načítaná",
+        "reconfigure_successful": "Úspešná rekonfigurácia"
+      },
+      "entry_type": "Meteorologická stanica",
       "error": {
         "cannot_connect": "Nepodarilo sa pripojiť",
         "invalid_auth": "Neplatné overenie",
         "unknown": "Neočakávaná chyba"
-      }
+      },
+      "initiate_flow": {
+        "user": "Pridať meteorologickú stanicu"
+      },
+      "step": {
+        "reconfigure": {
+          "description": "Prázdny popis...",
+          "title": "Aktualizovať stanicu"
+        },
+        "user": {
+          "data": {
+            "station_id": "Stanica"
+          },
+          "description": "Vyberte službu (účet), kde sa nachádza meteorologická stanica",
+          "title": "Pridať stanicu"
+        }
+      },
+      "title": "Meteorologická stanica"
     }
   },
   "entity": {
@@ -306,6 +330,14 @@
       "wind_gust": {
         "name": "Nárazový vietor"
       }
+    }
+  },
+  "exceptions": {
+    "config_entry_auth_failed": {
+      "message": "Overenie zlyhalo. Prihláste sa znova."
+    },
+    "config_entry_not_ready": {
+      "message": "Chyba pri načítavaní integrácie."
     }
   },
   "selector": {
