@@ -1,11 +1,12 @@
 # serializer version: 1
 # name: test_sensor[sensor.strp81_dew_point-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -43,10 +44,10 @@
 # name: test_sensor[sensor.strp81_dew_point-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'temperature',
-      'friendly_name': 'Strp81 Dew point',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Dew point',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_dew_point',
@@ -58,11 +59,12 @@
 # ---
 # name: test_sensor[sensor.strp81_evapotranspiration_day-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -103,11 +105,11 @@
 # name: test_sensor[sensor.strp81_evapotranspiration_day-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'precipitation',
-      'friendly_name': 'Strp81 Evapotranspiration day',
-      'icon': 'mdi:waves-arrow-up',
-      'state_class': <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      'unit_of_measurement': <UnitOfLength.MILLIMETERS: 'mm'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'precipitation',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Evapotranspiration day',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:waves-arrow-up',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfLength.MILLIMETERS: 'mm'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_evapotranspiration_day',
@@ -119,11 +121,12 @@
 # ---
 # name: test_sensor[sensor.strp81_evapotranspiration_month-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -164,11 +167,11 @@
 # name: test_sensor[sensor.strp81_evapotranspiration_month-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'precipitation',
-      'friendly_name': 'Strp81 Evapotranspiration month',
-      'icon': 'mdi:waves-arrow-up',
-      'state_class': <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      'unit_of_measurement': <UnitOfLength.MILLIMETERS: 'mm'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'precipitation',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Evapotranspiration month',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:waves-arrow-up',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfLength.MILLIMETERS: 'mm'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_evapotranspiration_month',
@@ -180,11 +183,12 @@
 # ---
 # name: test_sensor[sensor.strp81_evapotranspiration_year-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -225,11 +229,11 @@
 # name: test_sensor[sensor.strp81_evapotranspiration_year-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'precipitation',
-      'friendly_name': 'Strp81 Evapotranspiration year',
-      'icon': 'mdi:waves-arrow-up',
-      'state_class': <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      'unit_of_measurement': <UnitOfLength.MILLIMETERS: 'mm'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'precipitation',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Evapotranspiration year',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:waves-arrow-up',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfLength.MILLIMETERS: 'mm'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_evapotranspiration_year',
@@ -241,11 +245,12 @@
 # ---
 # name: test_sensor[sensor.strp81_heat_index-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -283,10 +288,10 @@
 # name: test_sensor[sensor.strp81_heat_index-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'temperature',
-      'friendly_name': 'Strp81 Heat index',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Heat index',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_heat_index',
@@ -298,11 +303,12 @@
 # ---
 # name: test_sensor[sensor.strp81_inside_humidity-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -340,10 +346,10 @@
 # name: test_sensor[sensor.strp81_inside_humidity-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'humidity',
-      'friendly_name': 'Strp81 Inside humidity',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': '%',
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'humidity',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Inside humidity',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: '%',
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_inside_humidity',
@@ -355,11 +361,12 @@
 # ---
 # name: test_sensor[sensor.strp81_inside_temperature-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -397,10 +404,10 @@
 # name: test_sensor[sensor.strp81_inside_temperature-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'temperature',
-      'friendly_name': 'Strp81 Inside temperature',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Inside temperature',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_inside_temperature',
@@ -412,8 +419,9 @@
 # ---
 # name: test_sensor[sensor.strp81_last_rain_storm-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': None,
     'config_entry_id': <ANY>,
@@ -455,9 +463,9 @@
 # name: test_sensor[sensor.strp81_last_rain_storm-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'precipitation',
-      'friendly_name': 'Strp81 Last rain storm',
-      'unit_of_measurement': <UnitOfLength.MILLIMETERS: 'mm'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'precipitation',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Last rain storm',
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfLength.MILLIMETERS: 'mm'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_last_rain_storm',
@@ -469,8 +477,9 @@
 # ---
 # name: test_sensor[sensor.strp81_last_updated-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': None,
     'config_entry_id': <ANY>,
@@ -506,8 +515,8 @@
 # name: test_sensor[sensor.strp81_last_updated-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'timestamp',
-      'friendly_name': 'Strp81 Last updated',
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'timestamp',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Last updated',
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_last_updated',
@@ -519,11 +528,12 @@
 # ---
 # name: test_sensor[sensor.strp81_outside_humidity-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -561,10 +571,10 @@
 # name: test_sensor[sensor.strp81_outside_humidity-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'humidity',
-      'friendly_name': 'Strp81 Outside humidity',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': '%',
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'humidity',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Outside humidity',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: '%',
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_outside_humidity',
@@ -576,11 +586,12 @@
 # ---
 # name: test_sensor[sensor.strp81_outside_temperature-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -618,10 +629,10 @@
 # name: test_sensor[sensor.strp81_outside_temperature-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'temperature',
-      'friendly_name': 'Strp81 Outside temperature',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Outside temperature',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_outside_temperature',
@@ -633,11 +644,12 @@
 # ---
 # name: test_sensor[sensor.strp81_pressure-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -678,10 +690,10 @@
 # name: test_sensor[sensor.strp81_pressure-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'pressure',
-      'friendly_name': 'Strp81 Pressure',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfPressure.HPA: 'hPa'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'pressure',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Pressure',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfPressure.HPA: 'hPa'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_pressure',
@@ -693,8 +705,9 @@
 # ---
 # name: test_sensor[sensor.strp81_pressure_trend-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': None,
     'config_entry_id': <ANY>,
@@ -730,8 +743,8 @@
 # name: test_sensor[sensor.strp81_pressure_trend-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Strp81 Pressure trend',
-      'icon': 'mdi:trending-up',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Pressure trend',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:trending-up',
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_pressure_trend',
@@ -743,11 +756,12 @@
 # ---
 # name: test_sensor[sensor.strp81_rain_intensity-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -788,10 +802,10 @@
 # name: test_sensor[sensor.strp81_rain_intensity-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'precipitation_intensity',
-      'friendly_name': 'Strp81 Rain intensity',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfVolumetricFlux.MILLIMETERS_PER_HOUR: 'mm/h'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'precipitation_intensity',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Rain intensity',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfVolumetricFlux.MILLIMETERS_PER_HOUR: 'mm/h'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_rain_intensity',
@@ -803,8 +817,9 @@
 # ---
 # name: test_sensor[sensor.strp81_rain_storm-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': None,
     'config_entry_id': <ANY>,
@@ -846,9 +861,9 @@
 # name: test_sensor[sensor.strp81_rain_storm-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'precipitation',
-      'friendly_name': 'Strp81 Rain storm',
-      'unit_of_measurement': <UnitOfLength.MILLIMETERS: 'mm'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'precipitation',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Rain storm',
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfLength.MILLIMETERS: 'mm'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_rain_storm',
@@ -860,11 +875,12 @@
 # ---
 # name: test_sensor[sensor.strp81_rain_this_month-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -905,10 +921,10 @@
 # name: test_sensor[sensor.strp81_rain_this_month-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'precipitation',
-      'friendly_name': 'Strp81 Rain this month',
-      'state_class': <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      'unit_of_measurement': <UnitOfLength.MILLIMETERS: 'mm'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'precipitation',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Rain this month',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfLength.MILLIMETERS: 'mm'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_rain_this_month',
@@ -920,11 +936,12 @@
 # ---
 # name: test_sensor[sensor.strp81_rain_this_year-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -965,10 +982,10 @@
 # name: test_sensor[sensor.strp81_rain_this_year-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'precipitation',
-      'friendly_name': 'Strp81 Rain this year',
-      'state_class': <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      'unit_of_measurement': <UnitOfLength.MILLIMETERS: 'mm'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'precipitation',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Rain this year',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfLength.MILLIMETERS: 'mm'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_rain_this_year',
@@ -980,11 +997,12 @@
 # ---
 # name: test_sensor[sensor.strp81_rain_today-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -1025,10 +1043,10 @@
 # name: test_sensor[sensor.strp81_rain_today-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'precipitation',
-      'friendly_name': 'Strp81 Rain today',
-      'state_class': <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
-      'unit_of_measurement': <UnitOfLength.MILLIMETERS: 'mm'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'precipitation',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Rain today',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL_INCREASING: 'total_increasing'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfLength.MILLIMETERS: 'mm'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_rain_today',
@@ -1040,11 +1058,12 @@
 # ---
 # name: test_sensor[sensor.strp81_solar_panel-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -1082,10 +1101,10 @@
 # name: test_sensor[sensor.strp81_solar_panel-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'voltage',
-      'friendly_name': 'Strp81 Solar panel',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfElectricPotential.VOLT: 'V'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'voltage',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Solar panel',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricPotential.VOLT: 'V'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_solar_panel',
@@ -1097,11 +1116,12 @@
 # ---
 # name: test_sensor[sensor.strp81_supercapacitor-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -1139,10 +1159,10 @@
 # name: test_sensor[sensor.strp81_supercapacitor-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'voltage',
-      'friendly_name': 'Strp81 Supercapacitor',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfElectricPotential.VOLT: 'V'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'voltage',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Supercapacitor',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricPotential.VOLT: 'V'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_supercapacitor',
@@ -1154,11 +1174,12 @@
 # ---
 # name: test_sensor[sensor.strp81_thw_index-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -1196,10 +1217,10 @@
 # name: test_sensor[sensor.strp81_thw_index-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'temperature',
-      'friendly_name': 'Strp81 THW index',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 THW index',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_thw_index',
@@ -1211,11 +1232,12 @@
 # ---
 # name: test_sensor[sensor.strp81_transmitter_battery-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -1253,10 +1275,10 @@
 # name: test_sensor[sensor.strp81_transmitter_battery-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'voltage',
-      'friendly_name': 'Strp81 Transmitter battery',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfElectricPotential.VOLT: 'V'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'voltage',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Transmitter battery',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfElectricPotential.VOLT: 'V'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_transmitter_battery',
@@ -1268,11 +1290,12 @@
 # ---
 # name: test_sensor[sensor.strp81_wet_bulb-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -1310,10 +1333,10 @@
 # name: test_sensor[sensor.strp81_wet_bulb-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'temperature',
-      'friendly_name': 'Strp81 Wet bulb',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Wet bulb',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_wet_bulb',
@@ -1325,11 +1348,12 @@
 # ---
 # name: test_sensor[sensor.strp81_wind-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -1370,10 +1394,10 @@
 # name: test_sensor[sensor.strp81_wind-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'wind_speed',
-      'friendly_name': 'Strp81 Wind',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfSpeed.KILOMETERS_PER_HOUR: 'km/h'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'wind_speed',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Wind',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfSpeed.KILOMETERS_PER_HOUR: 'km/h'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_wind',
@@ -1385,11 +1409,12 @@
 # ---
 # name: test_sensor[sensor.strp81_wind_chill-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -1427,10 +1452,10 @@
 # name: test_sensor[sensor.strp81_wind_chill-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'temperature',
-      'friendly_name': 'Strp81 Wind chill',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Wind chill',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_wind_chill',
@@ -1442,8 +1467,9 @@
 # ---
 # name: test_sensor[sensor.strp81_wind_direction-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': None,
     'config_entry_id': <ANY>,
@@ -1479,8 +1505,8 @@
 # name: test_sensor[sensor.strp81_wind_direction-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Strp81 Wind direction',
-      'icon': 'mdi:compass-outline',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Wind direction',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:compass-outline',
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_wind_direction',
@@ -1490,13 +1516,14 @@
     'state': 'unavailable',
   })
 # ---
-# name: test_sensor[sensor.strp81_wind_direction_deg-entry]
+# name: test_sensor[sensor.strp81_wind_direction_2-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT_ANGLE: 'measurement_angle'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -1505,7 +1532,7 @@
     'disabled_by': None,
     'domain': 'sensor',
     'entity_category': None,
-    'entity_id': 'sensor.strp81_wind_direction_deg',
+    'entity_id': 'sensor.strp81_wind_direction_2',
     'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
@@ -1513,31 +1540,31 @@
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Wind direction deg',
+    'object_id_base': 'Wind direction',
     'options': dict({
     }),
-    'original_device_class': None,
-    'original_icon': 'mdi:compass-outline',
-    'original_name': 'Wind direction deg',
+    'original_device_class': <SensorDeviceClass.WIND_DIRECTION: 'wind_direction'>,
+    'original_icon': None,
+    'original_name': 'Wind direction',
     'platform': 'weatherlink',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': 'wind_direction_deg',
+    'translation_key': None,
     'unique_id': '03e7585a-4f29-4e7c-b6cb-d9e17313b07c-WindDirDeg',
     'unit_of_measurement': '°',
   })
 # ---
-# name: test_sensor[sensor.strp81_wind_direction_deg-state]
+# name: test_sensor[sensor.strp81_wind_direction_2-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'friendly_name': 'Strp81 Wind direction deg',
-      'icon': 'mdi:compass-outline',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': '°',
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'wind_direction',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Wind direction',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT_ANGLE: 'measurement_angle'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: '°',
     }),
     'context': <ANY>,
-    'entity_id': 'sensor.strp81_wind_direction_deg',
+    'entity_id': 'sensor.strp81_wind_direction_2',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -1546,11 +1573,12 @@
 # ---
 # name: test_sensor[sensor.strp81_wind_gust-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': dict({
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
     }),
     'config_entry_id': <ANY>,
     'config_subentry_id': <ANY>,
@@ -1591,10 +1619,10 @@
 # name: test_sensor[sensor.strp81_wind_gust-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'wind_speed',
-      'friendly_name': 'Strp81 Wind gust',
-      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
-      'unit_of_measurement': <UnitOfSpeed.KILOMETERS_PER_HOUR: 'km/h'>,
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'wind_speed',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Wind gust',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfSpeed.KILOMETERS_PER_HOUR: 'km/h'>,
     }),
     'context': <ANY>,
     'entity_id': 'sensor.strp81_wind_gust',

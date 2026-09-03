@@ -1,8 +1,9 @@
 # serializer version: 1
 # name: test_binary_sensor[binary_sensor.strp81_connectivity-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': None,
     'config_entry_id': <ANY>,
@@ -38,8 +39,8 @@
 # name: test_binary_sensor[binary_sensor.strp81_connectivity-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'connectivity',
-      'friendly_name': 'Strp81 Connectivity',
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'connectivity',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Connectivity',
       'last_update': datetime.datetime(2024, 12, 28, 11, 55, tzinfo=datetime.timezone.utc),
     }),
     'context': <ANY>,
@@ -52,8 +53,9 @@
 # ---
 # name: test_binary_sensor[binary_sensor.strp81_transmitter_battery-entry]
   EntityRegistryEntrySnapshot({
-    'aliases': set({
-    }),
+    'aliases': list([
+      None,
+    ]),
     'area_id': None,
     'capabilities': None,
     'config_entry_id': <ANY>,
@@ -89,8 +91,8 @@
 # name: test_binary_sensor[binary_sensor.strp81_transmitter_battery-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      'device_class': 'battery',
-      'friendly_name': 'Strp81 Transmitter battery',
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'battery',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Strp81 Transmitter battery',
     }),
     'context': <ANY>,
     'entity_id': 'binary_sensor.strp81_transmitter_battery',
