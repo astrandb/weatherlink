@@ -133,10 +133,9 @@ SENSOR_TYPES: tuple[WLSensorDescription, ...] = (
     WLSensorDescription(
         key="WindDirDeg",
         tag=DataKey.WIND_DIR,
-        icon="mdi:compass-outline",
         native_unit_of_measurement=DEGREE,
-        translation_key="wind_direction_deg",
-        state_class=SensorStateClass.MEASUREMENT,
+        device_class=SensorDeviceClass.WIND_DIRECTION,
+        state_class=SensorStateClass.MEASUREMENT_ANGLE,
         entity_registry_enabled_default=False,
         aux_sensors=(55,),
     ),
