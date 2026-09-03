@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.entity import DeviceInfo, EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import dt as dt_util
@@ -63,7 +64,11 @@ class WLEntity(CoordinatorEntity):
             sw_version=self.get_firmware(),
             serial_number=self.get_serial(),
             configuration_url=CONFIG_URL,
-            via_device=(DOMAIN, self.get_unique_id_base())
+            via_device_id=dr.async_get_device_id_by_identifier(
+                coordinator.hass,
+                (DOMAIN, self.get_unique_id_base()),
+                config_entry_id=coordinator.config_entry.entry_id,
+            )
             if tx_id_part != ""
             else None,
         )
