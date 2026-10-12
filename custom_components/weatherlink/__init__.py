@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from datetime import timedelta
 from email.utils import mktime_tz, parsedate_tz
 import logging
+from typing import Any
 
 from aiohttp import ClientError, ClientResponseError
 
@@ -41,7 +42,7 @@ class WLData:
     api: WLHub | WLHubV2
     primary_tx_id: int
     station_data: dict
-    sensors_metadata: dict
+    sensors_metadata: list
     coordinator: DataUpdateCoordinator
     current: dict
 
@@ -91,7 +92,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: WLConfigEntry) -> bool:
         api=None,
         primary_tx_id=1,
         station_data={},
-        sensors_metadata={},
+        sensors_metadata=[],
         coordinator=None,
         current={},
     )
@@ -171,9 +172,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: WLConfigEntry) -> bool:
     return True
 
 
-def get_unique_id_base(entry: WLConfigEntry):
+def get_unique_id_base(entry: WLConfigEntry) -> str:
     """Generate base for unique_id."""
-    unique_base = None
+    unique_base = ""
     if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
         unique_base = entry.runtime_data.coordinator.data[
             entry.runtime_data.primary_tx_id
@@ -200,7 +201,7 @@ async def get_coordinator(  # noqa: C901
     if entry.runtime_data.coordinator is not None:
         return entry.runtime_data.coordinator
 
-    def _preprocess(indata: str):  # noqa: C901
+    def _preprocess(indata: dict[str, Any]):  # noqa: C901
         outdata = {}
         # _LOGGER.debug("Received data: %s", indata)
         if entry.data[CONF_API_VERSION] == ApiVersion.API_V1:

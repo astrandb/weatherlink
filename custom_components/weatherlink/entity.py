@@ -6,7 +6,9 @@ import logging
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
-from homeassistant.helpers.entity import DeviceInfo, EntityDescription
+from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.entity import EntityDescription
+from homeassistant.helpers.typing import UNDEFINED
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import dt as dt_util
 
@@ -70,12 +72,12 @@ class WLEntity(CoordinatorEntity):
                 config_entry_id=coordinator.config_entry.entry_id,
             )
             if tx_id_part != ""
-            else None,
+            else UNDEFINED,
         )
 
-    def get_unique_id_base(self):
+    def get_unique_id_base(self) -> str:
         """Generate base for unique_id."""
-        unique_base = None
+        unique_base = ""
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V1:
             unique_base = self.coordinator.data[self.tx_id]["DID"]
         if self.entry.data[CONF_API_VERSION] == ApiVersion.API_V2:

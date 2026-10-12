@@ -5,12 +5,11 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-import voluptuous as vol
+import probatio
 
-from homeassistant import config_entries
+from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
-from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.selector import (
@@ -35,32 +34,32 @@ _LOGGER = logging.getLogger(__name__)
 
 API_VERSIONS = [ApiVersion.API_V2, ApiVersion.API_V1]
 
-STEP_USER_APIVER_SCHEMA = vol.Schema(
+STEP_USER_APIVER_SCHEMA = probatio.Schema(
     {
-        vol.Required(CONF_API_VERSION, default=ApiVersion.API_V2): SelectSelector(
+        probatio.Required(CONF_API_VERSION, default=ApiVersion.API_V2): SelectSelector(
             SelectSelectorConfig(options=API_VERSIONS, translation_key="set_api_ver")
         ),
     }
 )
 
-STEP_USER_DATA_SCHEMA_V1 = vol.Schema(
+STEP_USER_DATA_SCHEMA_V1 = probatio.Schema(
     {
-        vol.Required(CONF_USERNAME): TextSelector(),
-        vol.Required(CONF_PASSWORD): str,
-        vol.Required(CONF_API_TOKEN): str,
+        probatio.Required(CONF_USERNAME): TextSelector(),
+        probatio.Required(CONF_PASSWORD): str,
+        probatio.Required(CONF_API_TOKEN): str,
     }
 )
 
-STEP_USER_DATA_SCHEMA_V2_A = vol.Schema(
+STEP_USER_DATA_SCHEMA_V2_A = probatio.Schema(
     {
-        vol.Required(CONF_API_KEY_V2): TextSelector(),
-        vol.Required(CONF_API_SECRET): TextSelector(),
+        probatio.Required(CONF_API_KEY_V2): TextSelector(),
+        probatio.Required(CONF_API_SECRET): TextSelector(),
     }
 )
 
-STEP_USER_DATA_SCHEMA_V2_B = vol.Schema(
+STEP_USER_DATA_SCHEMA_V2_B = probatio.Schema(
     {
-        vol.Required(CONF_STATION_ID): TextSelector(),
+        probatio.Required(CONF_STATION_ID): TextSelector(),
     }
 )
 
@@ -134,7 +133,7 @@ async def validate_input_v2b(
     return {"title": station_name}
 
 
-class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+class WeatherLinkConfigFlow(ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Weatherlink."""
 
     VERSION = 2
@@ -143,7 +142,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ) -> ConfigFlowResult:
         """Handle the initial step."""
         data_schema = STEP_USER_APIVER_SCHEMA
         if user_input is None:
@@ -157,7 +156,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user_1(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ) -> ConfigFlowResult:
         """Handle the step for API_V1."""
         data_schema = STEP_USER_DATA_SCHEMA_V1
         if user_input is None:
@@ -186,7 +185,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user_2(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ) -> ConfigFlowResult:
         """Handle the first step for API_V2."""
         data_schema = STEP_USER_DATA_SCHEMA_V2_A
         if user_input is None:
@@ -216,7 +215,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user_3(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ) -> ConfigFlowResult:
         """Handle the second step for API_V2."""
         data_schema = STEP_USER_DATA_SCHEMA_V2_B
         websession = async_get_clientsession(self.hass)
@@ -235,9 +234,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is None:
             return self.async_show_form(
                 step_id="user_3",
-                data_schema=vol.Schema(
+                data_schema=probatio.Schema(
                     {
-                        vol.Required(CONF_STATION_ID): SelectSelector(
+                        probatio.Required(CONF_STATION_ID): SelectSelector(
                             SelectSelectorConfig(options=station_list)
                         ),
                     }
