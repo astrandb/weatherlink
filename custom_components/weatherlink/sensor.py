@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 import logging
+from typing import Any
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -15,6 +16,7 @@ from homeassistant.components.sensor import (
 from homeassistant.const import (
     DEGREE,
     PERCENTAGE,
+    EntityCategory,
     UnitOfDensity,
     UnitOfElectricPotential,
     UnitOfIrradiance,
@@ -25,7 +27,6 @@ from homeassistant.const import (
     UnitOfVolumetricFlux,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util import dt as dt_util
 
@@ -39,11 +40,11 @@ _LOGGER = logging.getLogger(__name__)
 SUBTAG_1 = "davis_current_observation"
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class WLSensorDescription(SensorEntityDescription):
     """Class describing Weatherlink sensor entities."""
 
-    tag: DataKey | None = None
+    tag: str | None = None
     exclude_api_ver: tuple = ()
     exclude_data_structure: tuple = ()
     aux_sensors: tuple = ()
@@ -750,7 +751,7 @@ class WLSensor(WLEntity, SensorEntity):
         return True
 
     @property
-    def extra_state_attributes(self) -> dict[str, str] | None:
+    def extra_state_attributes(self) -> dict[str, Any] | None:
         """Return the state attributes, if any."""
         if self.entity_description.key == "RainStorm":
             if self.coordinator.data[self.tx_id].get(DataKey.RAIN_STORM_START) is None:

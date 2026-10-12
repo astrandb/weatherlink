@@ -4,15 +4,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import logging
-from typing import Final
+from typing import Any, Final
 
 from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
     BinarySensorEntity,
     BinarySensorEntityDescription,
 )
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util import dt as dt_util
 
@@ -24,14 +24,14 @@ from .pyweatherlink import WLData
 _LOGGER = logging.getLogger(__name__)
 
 
-@dataclass
+@dataclass(frozen=True, kw_only=True)
 class WLBinarySensorDescription(BinarySensorEntityDescription):
     """Class describing Weatherlink binarysensor entities."""
 
     tag: str | None = None
-    exclude_api_ver: set = ()
-    exclude_data_structure: set = ()
-    aux_sensors: set = ()
+    exclude_api_ver: tuple = ()
+    exclude_data_structure: tuple = ()
+    aux_sensors: tuple = ()
 
 
 SENSOR_TYPES: Final[tuple[WLBinarySensorDescription, ...]] = (
@@ -135,11 +135,9 @@ class WLBinarySensor(WLEntity, BinarySensorEntity):
         return None
 
     @property
-    def extra_state_attributes(self) -> dict[str, str] | None:
+    def extra_state_attributes(self) -> dict[str, Any] | None:
         """Return the state attributes, if any."""
-        if self.entity_description.key in [
-            "Timestamp",
-        ]:
+        if self.entity_description.key == "Timestamp":
             if self.coordinator.data[self.tx_id].get(DataKey.TIMESTAMP) is None:
                 return None
             dt_object = dt_util.utc_from_timestamp(
