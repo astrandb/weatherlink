@@ -45,15 +45,15 @@ STEP_USER_APIVER_SCHEMA = probatio.Schema(
 STEP_USER_DATA_SCHEMA_V1 = probatio.Schema(
     {
         probatio.Required(CONF_USERNAME): TextSelector(),
-        probatio.Required(CONF_PASSWORD): str,
-        probatio.Required(CONF_API_TOKEN): str,
+        probatio.Required(probatio.Secret(CONF_PASSWORD)): TextSelector(),
+        probatio.Required(probatio.Secret(CONF_API_TOKEN)): TextSelector(),
     }
 )
 
 STEP_USER_DATA_SCHEMA_V2_A = probatio.Schema(
     {
         probatio.Required(CONF_API_KEY_V2): TextSelector(),
-        probatio.Required(CONF_API_SECRET): TextSelector(),
+        probatio.Required(probatio.Secret(CONF_API_SECRET)): TextSelector(),
     }
 )
 
