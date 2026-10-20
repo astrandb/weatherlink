@@ -1,45 +1,57 @@
 name-template: "Example title - v2026.9.0"
 tag-template: "v2026.9.0"
 
-exclude-labels:
-  - "skip-changelog"
 categories:
+  - type: "pre-exclude"
+    when:
+      label: "skip-changelog"
+
   - title: "New Features"
-    labels:
-      - "feature"
-      - "enhancement"
+    with:
+      labels:
+        - "feature"
+        - "enhancement"
   - title: "Breaking changes"
-    labels:
-      - "breaking"
+    with:
+      labels:
+        - "breaking"
   - title: "Bug fixes"
-    labels:
-      - "fix"
-      - "bugfix"
-      - "bug"
+    with:
+      labels:
+        - "fix"
+        - "bugfix"
+        - "bug"
   - title: "Translation"
     collapse-after: 2
-    labels:
-      - "translation"
+    with:
+      labels:
+        - "translation"
   - title: "Dependencies"
     collapse-after: 2
-    labels:
-      - "dependencies"
-      - "dependency"
+    with:
+      labels:
+        - "dependencies"
+        - "dependency"
   - title: "Maintenance"
-    label: "maintenance"
+    with:
+      labels:
+        - "maintenance"
   - title: "Code quality and optimizations"
-    label: "code quality"
+    with:
+      labels:
+        - "code quality"
   - title: "Development tools"
-    labels:
-      - "development tools"
-      - "dev-tools"
+    with:
+      labels:
+        - "development tools"
+        - "dev-tools"
 
 change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 
 template: |
-  [![Downloads for this release](https://img.shields.io/github/downloads-pre/$OWNER/$REPOSITORY/v2026.9.0/total.svg)]
-  (https://github.com/$OWNER/$REPOSITORY/releases/v2026.9.0)
+  [![Downloads for this release](https://img.shields.io/github/downloads-pre/$OWNER/$REPOSITORY/v2026.9.0/total.svg)](
+  https://github.com/$OWNER/$REPOSITORY/releases/v2026.9.0)
 
   <!--
   ### Checklist for release

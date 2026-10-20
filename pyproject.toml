@@ -11,11 +11,7 @@ commit = false
 
 "custom_components/*/const.py" = ['^VERSION = "{version}"']
 
-".github/release-drafter.yml" = [
-    # 'name-template: "Example title - "v{version}"',
-    # 'tag-template: "v{version}"',
-    'v{version}',
-]
+".github/release-drafter.yml" = ['v{version}']
 
 [tool.pylint."MESSAGES CONTROL"]
 # Reasons disabled:
@@ -419,7 +415,6 @@ ignore = [
 ]
 
 [tool.ruff.lint.flake8-import-conventions.extend-aliases]
-voluptuous = "vol"
 "homeassistant.helpers.area_registry" = "ar"
 "homeassistant.helpers.category_registry" = "cr"
 "homeassistant.helpers.config_validation" = "cv"
