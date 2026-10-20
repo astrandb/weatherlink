@@ -7,41 +7,41 @@ categories:
       label: "skip-changelog"
 
   - title: "New Features"
-    with:
+    when:
       labels:
         - "feature"
         - "enhancement"
   - title: "Breaking changes"
-    with:
+    when:
       labels:
         - "breaking"
   - title: "Bug fixes"
-    with:
+    when:
       labels:
         - "fix"
         - "bugfix"
         - "bug"
   - title: "Translation"
     collapse-after: 2
-    with:
+    when:
       labels:
         - "translation"
   - title: "Dependencies"
     collapse-after: 2
-    with:
+    when:
       labels:
         - "dependencies"
         - "dependency"
   - title: "Maintenance"
-    with:
+    when:
       labels:
         - "maintenance"
   - title: "Code quality and optimizations"
-    with:
+    when:
       labels:
         - "code quality"
   - title: "Development tools"
-    with:
+    when:
       labels:
         - "development tools"
         - "dev-tools"
