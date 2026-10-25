@@ -1,7 +1,8 @@
 name: PR Autolabeler
 
 on:
-  push:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
   workflow_dispatch:
 
 permissions:
