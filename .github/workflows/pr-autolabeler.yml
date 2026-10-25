@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: read
+  contents: read
+  pull-requests: write
 
 jobs:
   update_release_draft:
