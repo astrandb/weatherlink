@@ -16,3 +16,4 @@ jobs:
       - uses: release-drafter/release-drafter/autolabeler@v7
         with:
           config-name: release-drafter.yml
+          token: ${{ secrets.GITHUB_TOKEN }}
