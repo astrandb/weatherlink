@@ -1,4 +1,4 @@
-name: Release Drafter
+name: PR Autolabeler
 
 on:
   push:
