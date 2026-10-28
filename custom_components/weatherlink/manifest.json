@@ -1,6 +1,7 @@
 {
   "domain": "weatherlink",
   "name": "WeatherLink",
+  "categories": ["sensors.temperature_humidity", "weather_alerts"],
   "codeowners": ["@astrandb"],
   "config_flow": true,
   "dependencies": [],
@@ -11,6 +12,6 @@
   "issue_tracker": "https://github.com/astrandb/weatherlink/issues",
   "requirements": [],
   "ssdp": [],
-  "version": "2026.9.0",
+  "version": "2026.10.0",
   "zeroconf": []
 }
