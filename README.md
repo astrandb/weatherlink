@@ -19,6 +19,8 @@ This version will mainly display data from primary devices, such as Vantage Vue 
 
 Current version has limited error detection and recovery and will therefore log detailed error descriptions if unforeseen things happen. If you see recurring stack traces from this integration in your log, please file an issue report.
 
+<!-- ha-marketplace:exclude-start -->
+
 ## Installation
 
 Make sure you have the credentials available for your account with [Weatherlink cloud service](https://www.weatherlink.com). You will need API Token and API Secret when using API V2. For the legacy API V1 you will need the DID for your Davis weather station, your password and the API V1 access token.
@@ -37,6 +39,8 @@ If you have another weatherlink integration installed you must remove it before 
 - Copy all files from custom_components/weatherlink in this repo to your config custom_components/weatherlink
 - Restart Home Assistant
 - Go to Settings->Devices & Services->Integrations and press Add Integration. Search for Weatherlink and select it. Follow the prompts.
+
+<!-- ha-marketplace:exclude-end -->
 
 ## Support
 
