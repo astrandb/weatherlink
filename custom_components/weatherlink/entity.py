@@ -8,7 +8,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import EntityDescription
-from homeassistant.helpers.typing import UNDEFINED
+from homeassistant.helpers.typing import Undefined
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import dt as dt_util
 
@@ -72,7 +72,7 @@ class WLEntity(CoordinatorEntity):
                 config_entry_id=coordinator.config_entry.entry_id,
             )
             if tx_id_part != ""
-            else UNDEFINED,
+            else Undefined,
         )
 
     def get_unique_id_base(self) -> str:
